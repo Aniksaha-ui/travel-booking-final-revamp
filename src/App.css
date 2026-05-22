@@ -1,0 +1,366 @@
+.routes-page {
+  min-height: 100%;
+  background: #100d0e;
+  color: #ffffff;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  padding: 28px 24px;
+}
+
+.routes-page__inner {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.routes-page__header {
+  margin-bottom: 28px;
+}
+
+.routes-page__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.routes-page__title h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.routes-page__subtitle {
+  margin: 12px 0 0;
+  color: #b4c5df;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.routes-table-card {
+  overflow: hidden;
+  border: 1px solid #2d282b;
+  border-radius: 8px;
+  background: #171314;
+}
+
+.routes-table-toolbar {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid #2d282b;
+  padding: 0 16px;
+}
+
+.routes-search {
+  display: flex;
+  width: 260px;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #2d282b;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #8c97aa;
+}
+
+.routes-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.routes-search input::placeholder {
+  color: #70798a;
+}
+
+.routes-control {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #2d282b;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.routes-control--blue {
+  border-color: #1e40af;
+  background: #17214a;
+  color: #bfdbfe;
+}
+
+.routes-control__count {
+  display: flex;
+  min-width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #17214a;
+  padding: 0 6px;
+  color: #7ea1ff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.routes-columns {
+  position: relative;
+}
+
+.routes-columns-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  width: 208px;
+  overflow: hidden;
+  border: 1px solid #332d30;
+  border-radius: 8px;
+  background: #171314;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+}
+
+.routes-columns-menu__header {
+  display: flex;
+  height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #2d282b;
+  padding: 0 12px;
+  color: #9fb2d0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.routes-columns-menu__header button {
+  border: 0;
+  background: transparent;
+  color: #7ea1ff;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.routes-columns-menu__body {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.routes-columns-menu__option {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  padding: 0 4px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.routes-columns-menu__option:hover {
+  background: #211d20;
+}
+
+.routes-columns-menu__option input {
+  width: 13px;
+  height: 13px;
+  accent-color: #2563eb;
+}
+
+.routes-new-button {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: #1d4ed8;
+  padding: 0 12px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+}
+
+.routes-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.routes-table thead tr {
+  height: 42px;
+  border-bottom: 1px solid #2d282b;
+  background: #221f20;
+}
+
+.routes-table th {
+  padding: 0 16px;
+  color: #9fb2d0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.routes-table tbody tr {
+  height: 56px;
+  border-bottom: 1px solid #282325;
+  background: #171314;
+}
+
+.routes-table tbody tr:hover {
+  background: #1d181a;
+}
+
+.routes-table td {
+  padding: 0 16px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+.routes-table__name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.routes-table__avatar {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #102256;
+  color: #7ea1ff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.routes-table__name-text {
+  overflow: hidden;
+  color: #ffffff;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.routes-table__code {
+  color: #9ed5ff !important;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px !important;
+}
+
+.routes-table__muted {
+  color: #b4c5df !important;
+}
+
+.routes-table__empty {
+  height: 96px;
+  color: #9fb2d0 !important;
+  text-align: center;
+  font-weight: 700;
+}
+
+.routes-table__status {
+  text-align: center;
+}
+
+.routes-status {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.routes-status--active {
+  background: rgb(16 185 129 / 15%);
+  color: #6ee7b7;
+}
+
+.routes-status--inactive {
+  background: rgb(245 158 11 / 15%);
+  color: #facc15;
+}
+
+.routes-table__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  color: #969baa;
+}
+
+.routes-icon-button {
+  display: inline-flex;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.routes-table-footer {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #282325;
+  padding: 0 16px;
+}
+
+.routes-table-footer p {
+  margin: 0;
+  color: #9fb2d0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.routes-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.routes-pagination button {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #282325;
+  border-radius: 6px;
+  background: transparent;
+  padding: 0 12px;
+  color: #4f5869;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}

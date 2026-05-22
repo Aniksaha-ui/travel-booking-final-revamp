@@ -1,0 +1,8 @@
+export const API_URLS = {
+  auth: {
+    login: "/login",
+  },
+  admin: {
+    menu: "/admin/menu",
+  },
+};
