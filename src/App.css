@@ -292,8 +292,15 @@
   text-align: center;
 }
 
+.routes-table__actions-heading,
+.routes-table__actions-cell {
+  padding-left: 8px !important;
+}
+
 .routes-status {
   display: inline-flex;
+  min-width: 72px;
+  justify-content: center;
   border-radius: 999px;
   padding: 4px 8px;
   font-size: 11px;
@@ -316,12 +323,16 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 10px;
   color: #969baa;
 }
 
 .routes-icon-button {
   display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
   border: 0;
   background: transparent;
   color: inherit;
@@ -350,17 +361,317 @@
   gap: 4px;
 }
 
-.routes-pagination button {
+.routes-pagination button,
+.routes-pagination__ellipsis {
   display: inline-flex;
   height: 30px;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   border: 1px solid #282325;
   border-radius: 6px;
   background: transparent;
-  padding: 0 12px;
+  min-width: 30px;
+  padding: 0 10px;
   color: #4f5869;
   font-size: 12px;
   font-weight: 700;
   font-family: inherit;
+}
+
+.routes-pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.routes-pagination button:not(:disabled):hover {
+  border-color: #3b3438;
+  color: #c5d9f7;
+}
+
+.routes-pagination button.is-active {
+  border-color: #1d4ed8;
+  background: #17214a;
+  color: #bfdbfe;
+}
+
+.routes-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.routes-pagination__ellipsis {
+  border-color: transparent;
+  padding: 0 4px;
+}
+
+.crud-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.crud-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 68%);
+}
+
+.crud-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(680px, 100%);
+  overflow: hidden;
+  border: 1px solid #332d30;
+  border-radius: 10px;
+  background: #171314;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 45%);
+}
+
+.crud-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #2d282b;
+  padding: 18px 20px;
+}
+
+.crud-modal__header h2 {
+  margin: 4px 0 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.crud-modal__header button {
+  height: 32px;
+  border: 1px solid #332d30;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.crud-modal__eyebrow {
+  margin: 0;
+  color: #7ea1ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.crud-modal__body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.crud-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crud-field span {
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.crud-field input,
+.crud-field select {
+  height: 38px;
+  border: 1px solid #332d30;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+
+.crud-field input:focus,
+.crud-field select:focus {
+  border-color: #2563eb;
+}
+
+.crud-field small {
+  color: #fca5a5;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.crud-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #2d282b;
+  padding: 16px 20px;
+}
+
+.crud-button {
+  height: 36px;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 800;
+  font-family: inherit;
+}
+
+.crud-button--ghost {
+  border: 1px solid #332d30;
+  background: #211d20;
+  color: #c5d9f7;
+}
+
+.crud-button--primary {
+  border: 1px solid #1d4ed8;
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.trip-summary-modal {
+  width: min(980px, 100%);
+}
+
+.trip-summary-modal__body {
+  max-height: min(72vh, 720px);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.trip-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid #2d282b;
+  border-radius: 8px;
+  background: #171314;
+  color: #ffffff;
+}
+
+.trip-summary-table th,
+.trip-summary-table td {
+  border-bottom: 1px solid #2d282b;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.trip-summary-table th {
+  background: #221f20;
+  color: #9fb2d0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.trip-summary-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.trip-seat-layout {
+  margin-top: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.trip-seat-layout h3 {
+  margin: 0 0 12px;
+  color: #c5d9f7;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.trip-seat-layout__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+}
+
+.trip-seat-layout article {
+  border: 1px solid #2d282b;
+  border-radius: 8px;
+  background: #211d20;
+  padding: 12px;
+  text-align: center;
+}
+
+.trip-seat-layout article.is-available {
+  border-color: rgb(16 185 129 / 45%);
+  background: rgb(16 185 129 / 12%);
+}
+
+.trip-seat-layout article.is-booked {
+  border-color: rgb(239 68 68 / 45%);
+  background: rgb(239 68 68 / 12%);
+}
+
+.trip-seat-layout strong {
+  display: block;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.trip-seat-layout span {
+  display: block;
+  margin-top: 4px;
+  color: #8fa0bd;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.trip-summary-empty {
+  border: 1px solid #2d282b;
+  border-radius: 8px;
+  background: #171314;
+  padding: 24px;
+  color: #8fa0bd;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.trip-users-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.trip-users-summary article {
+  border: 1px solid #2d282b;
+  border-radius: 8px;
+  background: #171314;
+  padding: 14px;
+}
+
+.trip-users-summary span {
+  display: block;
+  color: #8fa0bd;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.trip-users-summary strong {
+  display: block;
+  margin-top: 8px;
+  color: #ffffff;
+  font-size: 18px;
 }

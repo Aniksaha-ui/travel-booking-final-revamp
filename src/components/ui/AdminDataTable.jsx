@@ -39,6 +39,39 @@ function ColumnsDropdown({ columns, visibleColumnIds, onToggleColumn, onResetCol
   )
 }
 
+const getPaginationItems = (currentPage = 1, lastPage = 1) => {
+  if (lastPage <= 1) {
+    return [1]
+  }
+
+  const pages = new Set([1, lastPage, currentPage, currentPage - 1, currentPage + 1])
+
+  if (currentPage <= 3) {
+    pages.add(2)
+    pages.add(3)
+  }
+
+  if (currentPage >= lastPage - 2) {
+    pages.add(lastPage - 1)
+    pages.add(lastPage - 2)
+  }
+
+  const orderedPages = [...pages]
+    .filter((page) => page >= 1 && page <= lastPage)
+    .sort((firstPage, secondPage) => firstPage - secondPage)
+
+  return orderedPages.reduce((items, page, index) => {
+    const previousPage = orderedPages[index - 1]
+
+    if (previousPage && page - previousPage > 1) {
+      items.push(`ellipsis-${previousPage}-${page}`)
+    }
+
+    items.push(page)
+    return items
+  }, [])
+}
+
 export function AdminTableButton({ children, count, variant = 'default', className = '', ...props }) {
   return (
     <button
@@ -68,8 +101,14 @@ export default function AdminDataTable({
   emptyMessage = 'No data found',
   filters,
   getRowKey = (row) => row.id,
+  isLoading = false,
+  onPageChange,
+  onSearchChange,
+  pagination,
   renderRowActions,
   resultLabel,
+  rowActionsWidth = '88px',
+  search,
   searchPlaceholder = 'Search',
 }) {
   const columnsMenuRef = useRef(null)
@@ -80,6 +119,9 @@ export default function AdminDataTable({
     () => columns.filter((column) => visibleColumnIds.includes(column.id)),
     [columns, visibleColumnIds],
   )
+  const currentPage = pagination?.currentPage ?? 1
+  const lastPage = pagination?.lastPage ?? 1
+  const paginationItems = useMemo(() => getPaginationItems(currentPage, lastPage), [currentPage, lastPage])
 
   useEffect(() => {
     const handlePointerDown = (event) => {
@@ -114,7 +156,12 @@ export default function AdminDataTable({
       <div className="routes-table-toolbar">
         <label className="routes-search">
           <Search size={15} />
-          <input type="search" placeholder={searchPlaceholder} />
+          <input
+            type="search"
+            placeholder={searchPlaceholder}
+            value={search ?? ''}
+            onChange={(event) => onSearchChange?.(event.target.value)}
+          />
         </label>
 
         <div className="routes-columns" ref={columnsMenuRef}>
@@ -145,11 +192,21 @@ export default function AdminDataTable({
                 {column.label} {column.sortable === false ? null : <SortIcon />}
               </th>
             ))}
-            {renderRowActions ? <th style={{ width: '5%', textAlign: 'right' }}>Actions</th> : null}
+            {renderRowActions ? (
+              <th className="routes-table__actions-heading" style={{ width: rowActionsWidth, textAlign: 'right' }}>
+                Actions
+              </th>
+            ) : null}
           </tr>
         </thead>
         <tbody>
-          {data.length ? (
+          {isLoading ? (
+            <tr>
+              <td colSpan={visibleColumns.length + (renderRowActions ? 1 : 0)} className="routes-table__empty">
+                Loading records...
+              </td>
+            </tr>
+          ) : data.length ? (
             data.map((row) => (
               <tr key={getRowKey(row)}>
                 {visibleColumns.map((column) => (
@@ -157,7 +214,7 @@ export default function AdminDataTable({
                     {column.render ? column.render(row) : row[column.accessor ?? column.id]}
                   </td>
                 ))}
-                {renderRowActions ? <td>{renderRowActions(row)}</td> : null}
+                {renderRowActions ? <td className="routes-table__actions-cell">{renderRowActions(row)}</td> : null}
               </tr>
             ))
           ) : (
@@ -173,11 +230,38 @@ export default function AdminDataTable({
       <div className="routes-table-footer">
         <p>{resultLabel ?? `Showing ${data.length} result's`}</p>
         <div className="routes-pagination">
-          <button type="button">
+          <button
+            type="button"
+            disabled={isLoading || !pagination || currentPage <= 1}
+            onClick={() => onPageChange?.(currentPage - 1)}
+          >
             <ChevronLeft size={14} />
             Previous
           </button>
-          <button type="button">
+          <div className="routes-pagination__pages">
+            {paginationItems.map((item) =>
+              typeof item === 'string' ? (
+                <span key={item} className="routes-pagination__ellipsis">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={item}
+                  type="button"
+                  className={item === currentPage ? 'is-active' : ''}
+                  disabled={isLoading || item === currentPage}
+                  onClick={() => onPageChange?.(item)}
+                >
+                  {item}
+                </button>
+              ),
+            )}
+          </div>
+          <button
+            type="button"
+            disabled={isLoading || !pagination || currentPage >= lastPage}
+            onClick={() => onPageChange?.(currentPage + 1)}
+          >
             Next
             <ChevronRight size={14} />
           </button>

@@ -9,6 +9,9 @@ import { Sidebar } from './Sidebar'
 const pageTitles = {
   '/dashboard': 'Dashboard',
   '/routes': 'Routes',
+  '/seats': 'Seat Management',
+  '/trips': 'Trip Management',
+  '/vehicles': 'Vehicles',
 }
 
 export function AppLayout() {

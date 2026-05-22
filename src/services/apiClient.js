@@ -72,11 +72,15 @@ const resolveErrorMessage = (data, fallback) => {
 
 export const apiRequest = async (path, options = {}) => {
   const token = getAuthToken();
+  const isFormData = options.body instanceof FormData;
   const headers = new Headers({
     Accept: "application/json",
-    "Content-Type": "application/json",
     ...(options.headers ?? {}),
   });
+
+  if (!isFormData) {
+    headers.set("Content-Type", "application/json");
+  }
 
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);

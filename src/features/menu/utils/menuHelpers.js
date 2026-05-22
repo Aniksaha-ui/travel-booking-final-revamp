@@ -57,5 +57,17 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.routes;
   }
 
+  if (path === "/admin/vehicles" || path === "/admin/vehicle" || path === "/vehicles") {
+    return APP_ROUTES.vehicles;
+  }
+
+  if (path === "/admin/seats" || path === "/admin/seat" || path === "/seats") {
+    return APP_ROUTES.seats;
+  }
+
+  if (path === "/admin/trips" || path === "/admin/trip" || path === "/trips") {
+    return APP_ROUTES.trips;
+  }
+
   return null;
 };
