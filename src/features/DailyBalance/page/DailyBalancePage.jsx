@@ -63,8 +63,6 @@ export default function DailyBalancePage() {
     data: reportData,
     error: reportError,
     isLoading: isReportLoading,
-    page: reportPage,
-    setPage: setReportPage,
   } = useDailyBalanceReport()
   const {
     data: historyData,
@@ -108,10 +106,7 @@ export default function DailyBalancePage() {
           <DailyBalanceLedger
             error={reportError}
             isLoading={isReportLoading}
-            page={reportPage}
-            pagination={reportData.pagination}
             rows={reportData.rows}
-            setPage={setReportPage}
             summary={reportData.summary}
           />
 

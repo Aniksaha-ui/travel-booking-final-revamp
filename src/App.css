@@ -261,6 +261,19 @@
   vertical-align: middle;
 }
 
+.routes-table tfoot tr {
+  border-top: 1px solid #332d30;
+  background: #1d181a;
+}
+
+.routes-table tfoot td {
+  padding: 14px 16px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
 .routes-table__name {
   display: flex;
   align-items: center;
@@ -304,6 +317,24 @@
   color: #9fb2d0 !important;
   text-align: center;
   font-weight: 700;
+}
+
+.routes-table__summary-label {
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+.routes-table__summary-cell {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.routes-table__summary-cell--credit {
+  color: #6ee7b7 !important;
+}
+
+.routes-table__summary-cell--debit {
+  color: #facc15 !important;
 }
 
 .routes-table__status {

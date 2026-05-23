@@ -187,17 +187,55 @@ export const buildReportAssetUrl = (filePath) => {
   return `${baseUrl}/${normalizedPath}`
 }
 
-export const getDailyBalanceReport = async ({ page = 1 } = {}) => {
-  const payload = ensureSuccessfulPayload(
+const fetchDailyBalancePayload = async (page = 1) =>
+  ensureSuccessfulPayload(
     await apiRequest(`${API_URLS.reports.dailyBalance}?page=${page}`),
     'Unable to load daily balance report.',
   )
-  const { meta, rows } = extractRowsAndMeta(payload)
-  const normalizedRows = rows.map(normalizeDailyBalanceRow)
+
+const mergeDailyBalanceRows = (payloads) => {
+  const mergedRows = []
+
+  payloads.forEach((payload) => {
+    const { rows } = extractRowsAndMeta(payload)
+    mergedRows.push(...rows)
+  })
+
+  const rowsByDate = new Map()
+
+  mergedRows
+    .map(normalizeDailyBalanceRow)
+    .sort((firstRow, secondRow) => firstRow.date.localeCompare(secondRow.date))
+    .forEach((row) => {
+      rowsByDate.set(row.date, row)
+    })
+
+  return [...rowsByDate.values()]
+}
+
+export const getDailyBalanceReport = async () => {
+  const firstPayload = await fetchDailyBalancePayload(1)
+  const { meta } = extractRowsAndMeta(firstPayload)
+  const lastPage = toNumber(meta?.last_page ?? meta?.lastPage) || 1
+  const additionalPayloads =
+    lastPage > 1
+      ? await Promise.all(
+          Array.from({ length: lastPage - 1 }, (_, index) =>
+            fetchDailyBalancePayload(index + 2),
+          ),
+        )
+      : []
+  const normalizedRows = mergeDailyBalanceRows([firstPayload, ...additionalPayloads])
   const { firstDayLabel, rows: filledRows, todayLabel } = fillMissingDates(normalizedRows)
 
   return {
-    pagination: normalizePagination(meta, filledRows.length),
+    pagination: {
+      ...defaultPagination,
+      from: filledRows.length ? 1 : 0,
+      to: filledRows.length,
+      total: filledRows.length,
+      perPage: filledRows.length,
+    },
     rows: filledRows,
     summary: buildSummary(filledRows),
     titleDateRange: `${firstDayLabel} - ${todayLabel}`,

@@ -7,7 +7,6 @@ import {
 
 export default function useDailyBalanceReport() {
   const toast = useToast()
-  const [page, setPage] = useState(1)
   const [state, setState] = useState({
     data: emptyDailyBalanceData,
     error: null,
@@ -25,7 +24,7 @@ export default function useDailyBalanceReport() {
   useEffect(() => {
     let active = true
 
-    getDailyBalanceReport({ page })
+    getDailyBalanceReport()
       .then((data) => {
         if (active) {
           setState({
@@ -49,14 +48,12 @@ export default function useDailyBalanceReport() {
     return () => {
       active = false
     }
-  }, [page, toast])
+  }, [toast])
 
   return {
     ...state,
-    page,
-    setPage: (nextPage) => {
+    reload: () => {
       beginLoading()
-      setPage(nextPage)
     },
   }
 }

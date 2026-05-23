@@ -1,7 +1,6 @@
 import { CalendarDays } from 'lucide-react'
 import { DashboardSection } from '../../../components/ui/DashboardSection'
 import { LedgerColumns } from './column.jsx'
-import { DailyBalancePagination } from './DailyBalancePagination'
 
 function LedgerMobileCard({ row }) {
   return (
@@ -30,7 +29,33 @@ function LedgerMobileCard({ row }) {
   )
 }
 
-export function DailyBalanceLedger({ error, isLoading, page, pagination, rows, setPage, summary }) {
+function LedgerSummaryCard({ summary }) {
+  return (
+    <div className="rounded-lg border border-[#332d30] bg-[#1d181a] p-4 md:hidden">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-sm font-bold text-white">Total Summary</p>
+        <span className="text-sm font-semibold text-[#c5d9f7]">{summary.txCount} transactions</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-md bg-[#171314] p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8fa0bd]">Credit</p>
+          <p className="mt-2 text-sm font-bold text-emerald-300">{summary.totalCreditLabel}</p>
+        </div>
+        <div className="rounded-md bg-[#171314] p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8fa0bd]">Debit</p>
+          <p className="mt-2 text-sm font-bold text-amber-300">{summary.totalDebitLabel}</p>
+        </div>
+        <div className="rounded-md bg-[#171314] p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8fa0bd]">Balance</p>
+          <p className="mt-2 text-sm font-bold text-white">{summary.currentBalanceLabel}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function DailyBalanceLedger({ error, isLoading, rows, summary }) {
   return (
     <DashboardSection
       title="Daily Ledger"
@@ -83,12 +108,20 @@ export function DailyBalanceLedger({ error, isLoading, page, pagination, rows, s
             </tbody>
             {rows.length ? (
               <tfoot>
-                <tr className="border-t border-[#332d30] bg-[#1d181a]">
-                  <td className="px-4 py-3 text-sm font-semibold text-[#b4c5df]">Total Summary</td>
-                  <td className="px-4 py-3 text-center text-sm font-semibold text-white">{summary.txCount}</td>
-                  <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-300">{summary.totalCreditLabel}</td>
-                  <td className="px-4 py-3 text-right text-sm font-semibold text-amber-300">{summary.totalDebitLabel}</td>
-                  <td className="px-4 py-3 text-right text-sm font-bold text-white">{summary.currentBalanceLabel}</td>
+                <tr className="routes-table__summary-row">
+                  <td className="routes-table__summary-label">Total Summary</td>
+                  <td className="routes-table__summary-cell" style={{ textAlign: 'center' }}>
+                    {summary.txCount}
+                  </td>
+                  <td className="routes-table__summary-cell routes-table__summary-cell--credit" style={{ textAlign: 'right' }}>
+                    {summary.totalCreditLabel}
+                  </td>
+                  <td className="routes-table__summary-cell routes-table__summary-cell--debit" style={{ textAlign: 'right' }}>
+                    {summary.totalDebitLabel}
+                  </td>
+                  <td className="routes-table__summary-cell" style={{ textAlign: 'right' }}>
+                    {summary.currentBalanceLabel}
+                  </td>
                 </tr>
               </tfoot>
             ) : null}
@@ -106,24 +139,15 @@ export function DailyBalanceLedger({ error, isLoading, page, pagination, rows, s
             {error}
           </div>
         ) : rows.length ? (
-          rows.map((row) => <LedgerMobileCard key={row.id} row={row} />)
+          <>
+            {rows.map((row) => <LedgerMobileCard key={row.id} row={row} />)}
+            <LedgerSummaryCard summary={summary} />
+          </>
         ) : (
           <div className="rounded-lg border border-[#332d30] bg-[#231f21] px-4 py-5 text-center text-sm font-medium text-[#8fa0bd]">
             No daily balance records found.
           </div>
         )}
-      </div>
-
-      <div className="routes-table-footer">
-        <p>
-          Showing {pagination.from || 1}-{pagination.to || rows.length} of {pagination.total || rows.length} entries
-        </p>
-        <DailyBalancePagination
-          isLoading={isLoading}
-          page={page}
-          pagination={pagination}
-          setPage={setPage}
-        />
       </div>
     </DashboardSection>
   )
