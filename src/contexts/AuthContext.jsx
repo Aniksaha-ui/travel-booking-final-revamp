@@ -7,8 +7,8 @@ import {
   resetSessionTimeoutState,
 } from "../services/apiClient";
 import { useToast } from "../components/common/Toaster";
-import { login as loginRequest } from "../features/auth/services/authService";
-import { getAdminMenu } from "../features/menu/services/menuService";
+import { login as loginRequest } from "../features/auth/service/authService";
+import { getAdminMenu } from "../features/menu/service/menuService";
 import { normalizeStoredMenuState } from "../features/menu/utils/menuHelpers";
 
 const AuthContext = createContext(null);

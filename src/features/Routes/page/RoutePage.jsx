@@ -1,6 +1,7 @@
 import { MapPinned } from 'lucide-react'
 import ResourceCrudPage from '../../../components/crud/ResourceCrudPage'
-import { ROUTES_PAGE_COPY, routeColumns, routeFields } from '../constants/routes.constants.jsx'
+import { routeColumns } from '../component/column.jsx'
+import { ROUTES_PAGE_COPY, routeFields } from '../constants/routes.constants.jsx'
 import useRoutes from '../hooks/useRoutes'
 
 export default function RoutePage() {

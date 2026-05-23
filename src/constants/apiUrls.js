@@ -11,6 +11,8 @@ export const API_URLS = {
     packageProfitMargin: "/admin/package-profit-margin",
   },
   reports: {
+    dailyBalance: "/admin/monthlyDailyBalanceReport",
+    dailyBalanceHistory: "/admin/monthly-daily-balance-reports",
     monthRunningBalance: "/admin/monthRunningBalance",
   },
   resources: {

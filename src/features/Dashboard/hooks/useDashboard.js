@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useToast } from '../../../components/common/Toaster'
-import { getDashboardOverview } from '../services/dashboardService'
+import { getDashboardOverview } from '../service/dashboardService'
 
 export default function useDashboard() {
   const toast = useToast()

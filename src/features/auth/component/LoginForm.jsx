@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "../../../components/common/Toaster";
 import { APP_ROUTES } from "../../../constants/routes";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { validateLoginForm } from "../../../utils/validation";
 import { AUTH_COPY } from "../constants/auth.constants";
+import { validateLoginForm } from "../validation/loginValidation";
 
 const DEFAULT_FORM = {
   email: "",

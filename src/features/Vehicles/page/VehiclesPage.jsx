@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { Bus } from 'lucide-react'
 import ResourceCrudPage from '../../../components/crud/ResourceCrudPage'
 import { useToast } from '../../../components/common/Toaster'
-import { fetchRouteDropdown } from '../../Routes/services/routesService'
-import { VEHICLES_PAGE_COPY, vehicleColumns, vehicleFields } from '../constants/vehicles.constants.jsx'
+import { fetchRouteDropdown } from '../../Routes/service/routesService'
+import { vehicleColumns } from '../component/column.jsx'
+import { VEHICLES_PAGE_COPY, vehicleFields } from '../constants/vehicles.constants.jsx'
 import useVehicles from '../hooks/useVehicles'
 
 export default function VehiclesPage() {

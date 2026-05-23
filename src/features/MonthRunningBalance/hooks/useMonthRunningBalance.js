@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useToast } from '../../../components/common/Toaster'
-import { getMonthRunningBalanceReport } from '../services/monthRunningBalanceService'
+import { getMonthRunningBalanceReport } from '../service/monthRunningBalanceService'
 
 const defaultState = {
   chartItems: [],

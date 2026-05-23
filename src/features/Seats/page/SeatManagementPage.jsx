@@ -1,6 +1,7 @@
 import { Armchair } from 'lucide-react'
 import ResourceCrudPage from '../../../components/crud/ResourceCrudPage'
-import { SEATS_PAGE_COPY, seatColumns, seatFields } from '../constants/seats.constants.jsx'
+import { seatColumns } from '../component/column.jsx'
+import { SEATS_PAGE_COPY, seatFields } from '../constants/seats.constants.jsx'
 import useSeats from '../hooks/useSeats'
 
 export default function SeatManagementPage() {

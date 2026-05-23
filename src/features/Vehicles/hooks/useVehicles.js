@@ -1,5 +1,5 @@
 import useResourceCrud from '../../../hooks/useResourceCrud'
-import { vehiclesApi } from '../services/vehiclesService'
+import { vehiclesApi } from '../service/vehiclesService'
 
 export default function useVehicles() {
   return useResourceCrud({ api: vehiclesApi, resourceName: 'Vehicle' })

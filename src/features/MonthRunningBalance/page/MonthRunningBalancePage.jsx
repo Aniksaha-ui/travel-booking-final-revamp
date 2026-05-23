@@ -7,11 +7,9 @@ import {
 } from 'lucide-react'
 import AdminDataTable from '../../../components/ui/AdminDataTable'
 import { DashboardMetricCard } from '../../../components/ui/DashboardMetricCard'
-import { MonthBalanceManagementOverview } from '../components/MonthBalanceManagementOverview'
-import {
-  MONTH_RUNNING_BALANCE_COPY,
-  monthRunningBalanceColumns,
-} from '../constants/monthRunningBalance.constants.jsx'
+import { MonthBalanceManagementOverview } from '../component/MonthBalanceManagementOverview'
+import { monthRunningBalanceColumns } from '../component/column.jsx'
+import { MONTH_RUNNING_BALANCE_COPY } from '../constants/monthRunningBalance.constants.jsx'
 import useMonthRunningBalance from '../hooks/useMonthRunningBalance'
 
 function MonthRunningBalanceSummary({ summary }) {
