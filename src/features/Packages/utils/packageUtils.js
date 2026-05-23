@@ -91,12 +91,13 @@ const formatDateTimeLabel = (value) => {
 export const normalizePackageListItem = (item, index = 0, pagination = {}) => {
   const pricing = Array.isArray(item.pricing) ? item.pricing : []
   const serialSeed = pagination.from || 1
+  const guideName = item.guide_name ?? item.guide?.name ?? item.trip?.guide_name ?? item.trip?.guideName
 
   return {
     createdAtLabel: formatDateTimeLabel(item.created_at),
     description: normalizeText(item.description, ''),
     descriptionPreview: truncateText(item.description, 110) || 'No description provided.',
-    guideName: normalizeText(item.guide_name ?? item.guide?.name, 'Unassigned'),
+    guideName: normalizeText(guideName, 'Unassigned'),
     id: item.id ?? item.package_id ?? `package-${index + 1}`,
     imageUrl: buildAssetUrl(item.image ?? item.thumbnail),
     includesBus: toBooleanFlag(item.includes_bus),
@@ -111,35 +112,40 @@ export const normalizePackageListItem = (item, index = 0, pagination = {}) => {
   }
 }
 
-export const normalizePackageDetails = (item = {}) => ({
-  description: normalizeText(item.description, 'No description available.'),
-  exclusions: normalizeTextList(item.exclusions),
-  guideName: normalizeText(item.guide_name ?? item.guide?.name, 'Unassigned'),
-  id: item.id ?? '',
-  imageUrl: buildAssetUrl(item.image),
-  includesBus: toBooleanFlag(item.includes_bus),
-  includesHotel: toBooleanFlag(item.includes_hotel),
-  includesMeal: toBooleanFlag(item.includes_meal),
-  inclusions: normalizeTextList(item.inclusions),
-  name: normalizeText(item.name, 'Untitled package'),
-  pricing: Array.isArray(item.pricing)
-    ? item.pricing.map((price, index) => ({
-        adultPrice: toNumber(price.adult_price),
-        adultPriceLabel: formatCurrency(price.adult_price),
-        childPrice: toNumber(price.child_price),
-        childPriceLabel: formatCurrency(price.child_price),
-        id: `${item.id ?? 'package'}-price-${index + 1}`,
-      }))
-    : [],
-  trip: {
-    arrivalAt: normalizeText(item.trip?.arrival_at, '-'),
-    arrivalDateLabel: formatDateLabel(item.trip?.arrival_time),
-    departureAt: normalizeText(item.trip?.departure_at, '-'),
-    departureDateLabel: formatDateLabel(item.trip?.departure_time),
-    routeName: normalizeText(item.trip?.route_name, '-'),
-    tripName: normalizeText(item.trip?.trip_name ?? item.trip_name, '-'),
-  },
-})
+export const normalizePackageDetails = (item = {}) => {
+  const guideName = item.guide_name ?? item.guide?.name ?? item.trip?.guide_name ?? item.trip?.guideName
+
+  return {
+    description: normalizeText(item.description, 'No description available.'),
+    exclusions: normalizeTextList(item.exclusions),
+    guideName: normalizeText(guideName, 'Unassigned'),
+    id: item.id ?? '',
+    imageUrl: buildAssetUrl(item.image),
+    includesBus: toBooleanFlag(item.includes_bus),
+    includesHotel: toBooleanFlag(item.includes_hotel),
+    includesMeal: toBooleanFlag(item.includes_meal),
+    inclusions: normalizeTextList(item.inclusions),
+    name: normalizeText(item.name, 'Untitled package'),
+    pricing: Array.isArray(item.pricing)
+      ? item.pricing.map((price, index) => ({
+          adultPrice: toNumber(price.adult_price),
+          adultPriceLabel: formatCurrency(price.adult_price),
+          childPrice: toNumber(price.child_price),
+          childPriceLabel: formatCurrency(price.child_price),
+          id: `${item.id ?? 'package'}-price-${index + 1}`,
+        }))
+      : [],
+    trip: {
+      arrivalAt: normalizeText(item.trip?.arrival_at, '-'),
+      arrivalDateLabel: formatDateLabel(item.trip?.arrival_time),
+      departureAt: normalizeText(item.trip?.departure_at, '-'),
+      departureDateLabel: formatDateLabel(item.trip?.departure_time),
+      guideName: normalizeText(guideName, 'Unassigned'),
+      routeName: normalizeText(item.trip?.route_name, '-'),
+      tripName: normalizeText(item.trip?.trip_name ?? item.trip_name, '-'),
+    },
+  }
+}
 
 export const buildPackageMetrics = (packages = []) => {
   const totalPackages = packages.length
