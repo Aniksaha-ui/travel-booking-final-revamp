@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
 const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
 const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
 const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
+const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
 const VehiclesPage = lazy(() => import('./features/Vehicles/page/VehiclesPage'))
 const LoginPage = lazy(() => import('./features/auth/page/LoginPage'))
@@ -78,6 +79,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading monthly running balance..." />}>
               <MonthRunningBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.tickets}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading tickets..." />}>
+              <TicketsPage />
             </Suspense>
           }
         />

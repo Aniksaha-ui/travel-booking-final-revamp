@@ -9,6 +9,7 @@ import { Sidebar } from './Sidebar'
 const pageTitles = {
   '/admin/account/daily-balance': 'Monthly Daily Balance',
   '/admin/monthRunningBalance': 'Monthly Running Balance',
+  '/admin/tickets': 'Ticket Management',
   '/dashboard': 'Dashboard',
   '/routes': 'Routes',
   '/seats': 'Seat Management',

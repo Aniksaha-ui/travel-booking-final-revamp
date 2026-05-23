@@ -32,6 +32,7 @@ const iconMap = {
   ReportManagementIcon: BarChart3,
   RouteManagementIcon: Route,
   SeatManagementIcon: Ticket,
+  TicketManagementIcon: Ticket,
   SqlMonitorIcon: ShieldCheck,
   TripManagementIcon: Map,
   UserManagementIcon: Users,

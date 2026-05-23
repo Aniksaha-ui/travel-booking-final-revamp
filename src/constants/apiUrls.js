@@ -15,6 +15,10 @@ export const API_URLS = {
     dailyBalanceHistory: "/admin/monthly-daily-balance-reports",
     monthRunningBalance: "/admin/monthRunningBalance",
   },
+  tickets: {
+    list: "/admin/tickets",
+    update: (ticketId) => `/admin/tickets/update/${ticketId}`,
+  },
   resources: {
     routes: "/admin/routes",
     routeDropdown: "/admin/routes/dropdown",
