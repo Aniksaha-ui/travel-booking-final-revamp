@@ -10,6 +10,9 @@ export const API_URLS = {
     currentMonthTripSales: "/admin/current-month-trip-sales-report",
     packageProfitMargin: "/admin/package-profit-margin",
   },
+  reports: {
+    monthRunningBalance: "/admin/monthRunningBalance",
+  },
   resources: {
     routes: "/admin/routes",
     routeDropdown: "/admin/routes/dropdown",

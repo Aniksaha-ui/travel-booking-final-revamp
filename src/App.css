@@ -46,6 +46,24 @@
   background: #171314;
 }
 
+.month-balance-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.month-balance-alert {
+  margin: 0 0 16px;
+  border: 1px solid rgb(248 113 113 / 30%);
+  border-radius: 8px;
+  background: rgb(127 29 29 / 20%);
+  padding: 12px 14px;
+  color: #fecaca;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .routes-table-toolbar {
   display: flex;
   height: 54px;
@@ -674,4 +692,51 @@
   margin-top: 8px;
   color: #ffffff;
   font-size: 18px;
+}
+
+@media (max-width: 1100px) {
+  .month-balance-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .month-balance-summary-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .routes-page {
+    padding: 20px 16px;
+  }
+
+  .routes-table-toolbar {
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 12px 16px;
+  }
+
+  .routes-search {
+    width: 100%;
+  }
+
+  .routes-table {
+    min-width: 760px;
+  }
+
+  .routes-table-card {
+    overflow-x: auto;
+  }
+
+  .routes-table-footer {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .trip-users-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

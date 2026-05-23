@@ -7,6 +7,7 @@ import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
 const pageTitles = {
+  '/admin/monthRunningBalance': 'Monthly Running Balance',
   '/dashboard': 'Dashboard',
   '/routes': 'Routes',
   '/seats': 'Seat Management',

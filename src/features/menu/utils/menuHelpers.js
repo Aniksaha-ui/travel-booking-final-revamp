@@ -49,6 +49,10 @@ export const normalizeStoredMenuState = (payload) => {
 export const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0;
 
 export const getSupportedRoute = (path) => {
+  if (path === "/admin/monthRunningBalance" || path === "/monthRunningBalance") {
+    return APP_ROUTES.monthRunningBalance;
+  }
+
   if (path === "/admin/dashboard" || path === "/" || path === "/dashboard") {
     return APP_ROUTES.dashboard;
   }

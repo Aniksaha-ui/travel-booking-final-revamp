@@ -8,6 +8,7 @@ import { AuthProvider, useAuthContext } from './contexts/AuthContext'
 import { AppLayout } from './layout/AppLayout'
 
 const Dashboard = lazy(() => import('./features/Dashboard/pages/DashboardPage'))
+const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/pages/MonthRunningBalancePage'))
 const RoutePage = lazy(() => import('./features/Routes/pages/RoutePage'))
 const SeatManagementPage = lazy(() => import('./features/Seats/pages/SeatManagementPage'))
 const TripsPage = lazy(() => import('./features/Trips/pages/TripsPage'))
@@ -63,6 +64,14 @@ function AppRoutes() {
         }
       >
         <Route path="/" element={<Navigate to={APP_ROUTES.dashboard} replace />} />
+        <Route
+          path={APP_ROUTES.monthRunningBalance}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading monthly running balance..." />}>
+              <MonthRunningBalancePage />
+            </Suspense>
+          }
+        />
         <Route
           path={APP_ROUTES.dashboard}
           element={
