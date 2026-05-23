@@ -10,6 +10,7 @@ import { AppLayout } from './layout/AppLayout'
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
 const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
+const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
 const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
 const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
 const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
@@ -79,6 +80,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading monthly running balance..." />}>
               <MonthRunningBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.packages}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading packages..." />}>
+              <PackagesPage />
             </Suspense>
           }
         />
