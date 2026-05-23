@@ -7,8 +7,18 @@ import AdminDataTable, {
 } from '../ui/AdminDataTable'
 import { useToast } from '../common/Toaster'
 
-const getDefaultValues = (fields) =>
+const getDefaultValues = (fields, editingItem = null) =>
   fields.reduce((values, field) => {
+    if (field.type === 'file') {
+      values[field.name] = ''
+      return values
+    }
+
+    if (editingItem && editingItem[field.name] !== undefined && editingItem[field.name] !== null) {
+      values[field.name] = editingItem[field.name]
+      return values
+    }
+
     values[field.name] = field.defaultValue ?? ''
     return values
   }, {})
@@ -25,7 +35,7 @@ function ResourceFormModal({ editingItem, fields, isMutating, onClose, onSubmit,
     handleSubmit,
     register,
   } = useForm({
-    defaultValues: editingItem ?? getDefaultValues(fields),
+    defaultValues: getDefaultValues(fields, editingItem),
     mode: 'onBlur',
   })
 

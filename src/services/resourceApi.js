@@ -1,9 +1,34 @@
 import { apiRequest } from './apiClient'
 
-export const unwrapResponseData = (payload) => payload?.data ?? payload ?? []
+const getExecutionStatus = (payload) => payload?.isExecute ?? payload?.isExecture
 
-export const unwrapCollection = (payload) => {
-  const data = unwrapResponseData(payload)
+export const isExecutionSuccessful = (payload) => {
+  const executionStatus = getExecutionStatus(payload)
+
+  if (executionStatus === undefined || executionStatus === null || executionStatus === '') {
+    return true
+  }
+
+  if (typeof executionStatus === 'boolean') {
+    return executionStatus
+  }
+
+  return String(executionStatus).trim().toLowerCase() === 'success'
+}
+
+export const assertSuccessfulExecution = (payload, fallbackMessage = 'Request could not be completed.') => {
+  if (!isExecutionSuccessful(payload)) {
+    throw new Error(payload?.message || fallbackMessage)
+  }
+
+  return payload
+}
+
+export const unwrapResponseData = (payload, fallbackMessage) =>
+  assertSuccessfulExecution(payload, fallbackMessage)?.data ?? payload ?? []
+
+export const unwrapCollection = (payload, fallbackMessage) => {
+  const data = unwrapResponseData(payload, fallbackMessage)
 
   if (Array.isArray(data)) {
     return {
@@ -59,18 +84,27 @@ export const buildQueryPath = (endpoint, { page = 1, search = '' } = {}) => {
 }
 
 export const createResourceApi = ({ endpoint, updateEndpoint }) => ({
-  list: async ({ page, search } = {}) => unwrapCollection(await apiRequest(buildQueryPath(endpoint, { page, search }))),
-  create: async (payload) => apiRequest(endpoint, { method: 'POST', body: payload instanceof FormData ? payload : JSON.stringify(payload) }),
+  list: async ({ page, search } = {}) =>
+    unwrapCollection(await apiRequest(buildQueryPath(endpoint, { page, search })), 'Unable to load records.'),
+  create: async (payload) =>
+    assertSuccessfulExecution(
+      await apiRequest(endpoint, { method: 'POST', body: payload instanceof FormData ? payload : JSON.stringify(payload) }),
+      'Unable to create record.',
+    ),
   update: async (id, payload) =>
-    apiRequest(updateEndpoint ? updateEndpoint(id) : `${endpoint}/update/${id}`, {
-      method: 'POST',
-      body: payload instanceof FormData ? payload : JSON.stringify(payload),
-    }),
-  delete: async (id) => apiRequest(`${endpoint}/${id}`, { method: 'DELETE' }),
+    assertSuccessfulExecution(
+      await apiRequest(updateEndpoint ? updateEndpoint(id) : `${endpoint}/update/${id}`, {
+        method: 'POST',
+        body: payload instanceof FormData ? payload : JSON.stringify(payload),
+      }),
+      'Unable to update record.',
+    ),
+  delete: async (id) =>
+    assertSuccessfulExecution(await apiRequest(`${endpoint}/${id}`, { method: 'DELETE' }), 'Unable to delete record.'),
 })
 
 export const fetchDropdown = async (endpoint) => {
   const payload = await apiRequest(endpoint)
-  const data = unwrapResponseData(payload)
+  const data = unwrapResponseData(payload, 'Unable to load dropdown options.')
   return Array.isArray(data) ? data : data?.data ?? []
 }

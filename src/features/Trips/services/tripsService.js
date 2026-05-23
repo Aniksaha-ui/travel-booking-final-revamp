@@ -1,6 +1,6 @@
 import { API_URLS } from '../../../constants/apiUrls'
 import { apiRequest } from '../../../services/apiClient'
-import { createResourceApi } from '../../../services/resourceApi'
+import { assertSuccessfulExecution, createResourceApi, unwrapResponseData } from '../../../services/resourceApi'
 
 export const tripsApi = createResourceApi({
   endpoint: API_URLS.resources.trips,
@@ -13,7 +13,7 @@ export const fetchTripSummary = async (tripId) => {
     body: JSON.stringify({ trip_id: tripId }),
   })
 
-  return response?.data ?? {
+  return unwrapResponseData(response, 'Unable to load trip summary.') ?? {
     tripSummaries: [],
     seat_layout: [],
   }
@@ -21,13 +21,14 @@ export const fetchTripSummary = async (tripId) => {
 
 export const fetchTripUsers = async (tripId) => {
   const response = await apiRequest(`${API_URLS.resources.tripUsers}/${tripId}`)
-  const data = response?.data ?? response ?? []
+  const data = unwrapResponseData(response, 'Unable to load trip users.')
   return Array.isArray(data) ? data : data?.data ?? []
 }
 
 export const fetchTripById = async (tripId) => {
   const response = await apiRequest(`${API_URLS.resources.tripSingle}/${tripId}`)
-  return response?.data ?? response ?? {}
+  return unwrapResponseData(response, 'Unable to load trip details.') ?? {}
 }
 
-export const markTripCompleted = async (tripId) => apiRequest(`${API_URLS.resources.trips}/${tripId}`)
+export const markTripCompleted = async (tripId) =>
+  assertSuccessfulExecution(await apiRequest(`${API_URLS.resources.trips}/${tripId}`), 'Unable to mark trip as completed.')

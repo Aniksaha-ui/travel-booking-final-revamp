@@ -101,15 +101,85 @@ export const tripFields = [
   { name: 'image', label: 'Image', type: 'file', accept: '.png,.jpg,.jpeg' },
 ]
 
+const tripPayloadFieldNames = [
+  'vehicle_id',
+  'route_id',
+  'trip_name',
+  'departure_time',
+  'arrival_time',
+  'departure_at',
+  'arrival_at',
+  'price',
+  'is_active',
+  'image',
+]
+
+const formatTimeForTripPayload = (value) => {
+  if (!value) {
+    return value
+  }
+
+  const normalizedValue = String(value).trim()
+
+  if (/am|pm/i.test(normalizedValue)) {
+    return normalizedValue
+  }
+
+  const timeMatch = normalizedValue.match(/^(\d{1,2}):(\d{2})/)
+
+  if (!timeMatch) {
+    return normalizedValue
+  }
+
+  let hour = Number(timeMatch[1])
+  const minute = timeMatch[2]
+  const period = hour >= 12 ? 'PM' : 'AM'
+
+  if (hour === 0) {
+    hour = 12
+  } else if (hour > 12) {
+    hour -= 12
+  }
+
+  return `${String(hour).padStart(2, '0')}:${minute} ${period}`
+}
+
+const getSelectedFile = (value) => {
+  if (typeof File !== 'undefined' && value instanceof File) {
+    return value
+  }
+
+  const candidate = value?.[0]
+
+  if (typeof File !== 'undefined' && candidate instanceof File) {
+    return candidate
+  }
+
+  if (candidate && typeof candidate === 'object' && typeof candidate.name === 'string') {
+    return candidate
+  }
+
+  return null
+}
+
 export const toTripFormData = (values, editingItem) => {
   const formData = new FormData()
 
-  Object.entries(values).forEach(([key, value]) => {
+  tripPayloadFieldNames.forEach((key) => {
+    const value = values[key]
+
     if (key === 'image') {
-      const file = value?.[0]
+      const file = getSelectedFile(value)
+
       if (file) {
         formData.append(key, file)
       }
+
+      return
+    }
+
+    if (key === 'departure_at' || key === 'arrival_at') {
+      formData.append(key, formatTimeForTripPayload(value))
       return
     }
 
