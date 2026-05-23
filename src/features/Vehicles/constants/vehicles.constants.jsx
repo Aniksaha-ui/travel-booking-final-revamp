@@ -36,5 +36,5 @@ export const vehicleFields = [
     ],
   },
   { name: 'total_seats', label: 'Total Seats', type: 'number', rules: { required: 'Total seats is required.', min: { value: 1, message: 'Total seats must be greater than 0.' } } },
-  { name: 'route_id', label: 'Route ID', type: 'number', placeholder: '1', rules: { required: 'Route ID is required.' } },
+  { name: 'route_id', label: 'Route', type: 'select', options: [], rules: { required: 'Route is required.' } },
 ]
