@@ -11,6 +11,8 @@ export function PackageFormModal({
   optionsLoading,
   tripOptions,
 }) {
+  const getOptionId = (option) => option.id ?? option.user_id ?? option.guide_id ?? option.trip_id ?? ''
+  const getOptionLabel = (option) => option.name ?? option.guide_name ?? option.trip_name ?? ''
   const {
     control,
     formState: { errors, isSubmitting },
@@ -80,8 +82,8 @@ export function PackageFormModal({
                 <select {...register('trip_id', packageFieldRules.trip_id)} disabled={optionsLoading}>
                   <option value="">Select trip</option>
                   {tripOptions.map((trip) => (
-                    <option key={trip.id} value={trip.id}>
-                      {trip.trip_name ?? trip.name}
+                    <option key={getOptionId(trip)} value={getOptionId(trip)}>
+                      {getOptionLabel(trip)}
                     </option>
                   ))}
                 </select>
@@ -93,8 +95,8 @@ export function PackageFormModal({
                 <select {...register('guide_id')} disabled={optionsLoading}>
                   <option value="">Select guide</option>
                   {guideOptions.map((guide) => (
-                    <option key={guide.id} value={guide.id}>
-                      {guide.name}
+                    <option key={getOptionId(guide)} value={getOptionId(guide)}>
+                      {getOptionLabel(guide)}
                     </option>
                   ))}
                 </select>

@@ -9,7 +9,7 @@ import { PackageManagementOverview } from '../component/PackageManagementOvervie
 import { PACKAGES_PAGE_COPY, EMPTY_PACKAGE_DETAILS } from '../constants/packages.constants.jsx'
 import usePackageFormOptions from '../hooks/usePackageFormOptions'
 import usePackages from '../hooks/usePackages'
-import { toPackageFormData } from '../utils/packageUtils'
+import { resolveDropdownOptionId, toPackageFormData } from '../utils/packageUtils'
 
 export default function PackagesPage() {
   const toast = useToast()
@@ -51,7 +51,12 @@ export default function PackagesPage() {
   }
 
   const handleCreatePackage = async (values) => {
-    const wasCreated = await apiState.createItem(toPackageFormData(values))
+    const payload = {
+      ...values,
+      guide_id: resolveDropdownOptionId(optionsState.guides, values.guide_id),
+      trip_id: resolveDropdownOptionId(optionsState.trips, values.trip_id),
+    }
+    const wasCreated = await apiState.createItem(toPackageFormData(payload))
 
     if (wasCreated) {
       setCreateModalOpen(false)

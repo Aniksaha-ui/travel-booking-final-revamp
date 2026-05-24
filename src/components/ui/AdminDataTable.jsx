@@ -6,6 +6,7 @@ import {
   Columns3,
   Search,
 } from 'lucide-react'
+import useDebouncedValue from '../../hooks/useDebouncedValue'
 
 const getDefaultVisibleColumnIds = (columns) =>
   columns.filter((column) => column.defaultHidden !== true).map((column) => column.id)
@@ -115,6 +116,8 @@ export default function AdminDataTable({
   const defaultVisibleColumnIds = useMemo(() => getDefaultVisibleColumnIds(columns), [columns])
   const [visibleColumnIds, setVisibleColumnIds] = useState(defaultVisibleColumnIds)
   const [columnsOpen, setColumnsOpen] = useState(false)
+  const [searchInput, setSearchInput] = useState(search ?? '')
+  const debouncedSearch = useDebouncedValue(searchInput)
   const visibleColumns = useMemo(
     () => columns.filter((column) => visibleColumnIds.includes(column.id)),
     [columns, visibleColumnIds],
@@ -134,6 +137,16 @@ export default function AdminDataTable({
 
     return () => document.removeEventListener('pointerdown', handlePointerDown)
   }, [])
+
+  useEffect(() => {
+    setSearchInput(search ?? '')
+  }, [search])
+
+  useEffect(() => {
+    if (debouncedSearch !== (search ?? '')) {
+      onSearchChange?.(debouncedSearch)
+    }
+  }, [debouncedSearch, onSearchChange, search])
 
   const toggleColumn = (columnId) => {
     setVisibleColumnIds((currentColumnIds) => {
@@ -159,8 +172,8 @@ export default function AdminDataTable({
           <input
             type="search"
             placeholder={searchPlaceholder}
-            value={search ?? ''}
-            onChange={(event) => onSearchChange?.(event.target.value)}
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
           />
         </label>
 

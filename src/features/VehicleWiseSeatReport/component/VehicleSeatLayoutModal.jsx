@@ -1,12 +1,14 @@
-import { Armchair, Search, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { Armchair, Search, X } from 'lucide-react'
+import useDebouncedValue from '../../../hooks/useDebouncedValue'
 import { SeatLayout } from '../../Trips/component/SeatLayout'
 import { VEHICLE_SEAT_STATUS_FILTERS } from '../constants/vehicleWiseSeatReport.constants'
 import { buildVehicleSeatLayoutSummary } from '../utils/vehicleWiseSeatReportUtils'
 
 export function VehicleSeatLayoutModal({ isLoading, onClose, seats, vehicle }) {
-  const [search, setSearch] = useState('')
+  const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const search = useDebouncedValue(searchInput)
   const fullSummary = useMemo(() => buildVehicleSeatLayoutSummary(seats), [seats])
   const visibleSeats = useMemo(
     () =>
@@ -79,8 +81,8 @@ export function VehicleSeatLayoutModal({ isLoading, onClose, seats, vehicle }) {
                       <input
                         type="search"
                         placeholder="Filter by seat number"
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
+                        value={searchInput}
+                        onChange={(event) => setSearchInput(event.target.value)}
                       />
                     </label>
 

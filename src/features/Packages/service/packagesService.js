@@ -91,6 +91,17 @@ const extractDropdownItems = (payload) => {
   return []
 }
 
+const normalizeGuideDropdownItem = (item = {}, index = 0) => ({
+  id: item.id ?? item.user_id ?? item.guide_id ?? '',
+  name: item.name ?? item.guide_name ?? `Guide ${index + 1}`,
+})
+
+const normalizeTripDropdownItem = (item = {}, index = 0) => ({
+  ...item,
+  id: item.id ?? item.trip_id ?? '',
+  name: item.name ?? item.trip_name ?? `Trip ${index + 1}`,
+})
+
 export const getPackages = async ({ page = 1, search = '' } = {}) => {
   const payload = ensureSuccessfulPayload(
     await apiRequest(API_URLS.resources.packages, {
@@ -135,7 +146,7 @@ export const fetchPackageTripDropdown = async () => {
     'Unable to load trip options.',
   )
 
-  return extractDropdownItems(payload)
+  return extractDropdownItems(payload).map(normalizeTripDropdownItem)
 }
 
 export const fetchPackageGuideDropdown = async () => {
@@ -144,11 +155,10 @@ export const fetchPackageGuideDropdown = async () => {
     'Unable to load guide options.',
   )
 
-  return extractDropdownItems(payload)
+  return extractDropdownItems(payload).map(normalizeGuideDropdownItem)
 }
 
 export const emptyPackagesCollection = {
   pagination: defaultPagination,
   rows: [],
 }
-

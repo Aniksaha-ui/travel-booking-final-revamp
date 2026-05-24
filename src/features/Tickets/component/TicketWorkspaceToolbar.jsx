@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
+import useDebouncedValue from '../../../hooks/useDebouncedValue'
 import { TICKET_VIEW_OPTIONS } from '../constants/tickets.constants'
 
 export function TicketWorkspaceToolbar({
@@ -9,6 +11,19 @@ export function TicketWorkspaceToolbar({
   setActiveView,
   setSearch,
 }) {
+  const [searchInput, setSearchInput] = useState(search)
+  const debouncedSearch = useDebouncedValue(searchInput)
+
+  useEffect(() => {
+    setSearchInput(search)
+  }, [search])
+
+  useEffect(() => {
+    if (debouncedSearch !== search) {
+      setSearch(debouncedSearch)
+    }
+  }, [debouncedSearch, search, setSearch])
+
   return (
     <section className="mb-5 rounded-lg border border-[#332d30] bg-[#231f21] p-4">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -44,13 +59,12 @@ export function TicketWorkspaceToolbar({
           <Search size={16} />
           <input
             className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-[#70798a]"
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => setSearchInput(event.target.value)}
             placeholder="Search ticket, requester, remarks..."
-            value={search}
+            value={searchInput}
           />
         </label>
       </div>
     </section>
   )
 }
-

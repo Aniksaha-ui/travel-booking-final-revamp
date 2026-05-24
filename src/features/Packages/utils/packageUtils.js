@@ -249,3 +249,25 @@ export const toPackageFormData = (values) => {
 
   return formData
 }
+
+const getNormalizedOptionId = (option = {}) => option.id ?? option.user_id ?? option.guide_id ?? option.trip_id ?? ''
+
+const getNormalizedOptionName = (option = {}) =>
+  normalizeText(option.name ?? option.guide_name ?? option.trip_name, '')
+
+export const resolveDropdownOptionId = (options = [], value) => {
+  const normalizedValue = normalizeText(value, '')
+
+  if (!normalizedValue) {
+    return ''
+  }
+
+  const matchedOption = options.find((option) => {
+    const optionId = String(getNormalizedOptionId(option))
+    const optionName = getNormalizedOptionName(option).toLowerCase()
+
+    return optionId === normalizedValue || optionName === normalizedValue.toLowerCase()
+  })
+
+  return matchedOption ? String(getNormalizedOptionId(matchedOption)) : normalizedValue
+}
