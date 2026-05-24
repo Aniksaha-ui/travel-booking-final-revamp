@@ -32,11 +32,19 @@ const fallbackReportMenuItems = [
     children: [],
   },
   {
+    id: "frontend-financial-report",
+    title: "Financial Report",
+    path: APP_ROUTES.financialReport,
+    icon: "ReportManagementIcon",
+    order: 1002,
+    children: [],
+  },
+  {
     id: "frontend-avg-booking-value-report",
     title: "Average Booking Value",
     path: APP_ROUTES.avgBookingValueReport,
     icon: "ReportManagementIcon",
-    order: 1002,
+    order: 1003,
     children: [],
   },
   {
@@ -44,7 +52,7 @@ const fallbackReportMenuItems = [
     title: "Booking Summary Report",
     path: APP_ROUTES.bookingSummary,
     icon: "TripManagementIcon",
-    order: 1003,
+    order: 1004,
     children: [],
   },
   {
@@ -52,7 +60,7 @@ const fallbackReportMenuItems = [
     title: "Overall Sales",
     path: APP_ROUTES.overallSales,
     icon: "ReportManagementIcon",
-    order: 1004,
+    order: 1005,
     children: [],
   },
   {
@@ -60,7 +68,7 @@ const fallbackReportMenuItems = [
     title: "Route Wise Sales",
     path: APP_ROUTES.routeWiseSales,
     icon: "ReportManagementIcon",
-    order: 1005,
+    order: 1006,
     children: [],
   },
   {
@@ -68,7 +76,7 @@ const fallbackReportMenuItems = [
     title: "Ticket Status Analysis",
     path: APP_ROUTES.ticketStatusReport,
     icon: "ReportManagementIcon",
-    order: 1006,
+    order: 1007,
     children: [],
   },
   {
@@ -76,7 +84,7 @@ const fallbackReportMenuItems = [
     title: "High Cancellation Packages",
     path: APP_ROUTES.highCancellationPackages,
     icon: "ReportManagementIcon",
-    order: 1007,
+    order: 1008,
     children: [],
   },
 ];
@@ -190,6 +198,16 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/account/daily-balance" || path === "/account/daily-balance") {
     return APP_ROUTES.dailyBalance;
+  }
+
+  if (
+    path === "/admin/financialReport" ||
+    path === "/financialReport" ||
+    path === "admin/financialReport" ||
+    path === "financialReport" ||
+    path === "/admin/financial_report"
+  ) {
+    return APP_ROUTES.financialReport;
   }
 
   if (

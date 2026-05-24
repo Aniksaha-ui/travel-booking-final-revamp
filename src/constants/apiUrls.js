@@ -22,6 +22,7 @@ export const API_URLS = {
     bookingSummary: "/admin/booking-summary",
     dailyBalance: "/admin/monthlyDailyBalanceReport",
     dailyBalanceHistory: "/admin/monthly-daily-balance-reports",
+    financialReport: "/admin/financial_report",
     highCancellationPackages: "/admin/high-cancellation-packages",
     lowOccupancyTripReport: "/admin/low-occupancy-trip-report",
     lowPerformingPackages: "/admin/low-performing-packages",

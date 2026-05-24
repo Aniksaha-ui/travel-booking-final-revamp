@@ -13,6 +13,7 @@ const pageTitles = {
   '/admin/bookings': 'Bookings',
   '/admin/bookings/summary': 'Booking Summary Report',
   '/admin/account/daily-balance': 'Monthly Daily Balance',
+  '/admin/financialReport': 'Financial Report',
   '/admin/account/overall-sales': 'Overall Sales Report',
   '/admin/account/route-wise-sales': 'Route Wise Sales Report',
   '/admin/account/ticket-status-report': 'Ticket Status Analysis',

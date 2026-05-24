@@ -5,6 +5,7 @@ export const APP_ROUTES = {
   bookings: "/admin/bookings",
   bookingSummary: "/admin/bookings/summary",
   dailyBalance: "/admin/account/daily-balance",
+  financialReport: "/admin/financialReport",
   overallSales: "/admin/account/overall-sales",
   routeWiseSales: "/admin/account/route-wise-sales",
   ticketStatusReport: "/admin/account/ticket-status-report",

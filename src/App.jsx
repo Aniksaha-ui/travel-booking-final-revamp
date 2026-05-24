@@ -14,6 +14,7 @@ const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
 const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
+const FinancialReportPage = lazy(() => import('./features/FinancialReport/page/FinancialReportPage'))
 const HighCancellationPackagesPage = lazy(() => import('./features/HighCancellationPackages/page/HighCancellationPackagesPage'))
 const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/page/LowOccupancyReportPage'))
 const LowPerformingPackagesPage = lazy(() => import('./features/LowPerformingPackages/page/LowPerformingPackagesPage'))
@@ -130,6 +131,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading daily balance..." />}>
               <DailyBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.financialReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading financial report..." />}>
+              <FinancialReportPage />
             </Suspense>
           }
         />
