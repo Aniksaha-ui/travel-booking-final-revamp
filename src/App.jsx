@@ -12,6 +12,7 @@ const AccountBalancePage = lazy(() => import('./features/AccountBalance/page/Acc
 const AccountHistoryPage = lazy(() => import('./features/AccountHistory/page/AccountHistoryPage'))
 const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
 const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
+const CustomerValueReportPage = lazy(() => import('./features/CustomerValueReport/page/CustomerValueReportPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
 const FinancialReportPage = lazy(() => import('./features/FinancialReport/page/FinancialReportPage'))
@@ -31,6 +32,8 @@ const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
 const TransactionsPage = lazy(() => import('./features/Transactions/page/TransactionsPage'))
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
+const VisaCountriesPage = lazy(() => import('./features/VisaCountries/page/VisaCountriesPage'))
+const VisaTypesPage = lazy(() => import('./features/VisaTypes/page/VisaTypesPage'))
 const VehicleTrackingReportPage = lazy(() => import('./features/VehicleTrackingReport/page/VehicleTrackingReportPage'))
 const VehicleWiseSeatReportPage = lazy(() => import('./features/VehicleWiseSeatReport/page/VehicleWiseSeatReportPage'))
 const VehiclesPage = lazy(() => import('./features/Vehicles/page/VehiclesPage'))
@@ -114,6 +117,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading bookings..." />}>
               <BookingsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.customerValueReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading customer value report..." />}>
+              <CustomerValueReportPage />
             </Suspense>
           }
         />
@@ -247,6 +258,26 @@ function AppRoutes() {
             </Suspense>
           }
         />
+        <Route
+          path={APP_ROUTES.visaCountries}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading visa countries..." />}>
+              <VisaCountriesPage />
+            </Suspense>
+          }
+        />
+        <Route path="/admin/visa/countries/add" element={<Navigate to={APP_ROUTES.visaCountries} replace />} />
+        <Route path="/admin/visa/countries/update/:id" element={<Navigate to={APP_ROUTES.visaCountries} replace />} />
+        <Route
+          path={APP_ROUTES.visaTypes}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading visa types..." />}>
+              <VisaTypesPage />
+            </Suspense>
+          }
+        />
+        <Route path="/admin/visa/types/add" element={<Navigate to={APP_ROUTES.visaTypes} replace />} />
+        <Route path="/admin/visa/types/update/:id" element={<Navigate to={APP_ROUTES.visaTypes} replace />} />
         <Route
           path={APP_ROUTES.vehicleTrackingReport}
           element={

@@ -40,11 +40,19 @@ const fallbackReportMenuItems = [
     children: [],
   },
   {
+    id: "frontend-customer-value-report",
+    title: "Customer Value Report",
+    path: APP_ROUTES.customerValueReport,
+    icon: "ReportManagementIcon",
+    order: 1003,
+    children: [],
+  },
+  {
     id: "frontend-avg-booking-value-report",
     title: "Average Booking Value",
     path: APP_ROUTES.avgBookingValueReport,
     icon: "ReportManagementIcon",
-    order: 1003,
+    order: 1004,
     children: [],
   },
   {
@@ -52,7 +60,7 @@ const fallbackReportMenuItems = [
     title: "Booking Summary Report",
     path: APP_ROUTES.bookingSummary,
     icon: "TripManagementIcon",
-    order: 1004,
+    order: 1005,
     children: [],
   },
   {
@@ -60,7 +68,7 @@ const fallbackReportMenuItems = [
     title: "Overall Sales",
     path: APP_ROUTES.overallSales,
     icon: "ReportManagementIcon",
-    order: 1005,
+    order: 1006,
     children: [],
   },
   {
@@ -68,7 +76,7 @@ const fallbackReportMenuItems = [
     title: "Route Wise Sales",
     path: APP_ROUTES.routeWiseSales,
     icon: "ReportManagementIcon",
-    order: 1006,
+    order: 1007,
     children: [],
   },
   {
@@ -76,7 +84,7 @@ const fallbackReportMenuItems = [
     title: "Ticket Status Analysis",
     path: APP_ROUTES.ticketStatusReport,
     icon: "ReportManagementIcon",
-    order: 1007,
+    order: 1008,
     children: [],
   },
   {
@@ -84,7 +92,7 @@ const fallbackReportMenuItems = [
     title: "High Cancellation Packages",
     path: APP_ROUTES.highCancellationPackages,
     icon: "ReportManagementIcon",
-    order: 1008,
+    order: 1009,
     children: [],
   },
 ];
@@ -172,6 +180,30 @@ export const normalizeStoredMenuState = (payload) => {
 export const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0;
 
 export const getSupportedRoute = (path) => {
+  if (
+    path === "/admin/visa/types" ||
+    path === "/visa/types" ||
+    path === "admin/visa/types" ||
+    path === "visa/types" ||
+    path === "/admin/visa/types/add" ||
+    path === "/admin/visa/types/update/:id" ||
+    path?.startsWith("/admin/visa/types/update/")
+  ) {
+    return APP_ROUTES.visaTypes;
+  }
+
+  if (
+    path === "/admin/visa/countries" ||
+    path === "/visa/countries" ||
+    path === "admin/visa/countries" ||
+    path === "visa/countries" ||
+    path === "/admin/visa/countries/add" ||
+    path === "/admin/visa/countries/update/:id" ||
+    path?.startsWith("/admin/visa/countries/update/")
+  ) {
+    return APP_ROUTES.visaCountries;
+  }
+
   if (path === "/admin/avg-booking-value-report" || path === "/avg-booking-value-report") {
     return APP_ROUTES.avgBookingValueReport;
   }
@@ -198,6 +230,16 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/account/daily-balance" || path === "/account/daily-balance") {
     return APP_ROUTES.dailyBalance;
+  }
+
+  if (
+    path === "/admin/customerValueReport" ||
+    path === "/customerValueReport" ||
+    path === "admin/customerValueReport" ||
+    path === "customerValueReport" ||
+    path === "/admin/customerValue"
+  ) {
+    return APP_ROUTES.customerValueReport;
   }
 
   if (
