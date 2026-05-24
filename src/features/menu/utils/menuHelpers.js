@@ -24,11 +24,19 @@ const fallbackReportMenuItems = [
     children: [],
   },
   {
+    id: "frontend-account-history-report",
+    title: "Account History",
+    path: APP_ROUTES.accountHistory,
+    icon: "ReportManagementIcon",
+    order: 1001,
+    children: [],
+  },
+  {
     id: "frontend-avg-booking-value-report",
     title: "Average Booking Value",
     path: APP_ROUTES.avgBookingValueReport,
     icon: "ReportManagementIcon",
-    order: 1001,
+    order: 1002,
     children: [],
   },
   {
@@ -36,7 +44,7 @@ const fallbackReportMenuItems = [
     title: "Booking Summary Report",
     path: APP_ROUTES.bookingSummary,
     icon: "TripManagementIcon",
-    order: 1002,
+    order: 1003,
     children: [],
   },
   {
@@ -44,7 +52,7 @@ const fallbackReportMenuItems = [
     title: "Overall Sales",
     path: APP_ROUTES.overallSales,
     icon: "ReportManagementIcon",
-    order: 1003,
+    order: 1004,
     children: [],
   },
   {
@@ -52,7 +60,7 @@ const fallbackReportMenuItems = [
     title: "Route Wise Sales",
     path: APP_ROUTES.routeWiseSales,
     icon: "ReportManagementIcon",
-    order: 1004,
+    order: 1005,
     children: [],
   },
   {
@@ -60,7 +68,7 @@ const fallbackReportMenuItems = [
     title: "Ticket Status Analysis",
     path: APP_ROUTES.ticketStatusReport,
     icon: "ReportManagementIcon",
-    order: 1005,
+    order: 1006,
     children: [],
   },
   {
@@ -68,7 +76,7 @@ const fallbackReportMenuItems = [
     title: "High Cancellation Packages",
     path: APP_ROUTES.highCancellationPackages,
     icon: "ReportManagementIcon",
-    order: 1006,
+    order: 1007,
     children: [],
   },
 ];
@@ -191,6 +199,15 @@ export const getSupportedRoute = (path) => {
     path === "account/balance"
   ) {
     return APP_ROUTES.accountBalance;
+  }
+
+  if (
+    path === "/admin/account/history" ||
+    path === "/account/history" ||
+    path === "admin/account/history" ||
+    path === "account/history"
+  ) {
+    return APP_ROUTES.accountHistory;
   }
 
   if (path === "/admin/account/overall-sales" || path === "/account/overall-sales") {

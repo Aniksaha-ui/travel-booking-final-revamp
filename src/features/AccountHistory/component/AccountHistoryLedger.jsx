@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { DashboardSection } from '../../../components/ui/DashboardSection'
 import { DailyBalancePagination } from '../../DailyBalance/component/DailyBalancePagination'
 
@@ -145,4 +145,3 @@ export function AccountHistoryLedger({
     </DashboardSection>
   )
 }
-

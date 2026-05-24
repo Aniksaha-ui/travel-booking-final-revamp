@@ -17,6 +17,7 @@ export const API_URLS = {
   reports: {
     accountBalance: "/admin/accountBalance",
     accountBalanceHistory: (type) => `/admin/accountHistory/${encodeURIComponent(type)}`,
+    accountHistorySearch: "/admin/account-history",
     avgBookingValue: "/admin/avg-booking-value-report",
     bookingSummary: "/admin/booking-summary",
     dailyBalance: "/admin/monthlyDailyBalanceReport",

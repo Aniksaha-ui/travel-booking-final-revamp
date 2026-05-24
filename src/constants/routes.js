@@ -1,6 +1,7 @@
 export const APP_ROUTES = {
   avgBookingValueReport: "/admin/avg-booking-value-report",
   accountBalance: "/admin/account/balance",
+  accountHistory: "/admin/account/history",
   bookings: "/admin/bookings",
   bookingSummary: "/admin/bookings/summary",
   dailyBalance: "/admin/account/daily-balance",

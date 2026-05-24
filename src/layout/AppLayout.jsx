@@ -8,6 +8,7 @@ import { Sidebar } from './Sidebar'
 
 const pageTitles = {
   '/admin/account/balance': 'Account Balance Report',
+  '/admin/account/history': 'Account History Report',
   '/admin/avg-booking-value-report': 'Average Booking Value Report',
   '/admin/bookings': 'Bookings',
   '/admin/bookings/summary': 'Booking Summary Report',

@@ -9,6 +9,7 @@ import { AppLayout } from './layout/AppLayout'
 
 const AvgBookingValueReportPage = lazy(() => import('./features/AvgBookingValueReport/page/AvgBookingValueReportPage'))
 const AccountBalancePage = lazy(() => import('./features/AccountBalance/page/AccountBalancePage'))
+const AccountHistoryPage = lazy(() => import('./features/AccountHistory/page/AccountHistoryPage'))
 const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
 const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
@@ -88,6 +89,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading account balance..." />}>
               <AccountBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.accountHistory}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading account history..." />}>
+              <AccountHistoryPage />
             </Suspense>
           }
         />
