@@ -15,7 +15,10 @@ const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
 const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
 const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
 const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
+const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
+const VehicleTrackingReportPage = lazy(() => import('./features/VehicleTrackingReport/page/VehicleTrackingReportPage'))
+const VehicleWiseSeatReportPage = lazy(() => import('./features/VehicleWiseSeatReport/page/VehicleWiseSeatReportPage'))
 const VehiclesPage = lazy(() => import('./features/Vehicles/page/VehiclesPage'))
 const LoginPage = lazy(() => import('./features/auth/page/LoginPage'))
 
@@ -105,6 +108,30 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading tickets..." />}>
               <TicketsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.tripPerformance}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading trip performance..." />}>
+              <TripPerformancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.vehicleTrackingReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading vehicle tracking report..." />}>
+              <VehicleTrackingReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.vehicleWiseSeatReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading vehicle wise seat report..." />}>
+              <VehicleWiseSeatReportPage />
             </Suspense>
           }
         />

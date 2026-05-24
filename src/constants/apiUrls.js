@@ -14,6 +14,10 @@ export const API_URLS = {
     dailyBalance: "/admin/monthlyDailyBalanceReport",
     dailyBalanceHistory: "/admin/monthly-daily-balance-reports",
     monthRunningBalance: "/admin/monthRunningBalance",
+    tripPerformance: "/admin/tripPerformance",
+    vehicleTracking: "/admin/useageOfVehicle",
+    vehicleWiseSeatDetails: (vehicleId) => `/admin/vehiclewiseseat/${vehicleId}`,
+    vehicleWiseSeatTotal: "/admin/vehiclewisetotalseat",
   },
   tickets: {
     list: "/admin/tickets",

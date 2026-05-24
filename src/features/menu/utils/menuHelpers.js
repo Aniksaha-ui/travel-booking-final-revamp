@@ -57,6 +57,18 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.refunds;
   }
 
+  if (path === "/admin/vehicletrackingreport" || path === "/vehicletrackingreport") {
+    return APP_ROUTES.vehicleTrackingReport;
+  }
+
+  if (path === "/admin/tripPerformance" || path === "/tripPerformance") {
+    return APP_ROUTES.tripPerformance;
+  }
+
+  if (path === "/admin/vehiclewiseseatreport" || path === "/vehiclewiseseatreport") {
+    return APP_ROUTES.vehicleWiseSeatReport;
+  }
+
   if (path === "/admin/packages" || path === "/packages") {
     return APP_ROUTES.packages;
   }

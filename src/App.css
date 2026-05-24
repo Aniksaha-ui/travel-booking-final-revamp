@@ -537,6 +537,353 @@
   opacity: 0.6;
 }
 
+.vehicle-seat-report__type-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  background: rgb(96 165 250 / 12%);
+  padding: 0 12px;
+  color: #bfdbfe;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vehicle-seat-modal__panel {
+  width: min(1160px, 100%);
+}
+
+.vehicle-seat-modal__close {
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #332d30;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.vehicle-seat-modal__body {
+  max-height: min(78vh, 960px);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.vehicle-seat-modal__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.vehicle-seat-modal__stat {
+  border: 1px solid #2d282b;
+  border-radius: 10px;
+  background: #211d20;
+  padding: 16px;
+}
+
+.vehicle-seat-modal__stat p {
+  margin: 0;
+  color: #8fa0bd;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vehicle-seat-modal__stat strong {
+  display: block;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.vehicle-seat-modal__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+  gap: 18px;
+}
+
+.vehicle-seat-modal__main,
+.vehicle-seat-modal__sidebar {
+  min-width: 0;
+}
+
+.vehicle-seat-modal__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.vehicle-seat-modal__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: min(260px, 100%);
+  height: 38px;
+  border: 1px solid #332d30;
+  border-radius: 8px;
+  background: #171314;
+  padding: 0 12px;
+  color: #8c97aa;
+}
+
+.vehicle-seat-modal__search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.vehicle-seat-modal__search input::placeholder {
+  color: #70798a;
+}
+
+.vehicle-seat-modal__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vehicle-seat-modal__layout-card,
+.vehicle-seat-modal__sidebar-card {
+  border: 1px solid #2d282b;
+  border-radius: 10px;
+  background: #211d20;
+}
+
+.vehicle-seat-modal__layout-card {
+  padding: 18px;
+}
+
+.vehicle-seat-modal__layout-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.vehicle-seat-modal__sidebar {
+  display: grid;
+  gap: 16px;
+  align-self: start;
+}
+
+.vehicle-seat-modal__sidebar-card {
+  padding: 18px;
+}
+
+.vehicle-seat-modal__sidebar-eyebrow {
+  margin: 0;
+  color: #7ea1ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.vehicle-seat-modal__distribution {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.vehicle-seat-modal__distribution-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #d5e1f4;
+  font-size: 14px;
+}
+
+.vehicle-seat-modal__distribution-row strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.tracking-status-badge {
+  display: inline-flex;
+  min-width: 96px;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tracking-status-badge.is-scheduled {
+  background: rgb(96 165 250 / 15%);
+  color: #bfdbfe;
+}
+
+.tracking-status-badge.is-active {
+  background: rgb(16 185 129 / 15%);
+  color: #6ee7b7;
+}
+
+.tracking-status-badge.is-completed {
+  background: rgb(245 158 11 / 15%);
+  color: #facc15;
+}
+
+.tracking-report-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.tracking-report-date-field {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #2d282b;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 10px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tracking-report-date-field input {
+  min-width: 136px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.tracking-report-date-field input::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+  cursor: pointer;
+}
+
+.tracking-report-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.report-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.report-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 68%);
+}
+
+.report-drawer__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  max-height: calc(100vh - 32px);
+  width: min(760px, 100%);
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #332d30;
+  border-radius: 12px;
+  background: #171314;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 45%);
+}
+
+.report-drawer__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #2d282b;
+  padding: 20px 22px;
+}
+
+.report-drawer__eyebrow {
+  color: #7ea1ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.report-drawer__header h2 {
+  margin: 8px 0 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.report-drawer__subtitle {
+  margin: 10px 0 0;
+  color: #8fa0bd;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.report-drawer__close {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #332d30;
+  border-radius: 6px;
+  background: #211d20;
+  padding: 0 12px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.report-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px 22px;
+}
+
+.report-drawer__table-card {
+  border: 1px solid #2d282b;
+  border-radius: 10px;
+  background: #211d20;
+  padding: 16px;
+}
+
+.report-drawer__table-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
 .crud-modal {
   position: fixed;
   inset: 0;
@@ -788,7 +1135,7 @@
 
 .trip-users-summary {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -1181,8 +1528,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .trip-users-summary,
+  .vehicle-seat-modal__stats,
   .package-detail-card--hero,
   .package-details-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vehicle-seat-modal__content {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -1207,6 +1560,36 @@
     width: 100%;
   }
 
+  .tracking-report-filter-group {
+    width: 100%;
+  }
+
+  .tracking-report-date-field,
+  .tracking-report-filter-actions {
+    width: 100%;
+  }
+
+  .tracking-report-date-field input {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .report-drawer {
+    padding: 0;
+  }
+
+  .report-drawer__panel {
+    max-height: 100vh;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .report-drawer__header,
+  .report-drawer__body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
   .routes-table {
     min-width: 760px;
   }
@@ -1226,6 +1609,14 @@
   .package-form-grid,
   .package-form-pricing-row {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vehicle-seat-modal__toolbar {
+    align-items: stretch;
+  }
+
+  .vehicle-seat-modal__search {
+    min-width: 100%;
   }
 
   .package-form-grid__wide {
