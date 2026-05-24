@@ -53,6 +53,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.dailyBalance;
   }
 
+  if (path === "/admin/refunds" || path === "/admin/refund" || path === "/refunds") {
+    return APP_ROUTES.refunds;
+  }
+
   if (path === "/admin/packages" || path === "/packages") {
     return APP_ROUTES.packages;
   }

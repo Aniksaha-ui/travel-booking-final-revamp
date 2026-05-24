@@ -19,6 +19,10 @@ export const API_URLS = {
     list: "/admin/tickets",
     update: (ticketId) => `/admin/tickets/update/${ticketId}`,
   },
+  refunds: {
+    list: "/admin/refund",
+    disburse: "/admin/refund/disburse",
+  },
   resources: {
     guideDropdown: "/admin/guide/dropdown",
     packageCreate: "/admin/packages/create",

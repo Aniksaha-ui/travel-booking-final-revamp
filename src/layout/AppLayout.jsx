@@ -10,6 +10,7 @@ const pageTitles = {
   '/admin/account/daily-balance': 'Monthly Daily Balance',
   '/admin/monthRunningBalance': 'Monthly Running Balance',
   '/admin/packages': 'Package Management',
+  '/admin/refunds': 'Refund Management',
   '/admin/tickets': 'Ticket Management',
   '/dashboard': 'Dashboard',
   '/routes': 'Routes',
