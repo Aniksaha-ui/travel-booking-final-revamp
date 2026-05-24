@@ -32,6 +32,8 @@ const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
 const TransactionsPage = lazy(() => import('./features/Transactions/page/TransactionsPage'))
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
+const VisaApplicationDetailsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationDetailsPage'))
+const VisaApplicationsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationsPage'))
 const VisaCountriesPage = lazy(() => import('./features/VisaCountries/page/VisaCountriesPage'))
 const VisaTypesPage = lazy(() => import('./features/VisaTypes/page/VisaTypesPage'))
 const VehicleTrackingReportPage = lazy(() => import('./features/VehicleTrackingReport/page/VehicleTrackingReportPage'))
@@ -255,6 +257,22 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading trip performance..." />}>
               <TripPerformancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaApplications}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading visa applications..." />}>
+              <VisaApplicationsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/visa/applications/:id"
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading visa application details..." />}>
+              <VisaApplicationDetailsPage />
             </Suspense>
           }
         />

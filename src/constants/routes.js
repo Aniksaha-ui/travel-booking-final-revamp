@@ -20,6 +20,7 @@ export const APP_ROUTES = {
   transactions: "/admin/transactions",
   tickets: "/admin/tickets",
   tripPerformance: "/admin/tripPerformance",
+  visaApplications: "/admin/visa/applications",
   visaCountries: "/admin/visa/countries",
   visaTypes: "/admin/visa/types",
   vehicleTrackingReport: "/admin/vehicletrackingreport",

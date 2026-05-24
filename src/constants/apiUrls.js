@@ -4,6 +4,7 @@ export const API_URLS = {
   },
   admin: {
     menu: "/admin/menu",
+    users: "/admin/users",
   },
   bookings: {
     invoice: "/admin/booking-invoice",
@@ -47,6 +48,15 @@ export const API_URLS = {
   },
   transactions: {
     list: "/admin/transaction",
+  },
+  visaApplications: {
+    assign: "/admin/visa/assign",
+    byId: (applicationId) => `/admin/visa/applications/${applicationId}`,
+    documentVerify: "/admin/visa/document-verify",
+    list: "/admin/visa/applications",
+    print: (applicationId) => `/admin/visa/print/${applicationId}`,
+    statusUpdate: "/admin/visa/status-update",
+    update: (applicationId) => `/admin/visa/applications/update/${applicationId}`,
   },
   resources: {
     guideDropdown: "/admin/guide/dropdown",

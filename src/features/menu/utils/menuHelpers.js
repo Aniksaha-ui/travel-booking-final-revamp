@@ -181,6 +181,17 @@ export const hasChildren = (item) => Array.isArray(item?.children) && item.child
 
 export const getSupportedRoute = (path) => {
   if (
+    path === "/admin/visa/applications" ||
+    path === "/visa/applications" ||
+    path === "admin/visa/applications" ||
+    path === "visa/applications" ||
+    path === "/admin/visa/applications/:id" ||
+    path?.startsWith("/admin/visa/applications/")
+  ) {
+    return APP_ROUTES.visaApplications;
+  }
+
+  if (
     path === "/admin/visa/types" ||
     path === "/visa/types" ||
     path === "admin/visa/types" ||

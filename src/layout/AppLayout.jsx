@@ -26,6 +26,7 @@ const pageTitles = {
   '/admin/transactions': 'Transactions',
   '/admin/tickets': 'Ticket Management',
   '/admin/tripPerformance': 'Trip Performance',
+  '/admin/visa/applications': 'Visa Applications',
   '/admin/visa/countries': 'Visa Country Information',
   '/admin/visa/types': 'Visa Types Information',
   '/admin/vehicletrackingreport': 'Vehicle Tracking Report',
@@ -41,9 +42,11 @@ export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
   const { menu } = useAuthContext()
+  const supportedPath = getSupportedRoute(location.pathname) ?? location.pathname
   const title =
-    findMenuTitle([...menu.mainMenuItems, ...menu.bottomMenuItems], location.pathname) ??
+    findMenuTitle([...menu.mainMenuItems, ...menu.bottomMenuItems], supportedPath) ??
     pageTitles[location.pathname] ??
+    pageTitles[supportedPath] ??
     'Dashboard'
 
   return (
