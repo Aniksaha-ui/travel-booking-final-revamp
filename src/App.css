@@ -404,6 +404,70 @@
   font-weight: 600;
 }
 
+.monitoring-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.monitoring-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.monitoring-table thead tr {
+  height: 42px;
+  border-bottom: 1px solid #2d282b;
+  background: #221f20;
+}
+
+.monitoring-table th {
+  padding: 0 16px;
+  color: #9fb2d0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.monitoring-table tbody tr {
+  min-height: 56px;
+  border-bottom: 1px solid #282325;
+  background: #171314;
+}
+
+.monitoring-table tbody tr:hover {
+  background: #1d181a;
+}
+
+.monitoring-table tbody tr.is-warning {
+  background: rgb(245 158 11 / 8%);
+}
+
+.monitoring-table td {
+  padding: 14px 16px;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.monitoring-table__path,
+.monitoring-table__sql {
+  color: #c5d9f7 !important;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px !important;
+}
+
+.monitoring-table__sql {
+  white-space: normal;
+  word-break: break-word;
+}
+
 .routes-pagination {
   display: flex;
   align-items: center;
@@ -841,6 +905,70 @@
 
 .occupancy-progress__fill.is-watch {
   background: #60a5fa;
+}
+
+.booking-summary-share {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.booking-summary-share__track {
+  height: 8px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #2d282b;
+}
+
+.booking-summary-share__fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.booking-summary-share span {
+  min-width: 38px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.cancellation-rate-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cancellation-rate {
+  width: 120px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #221f20;
+}
+
+.cancellation-rate__fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.cancellation-rate__fill.is-success {
+  background: #34d399;
+}
+
+.cancellation-rate__fill.is-warning {
+  background: #f59e0b;
+}
+
+.cancellation-rate__fill.is-danger {
+  background: #fb7185;
+}
+
+.cancellation-rate-cell span {
+  min-width: 48px;
+  color: #c5d9f7;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .report-drawer {
@@ -1616,6 +1744,52 @@
 
   .routes-search {
     width: 100%;
+  }
+
+  .monitoring-table {
+    min-width: 0;
+  }
+
+  .monitoring-table thead {
+    display: none;
+  }
+
+  .monitoring-table tbody,
+  .monitoring-table tr,
+  .monitoring-table td {
+    display: block;
+  }
+
+  .monitoring-table tbody tr {
+    margin: 10px;
+    border: 1px solid #2d282b;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .monitoring-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid #282325;
+  }
+
+  .monitoring-table td::before {
+    content: attr(data-label);
+    flex: 0 0 34%;
+    color: #8fa0bd;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .monitoring-table__sql {
+    display: block !important;
+  }
+
+  .monitoring-table__sql::before {
+    display: block;
+    margin-bottom: 8px;
   }
 
   .tracking-report-filter-group {

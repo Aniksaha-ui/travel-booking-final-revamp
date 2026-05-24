@@ -7,7 +7,10 @@ import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
 const pageTitles = {
+  '/admin/avg-booking-value-report': 'Average Booking Value Report',
+  '/admin/bookings/summary': 'Booking Summary Report',
   '/admin/account/daily-balance': 'Monthly Daily Balance',
+  '/admin/high-cancellation-packages': 'High Cancellation Packages',
   '/admin/low-occupancy-report': 'Low Occupancy Report',
   '/admin/monthRunningBalance': 'Monthly Running Balance',
   '/admin/packages': 'Package Management',

@@ -14,13 +14,88 @@ export const sortMenuItems = (items = []) =>
       children: sortMenuItems(item.children ?? []),
     }));
 
+const fallbackReportMenuItems = [
+  {
+    id: "frontend-avg-booking-value-report",
+    title: "Average Booking Value",
+    path: APP_ROUTES.avgBookingValueReport,
+    icon: "ReportManagementIcon",
+    order: 1000,
+    children: [],
+  },
+  {
+    id: "frontend-booking-summary-report",
+    title: "Booking Summary Report",
+    path: APP_ROUTES.bookingSummary,
+    icon: "TripManagementIcon",
+    order: 1001,
+    children: [],
+  },
+  {
+    id: "frontend-high-cancellation-packages-report",
+    title: "High Cancellation Packages",
+    path: APP_ROUTES.highCancellationPackages,
+    icon: "ReportManagementIcon",
+    order: 1002,
+    children: [],
+  },
+];
+
+const findReportMenuItem = (items = []) =>
+  items.find((item) => /report/i.test(item.title ?? "") || item.icon === "ReportManagementIcon");
+
+const menuContainsRoute = (items = [], route) =>
+  items.some((item) => getSupportedRoute(item.path) === route || menuContainsRoute(item.children ?? [], route));
+
+const withFallbackReportMenuItems = ({ mainMenuItems = [], bottomMenuItems = [] }) => {
+  const missingReportItems = fallbackReportMenuItems.filter(
+    (item) => !menuContainsRoute([...mainMenuItems, ...bottomMenuItems], item.path),
+  );
+
+  if (!missingReportItems.length) {
+    return {
+      mainMenuItems: sortMenuItems(mainMenuItems),
+      bottomMenuItems: sortMenuItems(bottomMenuItems),
+    };
+  }
+
+  const reportMenuItem = findReportMenuItem(mainMenuItems) ?? findReportMenuItem(bottomMenuItems);
+
+  if (!reportMenuItem) {
+    return {
+      mainMenuItems: sortMenuItems(mainMenuItems),
+      bottomMenuItems: sortMenuItems([...bottomMenuItems, ...missingReportItems]),
+    };
+  }
+
+  const addMissingReports = (items = []) =>
+    items.map((item) => {
+      if (item.id !== reportMenuItem.id) {
+        return {
+          ...item,
+          children: addMissingReports(item.children ?? []),
+        };
+      }
+
+      return {
+        ...item,
+        children: sortMenuItems([...(item.children ?? []), ...missingReportItems]),
+      };
+    });
+
+  return {
+    mainMenuItems: sortMenuItems(addMissingReports(mainMenuItems)),
+    bottomMenuItems: sortMenuItems(addMissingReports(bottomMenuItems)),
+  };
+};
+
 export const normalizeMenuResponse = (payload) => {
   const menuData = payload?.data;
 
-  return {
+  return withFallbackReportMenuItems({
     mainMenuItems: sortMenuItems(menuData?.MAIN_MENU_ITEMS ?? []),
     bottomMenuItems: sortMenuItems(menuData?.BOTTOM_MENU_ITEMS ?? []),
-  };
+  });
 };
 
 export const normalizeStoredMenuState = (payload) => {
@@ -29,14 +104,14 @@ export const normalizeStoredMenuState = (payload) => {
   }
 
   if (Array.isArray(payload)) {
-    return { mainMenuItems: sortMenuItems(payload), bottomMenuItems: [] };
+    return withFallbackReportMenuItems({ mainMenuItems: sortMenuItems(payload), bottomMenuItems: [] });
   }
 
   if (payload.mainMenuItems || payload.bottomMenuItems) {
-    return {
+    return withFallbackReportMenuItems({
       mainMenuItems: sortMenuItems(payload.mainMenuItems ?? []),
       bottomMenuItems: sortMenuItems(payload.bottomMenuItems ?? []),
-    };
+    });
   }
 
   if (payload.data?.MAIN_MENU_ITEMS || payload.data?.BOTTOM_MENU_ITEMS) {
@@ -49,8 +124,25 @@ export const normalizeStoredMenuState = (payload) => {
 export const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0;
 
 export const getSupportedRoute = (path) => {
+  if (path === "/admin/avg-booking-value-report" || path === "/avg-booking-value-report") {
+    return APP_ROUTES.avgBookingValueReport;
+  }
+
+  if (
+    path === "/admin/bookings/summary" ||
+    path === "/bookings/summary" ||
+    path === "/admin/booking-summary" ||
+    path === "/booking-summary"
+  ) {
+    return APP_ROUTES.bookingSummary;
+  }
+
   if (path === "/admin/account/daily-balance" || path === "/account/daily-balance") {
     return APP_ROUTES.dailyBalance;
+  }
+
+  if (path === "/admin/high-cancellation-packages" || path === "/high-cancellation-packages") {
+    return APP_ROUTES.highCancellationPackages;
   }
 
   if (path === "/admin/refunds" || path === "/admin/refund" || path === "/refunds") {
@@ -63,6 +155,14 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/low-occupancy-report" || path === "/low-occupancy-report") {
     return APP_ROUTES.lowOccupancyReport;
+  }
+
+  if (path === "/admin/low-performing-packages" || path === "/low-performing-packages") {
+    return APP_ROUTES.lowPerformingPackages;
+  }
+
+  if (path === "/admin/monitoring" || path === "/monitoring") {
+    return APP_ROUTES.monitoring;
   }
 
   if (path === "/admin/tripPerformance" || path === "/tripPerformance") {

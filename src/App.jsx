@@ -7,9 +7,14 @@ import { APP_ROUTES } from './constants/routes'
 import { AuthProvider, useAuthContext } from './contexts/AuthContext'
 import { AppLayout } from './layout/AppLayout'
 
+const AvgBookingValueReportPage = lazy(() => import('./features/AvgBookingValueReport/page/AvgBookingValueReportPage'))
+const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
+const HighCancellationPackagesPage = lazy(() => import('./features/HighCancellationPackages/page/HighCancellationPackagesPage'))
 const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/page/LowOccupancyReportPage'))
+const LowPerformingPackagesPage = lazy(() => import('./features/LowPerformingPackages/page/LowPerformingPackagesPage'))
+const MonitoringPage = lazy(() => import('./features/Monitoring/page/MonitoringPage'))
 const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
 const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
 const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
@@ -73,10 +78,35 @@ function AppRoutes() {
       >
         <Route path="/" element={<Navigate to={APP_ROUTES.dashboard} replace />} />
         <Route
+          path={APP_ROUTES.avgBookingValueReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading average booking value report..." />}>
+              <AvgBookingValueReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.bookingSummary}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading booking summary..." />}>
+              <BookingSummaryPage />
+            </Suspense>
+          }
+        />
+        <Route path="/admin/booking-summary" element={<Navigate to={APP_ROUTES.bookingSummary} replace />} />
+        <Route
           path={APP_ROUTES.dailyBalance}
           element={
             <Suspense fallback={<FullPageLoader message="Loading daily balance..." />}>
               <DailyBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.highCancellationPackages}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading high cancellation packages..." />}>
+              <HighCancellationPackagesPage />
             </Suspense>
           }
         />
@@ -89,10 +119,26 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.lowPerformingPackages}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading low-performing packages..." />}>
+              <LowPerformingPackagesPage />
+            </Suspense>
+          }
+        />
+        <Route
           path={APP_ROUTES.monthRunningBalance}
           element={
             <Suspense fallback={<FullPageLoader message="Loading monthly running balance..." />}>
               <MonthRunningBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.monitoring}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading monitoring..." />}>
+              <MonitoringPage />
             </Suspense>
           }
         />

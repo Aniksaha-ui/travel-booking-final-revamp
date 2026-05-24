@@ -1,6 +1,11 @@
 export const APP_ROUTES = {
+  avgBookingValueReport: "/admin/avg-booking-value-report",
+  bookingSummary: "/admin/bookings/summary",
   dailyBalance: "/admin/account/daily-balance",
+  highCancellationPackages: "/admin/high-cancellation-packages",
   lowOccupancyReport: "/admin/low-occupancy-report",
+  lowPerformingPackages: "/admin/low-performing-packages",
+  monitoring: "/admin/monitoring",
   monthRunningBalance: "/admin/monthRunningBalance",
   packages: "/admin/packages",
   refunds: "/admin/refunds",
