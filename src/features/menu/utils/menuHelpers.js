@@ -61,6 +61,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.vehicleTrackingReport;
   }
 
+  if (path === "/admin/low-occupancy-report" || path === "/low-occupancy-report") {
+    return APP_ROUTES.lowOccupancyReport;
+  }
+
   if (path === "/admin/tripPerformance" || path === "/tripPerformance") {
     return APP_ROUTES.tripPerformance;
   }

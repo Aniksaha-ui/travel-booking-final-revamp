@@ -13,6 +13,7 @@ export const API_URLS = {
   reports: {
     dailyBalance: "/admin/monthlyDailyBalanceReport",
     dailyBalanceHistory: "/admin/monthly-daily-balance-reports",
+    lowOccupancyTripReport: "/admin/low-occupancy-trip-report",
     monthRunningBalance: "/admin/monthRunningBalance",
     tripPerformance: "/admin/tripPerformance",
     vehicleTracking: "/admin/useageOfVehicle",

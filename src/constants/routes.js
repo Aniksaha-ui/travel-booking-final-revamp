@@ -1,5 +1,6 @@
 export const APP_ROUTES = {
   dailyBalance: "/admin/account/daily-balance",
+  lowOccupancyReport: "/admin/low-occupancy-report",
   monthRunningBalance: "/admin/monthRunningBalance",
   packages: "/admin/packages",
   refunds: "/admin/refunds",

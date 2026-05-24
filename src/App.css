@@ -785,6 +785,64 @@
   gap: 8px;
 }
 
+.occupancy-status-badge {
+  display: inline-flex;
+  min-width: 88px;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.occupancy-status-badge.is-critical {
+  background: rgb(239 68 68 / 15%);
+  color: #fca5a5;
+}
+
+.occupancy-status-badge.is-warning {
+  background: rgb(245 158 11 / 15%);
+  color: #fcd34d;
+}
+
+.occupancy-status-badge.is-watch {
+  background: rgb(96 165 250 / 15%);
+  color: #bfdbfe;
+}
+
+.occupancy-progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.occupancy-progress {
+  width: 100px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #221f20;
+}
+
+.occupancy-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.occupancy-progress__fill.is-critical {
+  background: #ef4444;
+}
+
+.occupancy-progress__fill.is-warning {
+  background: #f59e0b;
+}
+
+.occupancy-progress__fill.is-watch {
+  background: #60a5fa;
+}
+
 .report-drawer {
   position: fixed;
   inset: 0;

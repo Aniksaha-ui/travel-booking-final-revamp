@@ -9,6 +9,7 @@ import { AppLayout } from './layout/AppLayout'
 
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
+const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/page/LowOccupancyReportPage'))
 const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
 const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
 const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
@@ -76,6 +77,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading daily balance..." />}>
               <DailyBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.lowOccupancyReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading low occupancy report..." />}>
+              <LowOccupancyReportPage />
             </Suspense>
           }
         />
