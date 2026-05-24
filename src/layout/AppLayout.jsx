@@ -7,14 +7,20 @@ import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
 const pageTitles = {
+  '/admin/account/balance': 'Account Balance Report',
   '/admin/avg-booking-value-report': 'Average Booking Value Report',
+  '/admin/bookings': 'Bookings',
   '/admin/bookings/summary': 'Booking Summary Report',
   '/admin/account/daily-balance': 'Monthly Daily Balance',
+  '/admin/account/overall-sales': 'Overall Sales Report',
+  '/admin/account/route-wise-sales': 'Route Wise Sales Report',
+  '/admin/account/ticket-status-report': 'Ticket Status Analysis',
   '/admin/high-cancellation-packages': 'High Cancellation Packages',
   '/admin/low-occupancy-report': 'Low Occupancy Report',
   '/admin/monthRunningBalance': 'Monthly Running Balance',
   '/admin/packages': 'Package Management',
   '/admin/refunds': 'Refund Management',
+  '/admin/transactions': 'Transactions',
   '/admin/tickets': 'Ticket Management',
   '/admin/tripPerformance': 'Trip Performance',
   '/admin/vehicletrackingreport': 'Vehicle Tracking Report',

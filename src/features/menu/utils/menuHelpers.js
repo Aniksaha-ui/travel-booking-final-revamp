@@ -16,11 +16,19 @@ export const sortMenuItems = (items = []) =>
 
 const fallbackReportMenuItems = [
   {
+    id: "frontend-account-balance-report",
+    title: "Account Balance",
+    path: APP_ROUTES.accountBalance,
+    icon: "ReportManagementIcon",
+    order: 1000,
+    children: [],
+  },
+  {
     id: "frontend-avg-booking-value-report",
     title: "Average Booking Value",
     path: APP_ROUTES.avgBookingValueReport,
     icon: "ReportManagementIcon",
-    order: 1000,
+    order: 1001,
     children: [],
   },
   {
@@ -28,7 +36,31 @@ const fallbackReportMenuItems = [
     title: "Booking Summary Report",
     path: APP_ROUTES.bookingSummary,
     icon: "TripManagementIcon",
-    order: 1001,
+    order: 1002,
+    children: [],
+  },
+  {
+    id: "frontend-overall-sales-report",
+    title: "Overall Sales",
+    path: APP_ROUTES.overallSales,
+    icon: "ReportManagementIcon",
+    order: 1003,
+    children: [],
+  },
+  {
+    id: "frontend-route-wise-sales-report",
+    title: "Route Wise Sales",
+    path: APP_ROUTES.routeWiseSales,
+    icon: "ReportManagementIcon",
+    order: 1004,
+    children: [],
+  },
+  {
+    id: "frontend-ticket-status-report",
+    title: "Ticket Status Analysis",
+    path: APP_ROUTES.ticketStatusReport,
+    icon: "ReportManagementIcon",
+    order: 1005,
     children: [],
   },
   {
@@ -36,7 +68,7 @@ const fallbackReportMenuItems = [
     title: "High Cancellation Packages",
     path: APP_ROUTES.highCancellationPackages,
     icon: "ReportManagementIcon",
-    order: 1002,
+    order: 1006,
     children: [],
   },
 ];
@@ -129,6 +161,17 @@ export const getSupportedRoute = (path) => {
   }
 
   if (
+    path === "/admin/bookings" ||
+    path === "/bookings" ||
+    path === "admin/bookings" ||
+    path === "bookings" ||
+    path === "/admin/booking" ||
+    path === "/booking"
+  ) {
+    return APP_ROUTES.bookings;
+  }
+
+  if (
     path === "/admin/bookings/summary" ||
     path === "/bookings/summary" ||
     path === "/admin/booking-summary" ||
@@ -141,12 +184,44 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.dailyBalance;
   }
 
+  if (
+    path === "/admin/account/balance" ||
+    path === "/account/balance" ||
+    path === "admin/account/balance" ||
+    path === "account/balance"
+  ) {
+    return APP_ROUTES.accountBalance;
+  }
+
+  if (path === "/admin/account/overall-sales" || path === "/account/overall-sales") {
+    return APP_ROUTES.overallSales;
+  }
+
+  if (path === "/admin/account/route-wise-sales" || path === "/account/route-wise-sales") {
+    return APP_ROUTES.routeWiseSales;
+  }
+
+  if (path === "/admin/account/ticket-status-report" || path === "/account/ticket-status-report") {
+    return APP_ROUTES.ticketStatusReport;
+  }
+
   if (path === "/admin/high-cancellation-packages" || path === "/high-cancellation-packages") {
     return APP_ROUTES.highCancellationPackages;
   }
 
   if (path === "/admin/refunds" || path === "/admin/refund" || path === "/refunds") {
     return APP_ROUTES.refunds;
+  }
+
+  if (
+    path === "/admin/transactions" ||
+    path === "/transactions" ||
+    path === "admin/transactions" ||
+    path === "transactions" ||
+    path === "/admin/transaction" ||
+    path === "/transaction"
+  ) {
+    return APP_ROUTES.transactions;
   }
 
   if (path === "/admin/vehicletrackingreport" || path === "/vehicletrackingreport") {

@@ -8,6 +8,8 @@ import { AuthProvider, useAuthContext } from './contexts/AuthContext'
 import { AppLayout } from './layout/AppLayout'
 
 const AvgBookingValueReportPage = lazy(() => import('./features/AvgBookingValueReport/page/AvgBookingValueReportPage'))
+const AccountBalancePage = lazy(() => import('./features/AccountBalance/page/AccountBalancePage'))
+const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
 const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
@@ -16,11 +18,15 @@ const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/
 const LowPerformingPackagesPage = lazy(() => import('./features/LowPerformingPackages/page/LowPerformingPackagesPage'))
 const MonitoringPage = lazy(() => import('./features/Monitoring/page/MonitoringPage'))
 const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
+const OverallSalesReportPage = lazy(() => import('./features/OverallSalesReport/page/OverallSalesReportPage'))
 const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
 const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
 const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
+const RouteWiseSalesReportPage = lazy(() => import('./features/RouteWiseSalesReport/page/RouteWiseSalesReportPage'))
 const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
+const TicketStatusReportPage = lazy(() => import('./features/TicketStatusReport/page/TicketStatusReportPage'))
 const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
+const TransactionsPage = lazy(() => import('./features/Transactions/page/TransactionsPage'))
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
 const VehicleTrackingReportPage = lazy(() => import('./features/VehicleTrackingReport/page/VehicleTrackingReportPage'))
@@ -78,10 +84,26 @@ function AppRoutes() {
       >
         <Route path="/" element={<Navigate to={APP_ROUTES.dashboard} replace />} />
         <Route
+          path={APP_ROUTES.accountBalance}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading account balance..." />}>
+              <AccountBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
           path={APP_ROUTES.avgBookingValueReport}
           element={
             <Suspense fallback={<FullPageLoader message="Loading average booking value report..." />}>
               <AvgBookingValueReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.bookings}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading bookings..." />}>
+              <BookingsPage />
             </Suspense>
           }
         />
@@ -99,6 +121,30 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading daily balance..." />}>
               <DailyBalancePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.overallSales}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading overall sales..." />}>
+              <OverallSalesReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.routeWiseSales}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading route wise sales..." />}>
+              <RouteWiseSalesReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.ticketStatusReport}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading ticket status report..." />}>
+              <TicketStatusReportPage />
             </Suspense>
           }
         />
@@ -158,6 +204,15 @@ function AppRoutes() {
             </Suspense>
           }
         />
+        <Route
+          path={APP_ROUTES.transactions}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading transactions..." />}>
+              <TransactionsPage />
+            </Suspense>
+          }
+        />
+        <Route path="/admin/transaction" element={<Navigate to={APP_ROUTES.transactions} replace />} />
         <Route
           path={APP_ROUTES.tickets}
           element={

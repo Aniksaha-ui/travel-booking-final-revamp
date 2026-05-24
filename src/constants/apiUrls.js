@@ -5,12 +5,18 @@ export const API_URLS = {
   admin: {
     menu: "/admin/menu",
   },
+  bookings: {
+    invoice: "/admin/booking-invoice",
+    list: "/admin/booking",
+  },
   dashboard: {
     overview: "/admin/dashboard",
     currentMonthTripSales: "/admin/current-month-trip-sales-report",
     packageProfitMargin: "/admin/package-profit-margin",
   },
   reports: {
+    accountBalance: "/admin/accountBalance",
+    accountBalanceHistory: (type) => `/admin/accountHistory/${encodeURIComponent(type)}`,
     avgBookingValue: "/admin/avg-booking-value-report",
     bookingSummary: "/admin/booking-summary",
     dailyBalance: "/admin/monthlyDailyBalanceReport",
@@ -20,6 +26,9 @@ export const API_URLS = {
     lowPerformingPackages: "/admin/low-performing-packages",
     monitoring: "/admin/monitoring",
     monthRunningBalance: "/admin/monthRunningBalance",
+    overallSales: "/admin/overall-sales-summary",
+    routeWiseSales: "/admin/route-wise-sales-summary",
+    ticketStatusReport: "/admin/ticket-status-report",
     tripPerformance: "/admin/tripPerformance",
     vehicleTracking: "/admin/useageOfVehicle",
     vehicleWiseSeatDetails: (vehicleId) => `/admin/vehiclewiseseat/${vehicleId}`,
@@ -32,6 +41,9 @@ export const API_URLS = {
   refunds: {
     list: "/admin/refund",
     disburse: "/admin/refund/disburse",
+  },
+  transactions: {
+    list: "/admin/transaction",
   },
   resources: {
     guideDropdown: "/admin/guide/dropdown",
