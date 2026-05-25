@@ -5,14 +5,18 @@ import {
   CalendarRange,
   Wallet,
 } from 'lucide-react'
+import dayjs from 'dayjs'
 import { useState } from 'react'
+import { useToast } from '../../../components/common/Toaster'
 import { DashboardMetricCard } from '../../../components/ui/DashboardMetricCard'
+import { DailyBalanceMonthFilter } from '../component/DailyBalanceMonthFilter'
 import { DailyBalanceHistoryTable } from '../component/DailyBalanceHistoryTable'
 import { DailyBalanceLedger } from '../component/DailyBalanceLedger'
 import { DailyBalanceOverview } from '../component/DailyBalanceOverview'
 import { DailyBalanceReportViewer } from '../component/DailyBalanceReportViewer'
 import useDailyBalanceHistory from '../hooks/useDailyBalanceHistory'
 import useDailyBalanceReport from '../hooks/useDailyBalanceReport'
+import { getCurrentDailyBalanceMonth } from '../service/dailyBalanceService'
 
 function DailyBalanceSummary({ summary }) {
   const items = [
@@ -58,12 +62,15 @@ function DailyBalanceSummary({ summary }) {
 }
 
 export default function DailyBalancePage() {
+  const toast = useToast()
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentDailyBalanceMonth())
+  const [draftMonth, setDraftMonth] = useState(selectedMonth)
   const [selectedReport, setSelectedReport] = useState(null)
   const {
     data: reportData,
     error: reportError,
     isLoading: isReportLoading,
-  } = useDailyBalanceReport()
+  } = useDailyBalanceReport(selectedMonth)
   const {
     data: historyData,
     error: historyError,
@@ -71,6 +78,22 @@ export default function DailyBalancePage() {
     page: historyPage,
     setPage: setHistoryPage,
   } = useDailyBalanceHistory()
+  const hasMonthChanges = draftMonth !== selectedMonth
+
+  const handleApplyMonth = () => {
+    if (!draftMonth || !dayjs(`${draftMonth}-01`).isValid()) {
+      toast.error('Please select a valid month.')
+      return
+    }
+
+    setSelectedMonth(draftMonth)
+  }
+
+  const handleResetMonth = () => {
+    const currentMonth = getCurrentDailyBalanceMonth()
+    setDraftMonth(currentMonth)
+    setSelectedMonth(currentMonth)
+  }
 
   return (
     <main className="routes-page">
@@ -83,16 +106,29 @@ export default function DailyBalancePage() {
                 <h1>Monthly Daily Balance</h1>
               </div>
               <p className="routes-page__subtitle">
-                Daily financial movement for the current month, with previous-month report history.
+                Daily financial movement for the selected month, with previous-month report history.
               </p>
             </div>
 
             <div className="inline-flex h-10 items-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7]">
               <CalendarRange size={16} />
-              <span>{reportData.titleDateRange || 'Current month'}</span>
+              <span>{reportData.titleDateRange || reportData.monthLabel || 'Current month'}</span>
             </div>
           </div>
         </header>
+
+        <section className="routes-table-card mb-6">
+          <div className="routes-table-toolbar !h-auto !justify-between gap-4 px-4 py-3">
+            <DailyBalanceMonthFilter
+              draftMonth={draftMonth}
+              hasChanges={hasMonthChanges}
+              isLoading={isReportLoading}
+              onApply={handleApplyMonth}
+              onMonthChange={setDraftMonth}
+              onReset={handleResetMonth}
+            />
+          </div>
+        </section>
 
         <DailyBalanceSummary summary={reportData.summary} />
         <DailyBalanceOverview

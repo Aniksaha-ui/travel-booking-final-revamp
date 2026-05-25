@@ -8,6 +8,10 @@ export default function useTransactions() {
   const [pagination, setPagination] = useState(emptyTransactionsCollection.pagination)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [dateRange, setDateRangeState] = useState({
+    endDate: '',
+    startDate: '',
+  })
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -17,12 +21,19 @@ export default function useTransactions() {
     async (overrides = {}) => {
       const nextPage = overrides.page ?? page
       const nextSearch = overrides.search ?? search
+      const nextStartDate = overrides.startDate ?? dateRange.startDate
+      const nextEndDate = overrides.endDate ?? dateRange.endDate
 
       setIsLoading(true)
       setError('')
 
       try {
-        const response = await getTransactions({ page: nextPage, search: nextSearch })
+        const response = await getTransactions({
+          fromDate: nextStartDate,
+          page: nextPage,
+          search: nextSearch,
+          toDate: nextEndDate,
+        })
         setItems(response.rows)
         setPagination(response.pagination)
       } catch (loadError) {
@@ -35,7 +46,7 @@ export default function useTransactions() {
         setIsLoading(false)
       }
     },
-    [page, search, toast],
+    [dateRange.endDate, dateRange.startDate, page, search, toast],
   )
 
   useEffect(() => {
@@ -58,6 +69,7 @@ export default function useTransactions() {
 
   return {
     closeDetails,
+    dateRange,
     detailsOpen,
     error,
     isLoading,
@@ -68,8 +80,11 @@ export default function useTransactions() {
     refresh: loadTransactions,
     search,
     selectedTransaction,
+    setDateRange: (nextRange) => {
+      setIsLoading(true)
+      setDateRangeState(nextRange)
+    },
     setPage,
     setSearch,
   }
 }
-

@@ -1,16 +1,64 @@
+import dayjs from 'dayjs'
 import { ReceiptText, RefreshCcw } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { useToast } from '../../../components/common/Toaster'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
 import { TransactionDetailsModal } from '../component/TransactionDetailsModal.jsx'
+import { TransactionsFilters } from '../component/TransactionsFilters.jsx'
 import { TransactionsOverview } from '../component/TransactionsOverview.jsx'
 import { transactionsColumns } from '../component/column.jsx'
 import { TRANSACTIONS_PAGE_COPY } from '../constants/transactions.constants'
 import useTransactions from '../hooks/useTransactions'
 import { buildTransactionMetrics } from '../utils/transactionsUtils'
 
+const formatHeaderDate = (value) => {
+  const parsedDate = dayjs(value)
+  return parsedDate.isValid() ? parsedDate.format('DD MMM YYYY') : value
+}
+
 export default function TransactionsPage() {
+  const toast = useToast()
   const apiState = useTransactions()
+  const [draftStartDate, setDraftStartDate] = useState(apiState.dateRange.startDate)
+  const [draftEndDate, setDraftEndDate] = useState(apiState.dateRange.endDate)
   const metrics = useMemo(() => buildTransactionMetrics(apiState.items), [apiState.items])
+  const hasActiveRange = Boolean(apiState.dateRange.startDate || apiState.dateRange.endDate)
+  const headerLabel = hasActiveRange
+    ? apiState.dateRange.startDate && apiState.dateRange.endDate
+      ? `${formatHeaderDate(apiState.dateRange.startDate)} - ${formatHeaderDate(apiState.dateRange.endDate)}`
+      : apiState.dateRange.startDate
+        ? `From ${formatHeaderDate(apiState.dateRange.startDate)}`
+        : `Until ${formatHeaderDate(apiState.dateRange.endDate)}`
+    : `${apiState.pagination.total || apiState.items.length} matched transactions`
+
+  const handleApplyFilters = () => {
+    if (
+      draftStartDate &&
+      draftEndDate &&
+      dayjs(draftEndDate).isValid() &&
+      dayjs(draftStartDate).isValid() &&
+      draftEndDate < draftStartDate
+    ) {
+      toast.error('To date cannot be earlier than from date.')
+      return
+    }
+
+    apiState.setPage(1)
+    apiState.setDateRange({
+      endDate: draftEndDate,
+      startDate: draftStartDate,
+    })
+  }
+
+  const handleClearFilters = () => {
+    setDraftStartDate('')
+    setDraftEndDate('')
+    apiState.setPage(1)
+    apiState.setDateRange({
+      endDate: '',
+      startDate: '',
+    })
+  }
 
   const resultLabel = useMemo(() => {
     if (!apiState.pagination.total && !apiState.items.length) {
@@ -40,7 +88,7 @@ export default function TransactionsPage() {
 
             <div className="inline-flex h-10 items-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7]">
               <ReceiptText size={16} />
-              <span>{apiState.pagination.total || apiState.items.length} matched transactions</span>
+              <span>{headerLabel}</span>
             </div>
           </div>
         </header>
@@ -62,6 +110,18 @@ export default function TransactionsPage() {
           columns={transactionsColumns}
           data={apiState.items}
           emptyMessage="No transactions found."
+          filters={
+            <TransactionsFilters
+              draftEndDate={draftEndDate}
+              draftStartDate={draftStartDate}
+              hasActiveRange={hasActiveRange}
+              isLoading={apiState.isLoading}
+              onApply={handleApplyFilters}
+              onClear={handleClearFilters}
+              onEndDateChange={setDraftEndDate}
+              onStartDateChange={setDraftStartDate}
+            />
+          }
           isLoading={apiState.isLoading}
           onPageChange={apiState.setPage}
           onSearchChange={(value) => {

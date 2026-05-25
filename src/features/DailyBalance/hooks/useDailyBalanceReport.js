@@ -5,8 +5,9 @@ import {
   getDailyBalanceReport,
 } from '../service/dailyBalanceService'
 
-export default function useDailyBalanceReport() {
+export default function useDailyBalanceReport(monthValue) {
   const toast = useToast()
+  const [refreshToken, setRefreshToken] = useState(0)
   const [state, setState] = useState({
     data: emptyDailyBalanceData,
     error: null,
@@ -23,8 +24,9 @@ export default function useDailyBalanceReport() {
 
   useEffect(() => {
     let active = true
+    beginLoading()
 
-    getDailyBalanceReport()
+    getDailyBalanceReport({ monthValue })
       .then((data) => {
         if (active) {
           setState({
@@ -48,12 +50,13 @@ export default function useDailyBalanceReport() {
     return () => {
       active = false
     }
-  }, [toast])
+  }, [monthValue, refreshToken, toast])
 
   return {
     ...state,
     reload: () => {
       beginLoading()
+      setRefreshToken((value) => value + 1)
     },
   }
 }
