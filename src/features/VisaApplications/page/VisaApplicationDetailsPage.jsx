@@ -1,7 +1,14 @@
-import { RefreshCcw } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import {
+  BriefcaseBusiness,
+  CheckCheck,
+  ClipboardList,
+  KanbanSquare,
+  RefreshCcw,
+} from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useToast } from '../../../components/common/Toaster'
+import { DashboardMetricCard } from '../../../components/ui/DashboardMetricCard'
 import { APP_ROUTES } from '../../../constants/routes'
 import {
   DEFAULT_ADMIN_UPDATE_DATA,
@@ -11,10 +18,12 @@ import {
 } from '../constants/visaApplications.constants'
 import { VisaApplicationDetailsHeader } from '../component/VisaApplicationDetailsHeader.jsx'
 import { VisaApplicationDocumentsPanel } from '../component/VisaApplicationDocumentsPanel.jsx'
+import { VisaApplicationKanbanBoard } from '../component/VisaApplicationKanbanBoard.jsx'
 import { VisaApplicationOverviewPanel } from '../component/VisaApplicationOverviewPanel.jsx'
 import { VisaApplicationPaymentsPanel } from '../component/VisaApplicationPaymentsPanel.jsx'
 import { VisaApplicationStatusLogsPanel } from '../component/VisaApplicationStatusLogsPanel.jsx'
 import { VisaApplicationWorkflowPanel } from '../component/VisaApplicationWorkflowPanel.jsx'
+import { VisaApplicationWorkspaceTabs } from '../component/VisaApplicationWorkspaceTabs.jsx'
 import {
   assignVisaApplication,
   fetchVisaApplicationOfficers,
@@ -30,6 +39,7 @@ export default function VisaApplicationDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const toast = useToast()
+  const [activeTab, setActiveTab] = useState('workflow')
   const [application, setApplication] = useState(null)
   const [officers, setOfficers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -117,6 +127,13 @@ export default function VisaApplicationDetailsPage() {
     setStatusData((currentData) => ({
       ...currentData,
       [name]: value,
+    }))
+  }
+
+  const handleStatusSelect = (status) => {
+    setStatusData((currentData) => ({
+      ...currentData,
+      status,
     }))
   }
 
@@ -223,6 +240,44 @@ export default function VisaApplicationDetailsPage() {
     }
   }
 
+  const summaryCards = useMemo(() => {
+    if (!application) {
+      return []
+    }
+
+    const reviewedDocuments = application.documents.filter(
+      (document) => document.reviewStatus !== 'pending',
+    ).length
+    const documentTarget = Math.max(application.documents.length, application.requiredDocuments.length)
+
+    return [
+      {
+        label: 'Workflow Stage',
+        value: application.statusLabel,
+        icon: KanbanSquare,
+        tone: 'blue',
+      },
+      {
+        label: 'Payment Status',
+        value: application.paymentStatusLabel,
+        icon: BriefcaseBusiness,
+        tone: application.paymentStatus === 'paid' ? 'green' : 'amber',
+      },
+      {
+        label: 'Documents Reviewed',
+        value: `${reviewedDocuments}/${documentTarget || 0}`,
+        icon: ClipboardList,
+        tone: reviewedDocuments === documentTarget && documentTarget ? 'emerald' : 'cyan',
+      },
+      {
+        label: 'Timeline Entries',
+        value: `${application.statusLogs.length}`,
+        icon: CheckCheck,
+        tone: 'emerald',
+      },
+    ]
+  }, [application])
+
   if (isLoading || !application) {
     return (
       <main className="routes-page">
@@ -245,34 +300,69 @@ export default function VisaApplicationDetailsPage() {
           onPrint={handlePrint}
         />
 
-        <VisaApplicationOverviewPanel application={application} />
-
-        <VisaApplicationWorkflowPanel
-          activeAction={activeAction}
-          adminUpdateData={adminUpdateData}
-          assignmentData={assignmentData}
-          officers={officers}
-          onAdminUpdate={handleAdminUpdate}
-          onAdminUpdateChange={handleAdminUpdateChange}
-          onAssign={handleAssign}
-          onAssignmentChange={handleAssignmentChange}
-          onStatusChange={handleStatusChange}
-          onStatusUpdate={handleStatusUpdate}
-          statusData={statusData}
-        />
-
-        <VisaApplicationDocumentsPanel
-          activeAction={activeAction}
-          documentReviews={documentReviews}
-          documents={application.documents}
-          onDocumentReviewChange={handleDocumentReviewChange}
-          onVerifyDocument={handleVerifyDocument}
-        />
-
-        <section className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-          <VisaApplicationStatusLogsPanel statusLogs={application.statusLogs} />
-          <VisaApplicationPaymentsPanel payments={application.payments} />
+        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {summaryCards.map((item) => (
+            <DashboardMetricCard
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              tone={item.tone}
+              value={item.value}
+            />
+          ))}
         </section>
+
+        <VisaApplicationWorkspaceTabs
+          activeTab={activeTab}
+          application={application}
+          onChange={setActiveTab}
+          selectedStatus={statusData.status}
+        />
+
+        {activeTab === 'workflow' ? (
+          <div className="space-y-4">
+            <VisaApplicationKanbanBoard
+              application={application}
+              onSelectStatus={handleStatusSelect}
+              selectedStatus={statusData.status}
+            />
+
+            <VisaApplicationWorkflowPanel
+              activeAction={activeAction}
+              adminUpdateData={adminUpdateData}
+              application={application}
+              assignmentData={assignmentData}
+              officers={officers}
+              onAdminUpdate={handleAdminUpdate}
+              onAdminUpdateChange={handleAdminUpdateChange}
+              onAssign={handleAssign}
+              onAssignmentChange={handleAssignmentChange}
+              onStatusChange={handleStatusChange}
+              onStatusUpdate={handleStatusUpdate}
+              statusData={statusData}
+            />
+          </div>
+        ) : null}
+
+        {activeTab === 'overview' ? <VisaApplicationOverviewPanel application={application} /> : null}
+
+        {activeTab === 'documents' ? (
+          <VisaApplicationDocumentsPanel
+            activeAction={activeAction}
+            documentReviews={documentReviews}
+            documents={application.documents}
+            onDocumentReviewChange={handleDocumentReviewChange}
+            onVerifyDocument={handleVerifyDocument}
+            requiredCount={application.requiredDocuments.length}
+          />
+        ) : null}
+
+        {activeTab === 'activity' ? (
+          <section className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+            <VisaApplicationStatusLogsPanel statusLogs={application.statusLogs} />
+            <VisaApplicationPaymentsPanel payments={application.payments} />
+          </section>
+        ) : null}
 
         <div className="flex justify-end">
           <button

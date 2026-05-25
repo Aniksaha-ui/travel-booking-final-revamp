@@ -2,9 +2,19 @@ import { VISA_APPLICATIONS_EMPTY_STATE } from '../constants/visaApplications.con
 
 export function VisaApplicationStatusLogsPanel({ statusLogs }) {
   return (
-    <section className="rounded-xl border border-[#2d282b] bg-[#171314] shadow-[0_14px_36px_rgba(0,0,0,0.2)]">
-      <header className="border-b border-[#2d282b] px-5 py-4">
-        <h2 className="text-sm font-bold text-white">Status Timeline</h2>
+    <section className="rounded-[24px] border border-[#2d282b] bg-[#171314] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+      <header className="flex flex-col gap-3 border-b border-[#2d282b] px-5 py-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-white">Status Timeline</h2>
+          <p className="mt-2 text-sm text-[#8fa0bd]">
+            Follow every application transition with who changed it, when it moved, and the note
+            left behind.
+          </p>
+        </div>
+
+        <span className="inline-flex items-center self-start rounded-full border border-[#3a3337] bg-[#211d20] px-3 py-1 text-xs font-semibold text-[#c5d9f7]">
+          {statusLogs.length} updates
+        </span>
       </header>
 
       <div className="overflow-x-auto p-5">
@@ -20,7 +30,10 @@ export function VisaApplicationStatusLogsPanel({ statusLogs }) {
           <tbody>
             {statusLogs.length ? (
               statusLogs.map((log) => (
-                <tr key={log.id} className="border-t border-[#2d282b] text-sm text-slate-200">
+                <tr
+                  key={log.id}
+                  className="border-t border-[#2d282b] text-sm text-slate-200 transition hover:bg-white/[0.02]"
+                >
                   <td className="px-4 py-4">{log.createdAtLabel}</td>
                   <td className="px-4 py-4">{log.changedByName}</td>
                   <td className="px-4 py-4">

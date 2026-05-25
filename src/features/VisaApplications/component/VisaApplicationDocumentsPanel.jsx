@@ -8,11 +8,27 @@ export function VisaApplicationDocumentsPanel({
   documents,
   onDocumentReviewChange,
   onVerifyDocument,
+  requiredCount = 0,
 }) {
   return (
-    <section className="rounded-xl border border-[#2d282b] bg-[#171314] shadow-[0_14px_36px_rgba(0,0,0,0.2)]">
-      <header className="border-b border-[#2d282b] px-5 py-4">
-        <h2 className="text-sm font-bold text-white">Documents</h2>
+    <section className="rounded-[24px] border border-[#2d282b] bg-[#171314] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+      <header className="flex flex-col gap-3 border-b border-[#2d282b] px-5 py-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-white">Documents</h2>
+          <p className="mt-2 text-sm text-[#8fa0bd]">
+            Review uploads, leave verification notes, and approve or reject files without leaving
+            the case workspace.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2 text-xs font-semibold">
+          <span className="inline-flex items-center rounded-full border border-[#3a3337] bg-[#211d20] px-3 py-1 text-[#c5d9f7]">
+            {documents.length} uploaded
+          </span>
+          <span className="inline-flex items-center rounded-full border border-[#3a3337] bg-[#211d20] px-3 py-1 text-[#8fa0bd]">
+            {requiredCount} required
+          </span>
+        </div>
       </header>
 
       <div className="overflow-x-auto p-5">
@@ -36,7 +52,10 @@ export function VisaApplicationDocumentsPanel({
                 }
 
                 return (
-                  <tr key={document.id} className="border-t border-[#2d282b] align-top text-sm text-slate-200">
+                  <tr
+                    key={document.id}
+                    className="border-t border-[#2d282b] align-top text-sm text-slate-200 transition hover:bg-white/[0.02]"
+                  >
                     <td className="px-4 py-4">
                       <div className="font-semibold text-white">{document.label}</div>
                       <div className="mt-1 text-xs text-[#8fa0bd]">{document.originalName}</div>

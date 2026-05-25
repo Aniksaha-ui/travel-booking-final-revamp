@@ -3,9 +3,19 @@ import { VisaPaymentStatusBadge } from './StatusBadge.jsx'
 
 export function VisaApplicationPaymentsPanel({ payments }) {
   return (
-    <section className="rounded-xl border border-[#2d282b] bg-[#171314] shadow-[0_14px_36px_rgba(0,0,0,0.2)]">
-      <header className="border-b border-[#2d282b] px-5 py-4">
-        <h2 className="text-sm font-bold text-white">Payments</h2>
+    <section className="rounded-[24px] border border-[#2d282b] bg-[#171314] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+      <header className="flex flex-col gap-3 border-b border-[#2d282b] px-5 py-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-white">Payments</h2>
+          <p className="mt-2 text-sm text-[#8fa0bd]">
+            Track the payment trail tied to this visa case, including method, reference, and
+            settlement state.
+          </p>
+        </div>
+
+        <span className="inline-flex items-center self-start rounded-full border border-[#3a3337] bg-[#211d20] px-3 py-1 text-xs font-semibold text-[#c5d9f7]">
+          {payments.length} records
+        </span>
       </header>
 
       <div className="overflow-x-auto p-5">
@@ -22,7 +32,10 @@ export function VisaApplicationPaymentsPanel({ payments }) {
           <tbody>
             {payments.length ? (
               payments.map((payment) => (
-                <tr key={payment.id} className="border-t border-[#2d282b] text-sm text-slate-200">
+                <tr
+                  key={payment.id}
+                  className="border-t border-[#2d282b] text-sm text-slate-200 transition hover:bg-white/[0.02]"
+                >
                   <td className="px-4 py-4 font-semibold text-white">{payment.amountLabel}</td>
                   <td className="px-4 py-4">{payment.methodLabel}</td>
                   <td className="px-4 py-4">{payment.referenceLabel}</td>
