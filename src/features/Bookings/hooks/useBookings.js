@@ -13,6 +13,10 @@ export default function useBookings() {
   const [pagination, setPagination] = useState(emptyBookingsCollection.pagination)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [dateRange, setDateRangeState] = useState({
+    endDate: '',
+    startDate: '',
+  })
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [invoice, setInvoice] = useState(emptyBookingInvoice)
@@ -26,12 +30,19 @@ export default function useBookings() {
     async (overrides = {}) => {
       const nextPage = overrides.page ?? page
       const nextSearch = overrides.search ?? search
+      const nextStartDate = overrides.startDate ?? dateRange.startDate
+      const nextEndDate = overrides.endDate ?? dateRange.endDate
 
       setIsLoading(true)
       setError('')
 
       try {
-        const response = await getBookings({ page: nextPage, search: nextSearch })
+        const response = await getBookings({
+          fromDate: nextStartDate,
+          page: nextPage,
+          search: nextSearch,
+          toDate: nextEndDate,
+        })
         setItems(response.rows)
         setPagination(response.pagination)
       } catch (loadError) {
@@ -44,7 +55,7 @@ export default function useBookings() {
         setIsLoading(false)
       }
     },
-    [page, search, toast],
+    [dateRange.endDate, dateRange.startDate, page, search, toast],
   )
 
   useEffect(() => {
@@ -87,6 +98,7 @@ export default function useBookings() {
 
   return {
     closeInvoice,
+    dateRange,
     error,
     invoice,
     invoiceError,
@@ -100,6 +112,10 @@ export default function useBookings() {
     pagination,
     refresh: loadBookings,
     search,
+    setDateRange: (nextRange) => {
+      setIsLoading(true)
+      setDateRangeState(nextRange)
+    },
     selectedBooking,
     setPage,
     setSearch,

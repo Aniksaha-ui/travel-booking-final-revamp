@@ -37,7 +37,10 @@ const toTitleCase = (value) =>
     .join(' ')
 
 const formatCompactCount = (value) => compactCountFormatter.format(toNumber(value))
-const formatCurrency = (value) => `BDT ${currencyFormatter.format(toNumber(value))}`
+const formatCurrency = (value, currency = 'BDT') => {
+  const normalizedCurrency = normalizeText(currency, 'BDT')
+  return `${normalizedCurrency} ${currencyFormatter.format(toNumber(value))}`
+}
 
 const formatDateLabel = (value) => {
   const parsedDate = dayjs(value)
@@ -68,6 +71,36 @@ export const resolveBookingTypeKey = (value) => {
 
   if (normalizedValue.includes('hotel')) {
     return 'hotel'
+  }
+
+  if (normalizedValue.includes('visa')) {
+    return 'visa'
+  }
+
+  return 'other'
+}
+
+const resolveInvoiceTypeKey = (item = {}) => {
+  const typeKey = resolveBookingTypeKey(item.booking_type)
+
+  if (typeKey !== 'other') {
+    return typeKey
+  }
+
+  if (item.hotel_name || item.hotel_city || item.hotel_country) {
+    return 'hotel'
+  }
+
+  if (item.package_name || item.package_title) {
+    return 'package'
+  }
+
+  if (item.visa_name || item.country_name || item.application_no || item.passport_no) {
+    return 'visa'
+  }
+
+  if (item.trip_name || item.trip_id || item.departure_time || item.arrival_time) {
+    return 'trip'
   }
 
   return 'other'
@@ -129,8 +162,15 @@ export const normalizeBooking = (item = {}, index = 0, pagination = {}) => {
   const seatCount = seatList.length
   const typeKey = resolveBookingTypeKey(item.booking_type)
   const paymentStatus = resolvePaymentStatus(item.status ?? item.booking_status)
-  const productName = normalizeText(item.package_name ?? item.hotel_name, '-')
   const serialSeed = pagination.from || 1
+  const productName =
+    typeKey === 'hotel'
+      ? normalizeText(item.hotel_name, '-')
+      : typeKey === 'package'
+        ? normalizeText(item.package_name ?? item.package_title, '-')
+        : typeKey === 'visa'
+          ? normalizeText(item.package_title ?? item.visa_name, '-')
+          : normalizeText(item.package_name ?? item.package_title ?? item.hotel_name ?? item.visa_name, '-')
 
   return {
     bookingDateLabel: formatDateLabel(item.created_at ?? item.booking_date),
@@ -149,8 +189,10 @@ export const normalizeBooking = (item = {}, index = 0, pagination = {}) => {
         ? productName
         : typeKey === 'hotel'
           ? 'No hotel linked'
-          : typeKey === 'package'
-            ? 'No package linked'
+        : typeKey === 'package'
+          ? 'No package linked'
+          : typeKey === 'visa'
+            ? 'No visa case linked'
             : 'No package linked',
     seatCount,
     seatCountLabel: seatCount ? `${seatCount} seat${seatCount === 1 ? '' : 's'}` : 'No seats',
@@ -164,59 +206,99 @@ export const normalizeBooking = (item = {}, index = 0, pagination = {}) => {
 }
 
 export const createEmptyBookingInvoice = () => ({
+  applicationNoLabel: '-',
   arrivalTimeLabel: '-',
   bkash: '',
+  bookingId: '',
   bookingIdLabel: '-',
   bookingStatusLabel: 'Unknown',
   bookingStatusToneClassName: 'border-blue-500/20 bg-blue-500/10 text-blue-200',
+  bookingTypeKey: 'other',
   bookingTypeLabel: BOOKING_TYPE_LABELS.other,
   card: '',
+  countryName: '',
+  createdAtLabel: '-',
   departureTimeLabel: '-',
+  feeSnapshotLabel: '-',
   hotelAddressLabel: '-',
   hotelName: '',
   nagad: '',
   packageName: '',
   paymentMethodLabel: '-',
+  passportNoLabel: '-',
+  priceAmount: 0,
   priceLabel: formatCurrency(0),
+  processingDaysLabel: '-',
   seatNumbersLabel: 'No seat number is available for this booking.',
+  totalPaymentAmount: 0,
   totalPaymentAmountLabel: formatCurrency(0),
   transactionReference: '-',
+  travelDateLabel: '-',
+  travelPurpose: '-',
   tripIdLabel: '',
   tripName: '',
   userEmail: '-',
   userName: 'Guest User',
+  userPhone: '-',
+  visaName: '',
+  visaTypeLabel: '-',
 })
 
 export const normalizeBookingInvoice = (item = {}) => {
+  const bookingTypeKey = resolveInvoiceTypeKey(item)
   const bookingStatus = resolvePaymentStatus(item.booking_status ?? item.status)
   const hotelAddressLabel = [item.hotel_name, item.hotel_city, item.hotel_country]
     .map((value) => String(value ?? '').trim())
     .filter(Boolean)
     .join(', ')
   const seatNumbers = normalizeText(item.seat_numbers ?? item.seat_ids, '')
+  const currency = item.currency_snapshot ?? item.currency ?? 'BDT'
+  const visaTypeLabel = normalizeText(item.visa_type, '')
+  const applicationNo = normalizeText(item.application_no, '')
 
   return {
+    applicationNoLabel: applicationNo || '-',
     arrivalTimeLabel: formatDateTimeLabel(item.arrival_time),
     bkash: normalizeText(item.bkash, ''),
+    bookingId: String(item.booking_id ?? item.id ?? ''),
     bookingIdLabel: `#${item.booking_id ?? item.id ?? '-'}`,
     bookingStatusLabel: bookingStatus.label,
     bookingStatusToneClassName: bookingStatus.toneClassName,
-    bookingTypeLabel: resolveBookingTypeLabel(item.booking_type),
+    bookingTypeKey,
+    bookingTypeLabel:
+      bookingTypeKey === 'visa' && !item.booking_type
+        ? BOOKING_TYPE_LABELS.visa
+        : resolveBookingTypeLabel(item.booking_type || bookingTypeKey),
     card: normalizeText(item.card, ''),
+    countryName: normalizeText(item.country_name, ''),
+    createdAtLabel: formatDateTimeLabel(item.created_at ?? item.booking_date ?? item.applied_at),
     departureTimeLabel: formatDateTimeLabel(item.departure_time),
+    feeSnapshotLabel:
+      item.fee_snapshot !== undefined && item.fee_snapshot !== null && item.fee_snapshot !== ''
+        ? formatCurrency(item.fee_snapshot, item.currency_snapshot ?? currency)
+        : '-',
     hotelAddressLabel: hotelAddressLabel || '-',
     hotelName: normalizeText(item.hotel_name, ''),
     nagad: normalizeText(item.nagad, ''),
-    packageName: normalizeText(item.package_name, ''),
+    packageName: normalizeText(item.package_name ?? item.package_title, ''),
     paymentMethodLabel: toTitleCase(item.payment_method) || '-',
-    priceLabel: formatCurrency(item.price),
+    passportNoLabel: normalizeText(item.passport_no, '-'),
+    priceAmount: toNumber(item.price),
+    priceLabel: formatCurrency(item.price, currency),
+    processingDaysLabel: normalizeText(item.processing_days_snapshot ?? item.processing_days, '-'),
     seatNumbersLabel: seatNumbers || 'No seat number is available for this booking.',
-    totalPaymentAmountLabel: formatCurrency(item.total_payment_amount),
+    totalPaymentAmount: toNumber(item.total_payment_amount),
+    totalPaymentAmountLabel: formatCurrency(item.total_payment_amount, currency),
     transactionReference: normalizeText(item.transaction_reference, '-'),
+    travelDateLabel: formatDateLabel(item.travel_date),
+    travelPurpose: normalizeText(item.travel_purpose, '-'),
     tripIdLabel: item.trip_id ? `#${item.trip_id}` : '',
     tripName: normalizeText(item.trip_name, ''),
     userEmail: normalizeText(item.user_email ?? item.email, '-'),
     userName: normalizeText(item.user_name ?? item.username ?? item.name, 'Guest User'),
+    userPhone: normalizeText(item.user_phone ?? item.phone, '-'),
+    visaName: normalizeText(item.visa_name, ''),
+    visaTypeLabel: visaTypeLabel || '-',
   }
 }
 

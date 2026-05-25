@@ -30,7 +30,7 @@ export const bookingsColumns = [
   },
   {
     id: 'productName',
-    label: 'Package / Hotel',
+    label: 'Product / Hotel / Visa',
     render: (item) => <span className="text-[#c5d9f7]">{item.productNameLabel}</span>,
     width: '220px',
   },

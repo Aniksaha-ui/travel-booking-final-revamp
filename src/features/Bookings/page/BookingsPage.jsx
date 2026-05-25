@@ -1,21 +1,69 @@
+import dayjs from 'dayjs'
 import { ReceiptText, RefreshCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useToast } from '../../../components/common/Toaster'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
 import { BookingInvoiceModal } from '../component/BookingInvoiceModal.jsx'
+import { BookingsFilters } from '../component/BookingsFilters.jsx'
 import { BookingsOverview } from '../component/BookingsOverview.jsx'
 import { bookingsColumns } from '../component/column.jsx'
 import { BOOKING_TYPE_FILTERS, BOOKINGS_PAGE_COPY } from '../constants/bookings.constants'
 import useBookings from '../hooks/useBookings'
 import { buildBookingsMetrics, filterBookingsByType } from '../utils/bookingsUtils'
 
+const formatHeaderDate = (value) => {
+  const parsedDate = dayjs(value)
+  return parsedDate.isValid() ? parsedDate.format('DD MMM YYYY') : value
+}
+
 export default function BookingsPage() {
+  const toast = useToast()
   const [typeFilter, setTypeFilter] = useState('all')
   const apiState = useBookings()
+  const [draftStartDate, setDraftStartDate] = useState(apiState.dateRange.startDate)
+  const [draftEndDate, setDraftEndDate] = useState(apiState.dateRange.endDate)
   const visibleBookings = useMemo(
     () => filterBookingsByType(apiState.items, typeFilter),
     [apiState.items, typeFilter],
   )
   const summary = useMemo(() => buildBookingsMetrics(visibleBookings), [visibleBookings])
+  const hasActiveRange = Boolean(apiState.dateRange.startDate || apiState.dateRange.endDate)
+  const headerLabel = hasActiveRange
+    ? apiState.dateRange.startDate && apiState.dateRange.endDate
+      ? `${formatHeaderDate(apiState.dateRange.startDate)} - ${formatHeaderDate(apiState.dateRange.endDate)}`
+      : apiState.dateRange.startDate
+        ? `From ${formatHeaderDate(apiState.dateRange.startDate)}`
+        : `Until ${formatHeaderDate(apiState.dateRange.endDate)}`
+    : `${apiState.pagination.total || apiState.items.length} matched bookings`
+
+  const handleApplyFilters = () => {
+    if (
+      draftStartDate &&
+      draftEndDate &&
+      dayjs(draftEndDate).isValid() &&
+      dayjs(draftStartDate).isValid() &&
+      draftEndDate < draftStartDate
+    ) {
+      toast.error('To date cannot be earlier than from date.')
+      return
+    }
+
+    apiState.setPage(1)
+    apiState.setDateRange({
+      endDate: draftEndDate,
+      startDate: draftStartDate,
+    })
+  }
+
+  const handleClearFilters = () => {
+    setDraftStartDate('')
+    setDraftEndDate('')
+    apiState.setPage(1)
+    apiState.setDateRange({
+      endDate: '',
+      startDate: '',
+    })
+  }
 
   const resultLabel = useMemo(() => {
     if (!apiState.pagination.total && !apiState.items.length) {
@@ -47,7 +95,7 @@ export default function BookingsPage() {
 
             <div className="inline-flex h-10 items-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7]">
               <ReceiptText size={16} />
-              <span>{apiState.pagination.total || apiState.items.length} matched bookings</span>
+              <span>{headerLabel}</span>
             </div>
           </div>
         </header>
@@ -74,17 +122,29 @@ export default function BookingsPage() {
               : `No ${BOOKING_TYPE_FILTERS.find((filter) => filter.key === typeFilter)?.label.toLowerCase()} on this page.`
           }
           filters={
-            <div className="refund-filter-group">
-              {BOOKING_TYPE_FILTERS.map((filter) => (
-                <button
-                  key={filter.key}
-                  type="button"
-                  className={`refund-filter-button ${typeFilter === filter.key ? 'is-active' : ''}`}
-                  onClick={() => setTypeFilter(filter.key)}
-                >
-                  {filter.label}
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="refund-filter-group">
+                {BOOKING_TYPE_FILTERS.map((filter) => (
+                  <button
+                    key={filter.key}
+                    type="button"
+                    className={`refund-filter-button ${typeFilter === filter.key ? 'is-active' : ''}`}
+                    onClick={() => setTypeFilter(filter.key)}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+              <BookingsFilters
+                draftEndDate={draftEndDate}
+                draftStartDate={draftStartDate}
+                hasActiveRange={hasActiveRange}
+                isLoading={apiState.isLoading}
+                onApply={handleApplyFilters}
+                onClear={handleClearFilters}
+                onEndDateChange={setDraftEndDate}
+                onStartDateChange={setDraftStartDate}
+              />
             </div>
           }
           isLoading={apiState.isLoading}
