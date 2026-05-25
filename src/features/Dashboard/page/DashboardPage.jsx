@@ -12,6 +12,8 @@ import {
   Route,
   Users,
 } from 'lucide-react'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 import {
   Bar,
   BarChart,
@@ -25,6 +27,9 @@ import {
 } from 'recharts'
 import FullPageLoader from '../../../components/common/FullPageLoader'
 import { DashboardSection } from '../../../components/ui/DashboardSection'
+import { getAllBookingsInRange } from '../../Bookings/service/bookingsService'
+import { buildBookingsMetrics } from '../../Bookings/utils/bookingsUtils'
+import { CurrentMonthBookingsDrawer } from '../component/CurrentMonthBookingsDrawer.jsx'
 import { DASHBOARD_COPY } from '../constants/dashboard.constants'
 import useDashboard from '../hooks/useDashboard'
 
@@ -212,10 +217,15 @@ function SummaryGrid({ items }) {
   )
 }
 
-function BookingPulse({ totals, paymentCaptureRate }) {
+function BookingPulse({ isMonthBookingsLoading, onMonthBookingsClick, totals, paymentCaptureRate }) {
   const pulseItems = [
     { label: 'Total bookings', value: totals.totalBookings ?? '0', icon: CalendarCheck },
-    { label: 'This month bookings', value: totals.thisMonthTotalBookings ?? '0', icon: Gauge },
+    {
+      label: 'This month bookings',
+      value: totals.thisMonthTotalBookings ?? '0',
+      icon: Gauge,
+      isInteractive: true,
+    },
     { label: 'Total tours', value: totals.totalTours ?? '0', icon: Route },
     { label: 'Vehicles in service', value: totals.totalVehicles ?? '0', icon: Bus },
   ]
@@ -224,11 +234,28 @@ function BookingPulse({ totals, paymentCaptureRate }) {
     <div className="p-5">
       <div className="grid grid-cols-2 gap-3">
         {pulseItems.map((item) => (
-          <div key={item.label} className="rounded-md bg-[#171314] p-4">
-            <item.icon size={18} className="mb-3 text-blue-400" />
-            <p className="text-xs text-[#8fa0bd]">{item.label}</p>
-            <strong className="mt-2 block text-xl text-white">{item.value}</strong>
-          </div>
+          item.isInteractive ? (
+            <button
+              key={item.label}
+              type="button"
+              onClick={onMonthBookingsClick}
+              disabled={isMonthBookingsLoading}
+              className="rounded-md bg-[#171314] p-4 text-left transition hover:bg-[#1d181a] disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <item.icon size={18} className="mb-3 text-blue-400" />
+              <p className="text-xs text-[#8fa0bd]">{item.label}</p>
+              <strong className="mt-2 block text-xl text-white">{item.value}</strong>
+              <span className="mt-3 inline-flex text-[11px] font-bold uppercase tracking-[0.08em] text-[#7ea1ff]">
+                {isMonthBookingsLoading ? 'Loading...' : 'Open drawer'}
+              </span>
+            </button>
+          ) : (
+            <div key={item.label} className="rounded-md bg-[#171314] p-4">
+              <item.icon size={18} className="mb-3 text-blue-400" />
+              <p className="text-xs text-[#8fa0bd]">{item.label}</p>
+              <strong className="mt-2 block text-xl text-white">{item.value}</strong>
+            </div>
+          )
         ))}
       </div>
 
@@ -253,6 +280,18 @@ function BookingPulse({ totals, paymentCaptureRate }) {
 
 export default function Dashboard() {
   const { data, isLoading } = useDashboard()
+  const [isMonthBookingsDrawerOpen, setIsMonthBookingsDrawerOpen] = useState(false)
+  const [monthBookingsState, setMonthBookingsState] = useState({
+    error: null,
+    isLoading: false,
+    rows: [],
+  })
+  const currentMonthRange = {
+    fromDate: dayjs().startOf('month').format('YYYY-MM-DD'),
+    label: dayjs().format('MMMM YYYY'),
+    toDate: dayjs().endOf('month').format('YYYY-MM-DD'),
+  }
+  const monthBookingsSummary = buildBookingsMetrics(monthBookingsState.rows)
 
   if (isLoading && !data) {
     return (
@@ -273,74 +312,125 @@ export default function Dashboard() {
   const totals = data?.totals ?? {}
   const paymentCaptureRate = data?.paymentCaptureRate ?? 0
 
+  const loadCurrentMonthBookings = async () => {
+    setMonthBookingsState((currentValue) => ({
+      ...currentValue,
+      error: null,
+      isLoading: true,
+    }))
+
+    try {
+      const response = await getAllBookingsInRange({
+        fromDate: currentMonthRange.fromDate,
+        toDate: currentMonthRange.toDate,
+      })
+
+      setMonthBookingsState({
+        error: null,
+        isLoading: false,
+        rows: response.rows,
+      })
+    } catch (error) {
+      setMonthBookingsState({
+        error: error.message || 'Unable to load current month bookings.',
+        isLoading: false,
+        rows: [],
+      })
+    }
+  }
+
+  const handleOpenMonthBookingsDrawer = () => {
+    setIsMonthBookingsDrawerOpen(true)
+    void loadCurrentMonthBookings()
+  }
+
   return (
-    <main className="min-h-full bg-[#100d0e] px-6 py-7 text-white sm:px-8">
-      <div className="mx-auto max-w-[1920px]">
-        <header className="mb-7 flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
-          <div>
-            <div className="flex items-center gap-2">
-              <MapPinned size={21} className="text-[#4f83ff]" />
-              <h1 className="text-2xl font-bold leading-none text-white">{copy.pageTitle}</h1>
+    <>
+      <main className="min-h-full bg-[#100d0e] px-6 py-7 text-white sm:px-8">
+        <div className="mx-auto max-w-[1920px]">
+          <header className="mb-7 flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
+            <div>
+              <div className="flex items-center gap-2">
+                <MapPinned size={21} className="text-[#4f83ff]" />
+                <h1 className="text-2xl font-bold leading-none text-white">{copy.pageTitle}</h1>
+              </div>
+              <p className="mt-3 text-sm text-[#b4c5df]">{copy.pageSubtitle}</p>
             </div>
-            <p className="mt-3 text-sm text-[#b4c5df]">{copy.pageSubtitle}</p>
-          </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Monthly payments</p>
-              <strong className="mt-1 block text-sm text-white">{totals.monthlyPayments ?? 'BDT 0'}</strong>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Monthly payments</p>
+                <strong className="mt-1 block text-sm text-white">{totals.monthlyPayments ?? 'BDT 0'}</strong>
+              </div>
+              <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Capture rate</p>
+                <strong className="mt-1 block text-sm text-white">{paymentCaptureRate}%</strong>
+              </div>
+              <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Trip sales</p>
+                <strong className="mt-1 block text-sm text-white">{totals.currentMonthTripSales ?? 'BDT 0'}</strong>
+              </div>
             </div>
-            <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Capture rate</p>
-              <strong className="mt-1 block text-sm text-white">{paymentCaptureRate}%</strong>
-            </div>
-            <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Trip sales</p>
-              <strong className="mt-1 block text-sm text-white">{totals.currentMonthTripSales ?? 'BDT 0'}</strong>
-            </div>
-          </div>
-        </header>
+          </header>
 
-        <section className="mb-7 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {metrics.map((metric, index) => (
-            <MetricCard key={metric.id} metric={metric} index={index} />
-          ))}
-        </section>
+          <section className="mb-7 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {metrics.map((metric, index) => (
+              <MetricCard key={metric.id} metric={metric} index={index} />
+            ))}
+          </section>
 
-        <section className="mb-7 grid grid-cols-1 gap-7 xl:grid-cols-[1.15fr_0.85fr]">
-          <DashboardSection title="Current month trip sales" icon={<CircleDollarSign size={16} className="text-emerald-400" />}>
-            <TripSalesChart tripSales={tripSales} />
-          </DashboardSection>
+          <section className="mb-7 grid grid-cols-1 gap-7 xl:grid-cols-[1.15fr_0.85fr]">
+            <DashboardSection title="Current month trip sales" icon={<CircleDollarSign size={16} className="text-emerald-400" />}>
+              <TripSalesChart tripSales={tripSales} />
+            </DashboardSection>
 
-          <DashboardSection title="Trip origin performance" icon={<Route size={16} className="text-blue-400" />}>
-            <TripOriginList items={tripOrigins} isLoading={isLoading} />
-          </DashboardSection>
-        </section>
+            <DashboardSection title="Trip origin performance" icon={<Route size={16} className="text-blue-400" />}>
+              <TripOriginList items={tripOrigins} isLoading={isLoading} />
+            </DashboardSection>
+          </section>
 
-        <section className="mb-7 grid grid-cols-1 gap-7 xl:grid-cols-[1fr_1fr]">
-          <DashboardSection
-            title="Package profit margin"
-            icon={<Package size={16} className="text-amber-400" />}
-            action={<span className="text-xs font-bold text-[#8fa0bd]">{totals.packageAverageMargin ?? '0%'} avg</span>}
-          >
-            <PackageMarginChart packageProfitMargin={packageProfitMargin} />
-          </DashboardSection>
+          <section className="mb-7 grid grid-cols-1 gap-7 xl:grid-cols-[1fr_1fr]">
+            <DashboardSection
+              title="Package profit margin"
+              icon={<Package size={16} className="text-amber-400" />}
+              action={<span className="text-xs font-bold text-[#8fa0bd]">{totals.packageAverageMargin ?? '0%'} avg</span>}
+            >
+              <PackageMarginChart packageProfitMargin={packageProfitMargin} />
+            </DashboardSection>
 
-          <DashboardSection title="Payment method analysis" icon={<CreditCard size={16} className="text-cyan-400" />}>
-            <PaymentMethodList items={paymentMethods} isLoading={isLoading} />
-          </DashboardSection>
-        </section>
+            <DashboardSection title="Payment method analysis" icon={<CreditCard size={16} className="text-cyan-400" />}>
+              <PaymentMethodList items={paymentMethods} isLoading={isLoading} />
+            </DashboardSection>
+          </section>
 
-        <section className="grid grid-cols-1 gap-7 xl:grid-cols-[1fr_0.7fr]">
-          <DashboardSection title="Operational inventory" icon={<Users size={16} className="text-blue-400" />}>
-            <SummaryGrid items={summaryStats} />
-          </DashboardSection>
+          <section className="grid grid-cols-1 gap-7 xl:grid-cols-[1fr_0.7fr]">
+            <DashboardSection title="Operational inventory" icon={<Users size={16} className="text-blue-400" />}>
+              <SummaryGrid items={summaryStats} />
+            </DashboardSection>
 
-          <DashboardSection title="Booking pulse" icon={<BarChart3 size={16} className="text-emerald-400" />}>
-            <BookingPulse totals={totals} paymentCaptureRate={paymentCaptureRate} />
-          </DashboardSection>
-        </section>
-      </div>
-    </main>
+            <DashboardSection title="Booking pulse" icon={<BarChart3 size={16} className="text-emerald-400" />}>
+              <BookingPulse
+                isMonthBookingsLoading={monthBookingsState.isLoading}
+                onMonthBookingsClick={handleOpenMonthBookingsDrawer}
+                totals={totals}
+                paymentCaptureRate={paymentCaptureRate}
+              />
+            </DashboardSection>
+          </section>
+        </div>
+      </main>
+
+      {isMonthBookingsDrawerOpen ? (
+        <CurrentMonthBookingsDrawer
+          error={monthBookingsState.error}
+          isLoading={monthBookingsState.isLoading}
+          monthLabel={currentMonthRange.label}
+          onClose={() => setIsMonthBookingsDrawerOpen(false)}
+          onRefresh={() => void loadCurrentMonthBookings()}
+          rows={monthBookingsState.rows}
+          summary={monthBookingsSummary}
+        />
+      ) : null}
+    </>
   )
 }

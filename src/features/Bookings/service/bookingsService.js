@@ -190,6 +190,46 @@ const fetchAllFilteredBookings = async ({ fromDate = '', page = 1, search = '', 
   }
 }
 
+const fetchCompleteFilteredBookings = async ({ fromDate = '', search = '', toDate = '' } = {}) => {
+  const firstPayload = await fetchBookingsPayload({
+    fromDate,
+    page: 1,
+    search,
+    toDate,
+  })
+  const { meta: firstMeta, rows: firstRows } = extractRowsAndMeta(firstPayload)
+  const firstPagination = normalizePagination(firstMeta, firstRows.length)
+  const additionalPageNumbers = Array.from(
+    { length: Math.max(firstPagination.lastPage - 1, 0) },
+    (_, index) => index + 2,
+  )
+  const additionalPayloads = await Promise.all(
+    additionalPageNumbers.map((nextPage) =>
+      fetchBookingsPayload({
+        fromDate,
+        page: nextPage,
+        search,
+        toDate,
+      }),
+    ),
+  )
+  const allRows = [
+    ...firstRows,
+    ...additionalPayloads.flatMap((payload) => extractRowsAndMeta(payload).rows),
+  ]
+  const filteredRows = allRows.filter((item) => isWithinSelectedRange(item, fromDate, toDate))
+  const pagination = buildFilteredPagination({
+    currentPage: 1,
+    perPage: filteredRows.length || firstPagination.perPage || 1,
+    total: filteredRows.length,
+  })
+
+  return {
+    pagination,
+    rows: filteredRows.map((item, index) => normalizeBooking(item, index, pagination)),
+  }
+}
+
 const extractInvoiceRecord = (payload) => {
   if (Array.isArray(payload?.data?.data)) {
     return payload.data.data[0] ?? {}
@@ -237,6 +277,28 @@ export const getBookings = async ({ fromDate = '', page = 1, search = '', toDate
     pagination,
     rows: rows.map((item, index) => normalizeBooking(item, index, pagination)),
   }
+}
+
+export const getAllBookingsInRange = async ({ fromDate = '', search = '', toDate = '' } = {}) => {
+  if (!fromDate && !toDate) {
+    const payload = await fetchBookingsPayload({
+      page: 1,
+      search,
+    })
+    const { meta, rows } = extractRowsAndMeta(payload)
+    const pagination = normalizePagination(meta, rows.length)
+
+    return {
+      pagination,
+      rows: rows.map((item, index) => normalizeBooking(item, index, pagination)),
+    }
+  }
+
+  return fetchCompleteFilteredBookings({
+    fromDate,
+    search,
+    toDate,
+  })
 }
 
 export const getBookingInvoice = async (bookingId) => {
