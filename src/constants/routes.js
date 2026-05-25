@@ -11,6 +11,7 @@ export const APP_ROUTES = {
   routeWiseSales: "/admin/account/route-wise-sales",
   ticketStatusReport: "/admin/account/ticket-status-report",
   highCancellationPackages: "/admin/high-cancellation-packages",
+  hotels: "/admin/hotel",
   lowOccupancyReport: "/admin/low-occupancy-report",
   lowPerformingPackages: "/admin/low-performing-packages",
   monitoring: "/admin/monitoring",

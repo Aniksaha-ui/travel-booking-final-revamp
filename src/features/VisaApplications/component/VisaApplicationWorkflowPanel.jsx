@@ -128,14 +128,14 @@ export function VisaApplicationWorkflowPanel({
         </ActionCard>
 
         <ActionCard
-          description="Choose the live application stage. Board selections automatically appear here."
+          description="Choose the live application stage here, or drag the case on the board for an immediate status update."
           title="Update Status"
         >
           {hasStagedStatus ? (
             <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-3 text-xs font-semibold leading-5 text-blue-100">
-              The board has staged this application for{' '}
+              The selected status is currently{' '}
               <span className="font-bold">{formatVisaStatusLabel(selectedStatus)}</span>. Save below
-              to make the move live.
+              to make it live.
             </div>
           ) : null}
           <label className="crud-field">

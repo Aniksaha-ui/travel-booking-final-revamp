@@ -4,12 +4,10 @@ import {
   GripVertical,
   KanbanSquare,
   MessageSquareText,
-  RefreshCcw,
   UserRound,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { DashboardSection } from '../../../components/ui/DashboardSection'
-import { VISA_APPLICATION_STATUS_OPTIONS } from '../constants/visaApplications.constants'
 import { VisaApplicationStatusBadge, VisaPaymentStatusBadge } from './StatusBadge.jsx'
 import { formatVisaStatusLabel } from '../utils/visaApplicationsUtils'
 
@@ -69,9 +67,8 @@ function VisaWorkflowCard({
   application,
   boardStatus,
   disabled,
-  hasStagedStatus,
   isDragging,
-  onClick,
+  isUpdatingStatus,
   onDragEnd,
   onStartDrag,
 }) {
@@ -85,14 +82,15 @@ function VisaWorkflowCard({
   return (
     <article
       className={`rounded-lg border border-[#332d30] bg-[#171314] p-4 shadow-sm transition ${
-        isDragging ? 'opacity-50 ring-2 ring-blue-400/30' : 'hover:border-[#4a4348] hover:bg-[#1d181a]'
+        disabled
+          ? 'cursor-not-allowed opacity-70'
+          : isDragging
+            ? 'cursor-grabbing opacity-50 ring-2 ring-blue-400/30'
+            : 'cursor-grab hover:border-[#4a4348] hover:bg-[#1d181a] active:cursor-grabbing'
       }`}
       draggable={!disabled}
-      onClick={onClick}
       onDragEnd={onDragEnd}
       onDragStart={onStartDrag}
-      role="button"
-      tabIndex={0}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -109,9 +107,9 @@ function VisaWorkflowCard({
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <VisaApplicationStatusBadge status={formatVisaStatusLabel(boardStatus)} />
         <VisaPaymentStatusBadge status={application.paymentStatusLabel} />
-        {hasStagedStatus ? (
-          <span className="inline-flex items-center rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-semibold text-cyan-100">
-            Pending save
+        {isUpdatingStatus ? (
+          <span className="inline-flex items-center rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-[11px] font-semibold text-blue-100">
+            Updating...
           </span>
         ) : null}
       </div>
@@ -146,16 +144,20 @@ function VisaWorkflowColumn({
   boardStatus,
   column,
   disabled,
-  hasStagedStatus,
+  isUpdatingStatus,
   onDragEnd,
   onDropApplication,
-  onSelectStatus,
   onStartDrag,
 }) {
   const hasCard = boardStatus === column.key
 
   const handleDrop = async (event) => {
     event.preventDefault()
+
+    if (disabled) {
+      return
+    }
+
     await onDropApplication(column.key)
   }
 
@@ -186,19 +188,23 @@ function VisaWorkflowColumn({
             application={application}
             boardStatus={boardStatus}
             disabled={disabled}
-            hasStagedStatus={hasStagedStatus}
             isDragging={String(activeDragId) === String(application.id)}
-            onClick={() => onSelectStatus(boardStatus)}
+            isUpdatingStatus={isUpdatingStatus}
             onDragEnd={onDragEnd}
             onStartDrag={(event) => onStartDrag(event, application)}
           />
         ) : (
           <button
             type="button"
-            className="flex min-h-[160px] flex-1 items-center justify-center rounded-lg border border-dashed border-[#332d30] bg-[#171314] px-5 py-8 text-center text-sm font-medium text-[#8fa0bd] transition hover:border-[#4f83ff] hover:text-white"
-            onClick={() => onSelectStatus(column.key)}
+            className={`flex min-h-[160px] flex-1 items-center justify-center rounded-lg border border-dashed px-5 py-8 text-center text-sm font-medium transition ${
+              disabled
+                ? 'cursor-not-allowed border-[#2d282b] bg-[#171314] text-[#66758d]'
+                : 'border-[#332d30] bg-[#171314] text-[#8fa0bd] hover:border-[#4f83ff] hover:text-white'
+            }`}
+            disabled={disabled}
+            onClick={() => onDropApplication(column.key)}
           >
-            Drop the application here or click to stage {column.title.toLowerCase()}.
+            Drop the application here or click to move it to {column.title.toLowerCase()}.
           </button>
         )}
       </div>
@@ -206,23 +212,34 @@ function VisaWorkflowColumn({
   )
 }
 
-export function VisaApplicationKanbanBoard({ application, onSelectStatus, selectedStatus }) {
+export function VisaApplicationKanbanBoard({
+  application,
+  isUpdatingStatus = false,
+  onMoveStatus,
+  selectedStatus,
+}) {
   const [activeDragId, setActiveDragId] = useState(null)
 
-  const boardStatus = selectedStatus || application.status
-  const hasStagedStatus = boardStatus !== application.status
+  const boardStatus = isUpdatingStatus && selectedStatus ? selectedStatus : application.status
 
   const boardColumns = useMemo(() => VISA_BOARD_COLUMNS, [])
 
   const handleDropApplication = async (targetColumnKey) => {
-    if (boardStatus !== targetColumnKey) {
-      onSelectStatus(targetColumnKey)
+    if (isUpdatingStatus || boardStatus === targetColumnKey) {
+      setActiveDragId(null)
+      return
     }
 
+    await onMoveStatus(targetColumnKey)
     setActiveDragId(null)
   }
 
   const handleStartDrag = (event, draggedApplication) => {
+    if (isUpdatingStatus) {
+      event.preventDefault()
+      return
+    }
+
     event.dataTransfer.effectAllowed = 'move'
     setActiveDragId(draggedApplication.id)
   }
@@ -233,9 +250,9 @@ export function VisaApplicationKanbanBoard({ application, onSelectStatus, select
       icon={<KanbanSquare size={16} className="text-blue-400" />}
       action={
         <div className="flex flex-wrap items-center justify-end gap-2">
-          {hasStagedStatus ? (
-            <span className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-bold text-cyan-100">
-              Staged: {formatVisaStatusLabel(boardStatus)}
+          {isUpdatingStatus ? (
+            <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-[11px] font-bold text-blue-100">
+              Updating: {formatVisaStatusLabel(boardStatus)}
             </span>
           ) : null}
           <span className="rounded-full border border-[#332d30] bg-[#171314] px-2.5 py-1 text-[11px] font-bold text-[#9fb2d0]">
@@ -247,21 +264,9 @@ export function VisaApplicationKanbanBoard({ application, onSelectStatus, select
     >
       <div className="flex flex-wrap items-start justify-between gap-3 px-1 pb-4">
         <p className="max-w-3xl text-sm leading-6 text-[#8fa0bd]">
-          Move the application card between lanes just like the complaint board. The card will
-          shift immediately, and the live status will update after you save the workflow action
-          below.
+          Move the application card between lanes just like the complaint board. Dropping the card
+          or clicking a lane updates the visa status immediately through the admin API.
         </p>
-
-        {hasStagedStatus ? (
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-3 py-2 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 hover:text-white"
-            onClick={() => onSelectStatus(application.status)}
-          >
-            <RefreshCcw size={15} />
-            Reset staged move
-          </button>
-        ) : null}
       </div>
 
       <div className="overflow-x-auto">
@@ -273,11 +278,10 @@ export function VisaApplicationKanbanBoard({ application, onSelectStatus, select
               application={application}
               boardStatus={boardStatus}
               column={column}
-              disabled={false}
-              hasStagedStatus={hasStagedStatus}
+              disabled={isUpdatingStatus}
+              isUpdatingStatus={isUpdatingStatus}
               onDragEnd={() => setActiveDragId(null)}
               onDropApplication={handleDropApplication}
-              onSelectStatus={onSelectStatus}
               onStartDrag={handleStartDrag}
             />
           ))}

@@ -130,11 +130,35 @@ export default function VisaApplicationDetailsPage() {
     }))
   }
 
-  const handleStatusSelect = (status) => {
+  const handleBoardStatusMove = async (nextStatus) => {
+    if (!application || !nextStatus || nextStatus === application.status || activeAction === 'status') {
+      return
+    }
+
+    const previousStatus = application.status
+
     setStatusData((currentData) => ({
       ...currentData,
-      status,
+      status: nextStatus,
     }))
+
+    try {
+      setActiveAction('status')
+      await updateVisaApplicationStatus({
+        remarks: statusData.remarks.trim(),
+        status: nextStatus,
+        visa_application_id: Number.parseInt(id, 10),
+      })
+      await refreshApplication(VISA_APPLICATION_SUCCESS_MESSAGES.status)
+    } catch (error) {
+      setStatusData((currentData) => ({
+        ...currentData,
+        status: previousStatus,
+      }))
+      toast.error(error.message || 'Unable to update visa application status.')
+    } finally {
+      setActiveAction('')
+    }
   }
 
   const handleDocumentReviewChange = (documentId, field, value) => {
@@ -323,7 +347,8 @@ export default function VisaApplicationDetailsPage() {
           <div className="space-y-4">
             <VisaApplicationKanbanBoard
               application={application}
-              onSelectStatus={handleStatusSelect}
+              isUpdatingStatus={activeAction === 'status'}
+              onMoveStatus={handleBoardStatusMove}
               selectedStatus={statusData.status}
             />
 

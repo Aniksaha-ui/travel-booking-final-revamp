@@ -17,6 +17,8 @@ const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBa
 const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
 const FinancialReportPage = lazy(() => import('./features/FinancialReport/page/FinancialReportPage'))
 const HighCancellationPackagesPage = lazy(() => import('./features/HighCancellationPackages/page/HighCancellationPackagesPage'))
+const HotelsPage = lazy(() => import('./features/Hotels/page/HotelsPage'))
+const HotelFormPage = lazy(() => import('./features/Hotels/page/HotelFormPage'))
 const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/page/LowOccupancyReportPage'))
 const LowPerformingPackagesPage = lazy(() => import('./features/LowPerformingPackages/page/LowPerformingPackagesPage'))
 const MonitoringPage = lazy(() => import('./features/Monitoring/page/MonitoringPage'))
@@ -232,6 +234,30 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading packages..." />}>
               <PackagesPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.hotels}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading hotels..." />}>
+              <HotelsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/hotel/add"
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading hotel form..." />}>
+              <HotelFormPage action="add" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/hotel/update/:id"
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading hotel form..." />}>
+              <HotelFormPage action="update" />
             </Suspense>
           }
         />

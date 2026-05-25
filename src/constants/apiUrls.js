@@ -15,6 +15,11 @@ export const API_URLS = {
     currentMonthTripSales: "/admin/current-month-trip-sales-report",
     packageProfitMargin: "/admin/package-profit-margin",
   },
+  hotels: {
+    byId: (hotelId) => `/hotel/${hotelId}`,
+    list: "/admin/hotel",
+    update: (hotelId) => `/admin/hotel/update/${hotelId}`,
+  },
   reports: {
     accountBalance: "/admin/accountBalance",
     accountBalanceHistory: (type) => `/admin/accountHistory/${encodeURIComponent(type)}`,

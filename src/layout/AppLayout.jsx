@@ -19,6 +19,7 @@ const pageTitles = {
   '/admin/account/route-wise-sales': 'Route Wise Sales Report',
   '/admin/account/ticket-status-report': 'Ticket Status Analysis',
   '/admin/high-cancellation-packages': 'High Cancellation Packages',
+  '/admin/hotel': 'Hotel Information',
   '/admin/low-occupancy-report': 'Low Occupancy Report',
   '/admin/monthRunningBalance': 'Monthly Running Balance',
   '/admin/packages': 'Package Management',

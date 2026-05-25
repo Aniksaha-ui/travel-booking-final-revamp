@@ -231,6 +231,18 @@ export const getSupportedRoute = (path) => {
   }
 
   if (
+    path === "/admin/hotel" ||
+    path === "/hotel" ||
+    path === "admin/hotel" ||
+    path === "hotel" ||
+    path === "/admin/hotel/add" ||
+    path === "/admin/hotel/update/:id" ||
+    path?.startsWith("/admin/hotel/update/")
+  ) {
+    return APP_ROUTES.hotels;
+  }
+
+  if (
     path === "/admin/bookings/summary" ||
     path === "/bookings/summary" ||
     path === "/admin/booking-summary" ||
@@ -338,6 +350,10 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/packages" || path === "/packages") {
     return APP_ROUTES.packages;
+  }
+
+  if (path === "/admin/hotel" || path === "/hotel") {
+    return APP_ROUTES.hotels;
   }
 
   if (path === "/admin/tickets" || path === "/tickets") {
