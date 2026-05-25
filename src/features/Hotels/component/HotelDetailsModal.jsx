@@ -42,7 +42,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end">
             <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-amber-100">
               <Star size={12} />
               {activeHotel?.starRatingLabel || '-'}
@@ -53,7 +53,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
           </div>
         </header>
 
-        <div className="max-h-[72vh] overflow-y-auto p-5">
+        <div className="max-h-[72vh] overflow-y-auto p-4 sm:p-5">
           {isLoading ? (
             <div className="flex min-h-[280px] items-center justify-center rounded-lg border border-[#332d30] bg-[#171314] text-sm font-semibold text-[#8fa0bd]">
               Loading hotel details...
@@ -86,7 +86,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
               <section className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1.2fr)]">
                 <div className="space-y-5">
                   <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                    <header className="flex h-[50px] items-center gap-2 border-b border-[#2d282b] px-5">
+                    <header className="flex min-h-[50px] items-center gap-2 border-b border-[#2d282b] px-4 sm:px-5">
                       <Hotel size={16} className="text-blue-400" />
                       <h3 className="text-sm font-bold text-white">Profile</h3>
                     </header>
@@ -105,7 +105,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
                   </div>
 
                   <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                    <header className="flex h-[50px] items-center gap-2 border-b border-[#2d282b] px-5">
+                    <header className="flex min-h-[50px] items-center gap-2 border-b border-[#2d282b] px-4 sm:px-5">
                       <MapPinned size={16} className="text-cyan-400" />
                       <h3 className="text-sm font-bold text-white">Facilities</h3>
                     </header>
@@ -126,7 +126,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
                   </div>
 
                   <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                    <header className="flex h-[50px] items-center gap-2 border-b border-[#2d282b] px-5">
+                    <header className="flex min-h-[50px] items-center gap-2 border-b border-[#2d282b] px-4 sm:px-5">
                       <Image size={16} className="text-amber-400" />
                       <h3 className="text-sm font-bold text-white">Photos & Links</h3>
                     </header>
@@ -187,7 +187,7 @@ export function HotelDetailsModal({ error, fallbackHotel, hotel, isLoading, onCl
                 </div>
 
                 <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                  <header className="flex h-[50px] items-center gap-2 border-b border-[#2d282b] px-5">
+                  <header className="flex min-h-[50px] items-center gap-2 border-b border-[#2d282b] px-4 sm:px-5">
                     <BedDouble size={16} className="text-emerald-400" />
                     <h3 className="text-sm font-bold text-white">Room Inventory</h3>
                   </header>

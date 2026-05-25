@@ -31,8 +31,8 @@ export function Navbar({ isSidebarCollapsed, title, onMenuClick }) {
   }
 
   return (
-    <header className="flex h-[74px] shrink-0 items-center justify-between border-b border-[#2d282b] bg-[#171314] px-4 sm:px-6">
-      <div className="flex items-center gap-3">
+    <header className="flex h-[74px] shrink-0 items-center justify-between gap-3 border-b border-[#2d282b] bg-[#171314] px-3 sm:px-6">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           type="button"
           className="inline-flex h-10 items-center justify-center rounded-xl border border-[#2d282b] bg-[#211c1f] px-3 text-[#969baa] transition hover:border-[#3a3438] hover:text-white"
@@ -43,15 +43,15 @@ export function Navbar({ isSidebarCollapsed, title, onMenuClick }) {
           <Menu size={20} className="md:hidden" />
           <PanelLeft size={18} className="hidden md:block" />
         </button>
-        <h1 className="text-sm font-bold text-white">{title}</h1>
+        <h1 className="truncate text-xs font-bold text-white sm:text-sm">{title}</h1>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">
         {sessionMessage ? (
           <button
             type="button"
             onClick={clearSessionMessage}
-            className="rounded-md border border-red-900/70 bg-red-950/30 px-3 py-2 text-xs font-semibold text-red-200"
+            className="hidden rounded-md border border-red-900/70 bg-red-950/30 px-3 py-2 text-xs font-semibold text-red-200 lg:inline-flex"
           >
             {sessionMessage}
           </button>
@@ -73,7 +73,7 @@ export function Navbar({ isSidebarCollapsed, title, onMenuClick }) {
           <ChevronDown size={15} className="text-[#969baa]" />
         </button>
 
-        <button className="rounded-lg p-2 text-[#969baa] hover:bg-[#211c1f] hover:text-white" aria-label="Theme">
+        <button className="hidden rounded-lg p-2 text-[#969baa] hover:bg-[#211c1f] hover:text-white sm:inline-flex" aria-label="Theme">
           <Sun size={18} />
         </button>
 
@@ -92,7 +92,7 @@ export function Navbar({ isSidebarCollapsed, title, onMenuClick }) {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-700 text-xs font-bold">
               {userInitial}
             </span>
-            <span className="hidden sm:inline">{userName}</span>
+            <span className="hidden md:inline">{userName}</span>
             <ChevronDown size={15} className={`text-[#969baa] transition ${profileMenuOpen ? 'rotate-180' : ''}`} />
           </button>
 

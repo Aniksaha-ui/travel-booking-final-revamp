@@ -74,7 +74,7 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={toast}>
       {children}
-      <div className="pointer-events-none fixed right-5 top-5 z-[100] flex w-[380px] flex-col gap-3">
+      <div className="pointer-events-none fixed inset-x-4 top-4 z-[100] flex w-auto flex-col gap-3 sm:left-auto sm:right-5 sm:top-5 sm:w-[380px]">
         {toasts.map((toastItem) => {
           const style = toastStyles[toastItem.type] ?? toastStyles.info;
           const Icon = style.icon;

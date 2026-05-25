@@ -3,6 +3,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Columns3,
   Search,
 } from 'lucide-react'
@@ -10,6 +11,29 @@ import useDebouncedValue from '../../hooks/useDebouncedValue'
 
 const getDefaultVisibleColumnIds = (columns) =>
   columns.filter((column) => column.defaultHidden !== true).map((column) => column.id)
+
+const getColumnMobileLabel = (column) => {
+  if (typeof column.mobileLabel === 'string' && column.mobileLabel.trim()) {
+    return column.mobileLabel
+  }
+
+  if (typeof column.label === 'string' || typeof column.label === 'number') {
+    return String(column.label)
+  }
+
+  if (typeof column.id === 'string' && column.id.trim()) {
+    return column.id.replace(/[_-]+/g, ' ')
+  }
+
+  return 'Value'
+}
+
+const isSerialLikeColumn = (column) => {
+  const id = String(column?.id ?? '').trim().toLowerCase()
+  const label = String(column?.label ?? '').trim().toLowerCase()
+
+  return id === 'serial' || id === 'sl' || label === 'serial' || label === 'sl' || label === '#'
+}
 
 function SortIcon() {
   return <span aria-hidden="true"> ^</span>
@@ -116,11 +140,20 @@ export default function AdminDataTable({
   const defaultVisibleColumnIds = useMemo(() => getDefaultVisibleColumnIds(columns), [columns])
   const [visibleColumnIds, setVisibleColumnIds] = useState(defaultVisibleColumnIds)
   const [columnsOpen, setColumnsOpen] = useState(false)
+  const [expandedRowKeys, setExpandedRowKeys] = useState({})
   const [searchInput, setSearchInput] = useState(search ?? '')
   const debouncedSearch = useDebouncedValue(searchInput)
   const visibleColumns = useMemo(
     () => columns.filter((column) => visibleColumnIds.includes(column.id)),
     [columns, visibleColumnIds],
+  )
+  const mobileSummaryColumn = useMemo(
+    () => visibleColumns.find((column) => !isSerialLikeColumn(column)) ?? visibleColumns[0] ?? null,
+    [visibleColumns],
+  )
+  const mobileDetailColumns = useMemo(
+    () => visibleColumns.filter((column) => column.id !== mobileSummaryColumn?.id),
+    [mobileSummaryColumn, visibleColumns],
   )
   const currentPage = pagination?.currentPage ?? 1
   const lastPage = pagination?.lastPage ?? 1
@@ -148,6 +181,10 @@ export default function AdminDataTable({
     }
   }, [debouncedSearch, onSearchChange, search])
 
+  useEffect(() => {
+    setExpandedRowKeys({})
+  }, [data, currentPage])
+
   const toggleColumn = (columnId) => {
     setVisibleColumnIds((currentColumnIds) => {
       if (currentColumnIds.includes(columnId)) {
@@ -162,6 +199,13 @@ export default function AdminDataTable({
         .map((column) => column.id)
         .filter((defaultColumnId) => defaultColumnId === columnId || currentColumnIds.includes(defaultColumnId))
     })
+  }
+
+  const toggleRowExpansion = (rowKey) => {
+    setExpandedRowKeys((currentRows) => ({
+      ...currentRows,
+      [rowKey]: !currentRows[rowKey],
+    }))
   }
 
   return (
@@ -197,7 +241,66 @@ export default function AdminDataTable({
         {actions}
       </div>
 
-      <table className="routes-table">
+      <div className="routes-mobile-list md:hidden">
+        {isLoading ? (
+          <div className="routes-mobile-card routes-mobile-card--empty">Loading records...</div>
+        ) : data.length ? (
+          data.map((row) => {
+            const rowKey = getRowKey(row)
+            const isExpanded = expandedRowKeys[rowKey] === true
+
+            return (
+              <article key={rowKey} className="routes-mobile-card">
+                <button
+                  type="button"
+                  className="routes-mobile-card__button"
+                  onClick={() => toggleRowExpansion(rowKey)}
+                  aria-expanded={isExpanded}
+                >
+                  <div className="routes-mobile-card__summary">
+                    {mobileSummaryColumn ? (
+                      <div className="routes-mobile-card__summary-main">
+                        <span className="routes-mobile-card__label">{getColumnMobileLabel(mobileSummaryColumn)}</span>
+                        <div className="routes-mobile-card__value">
+                          {mobileSummaryColumn.render
+                            ? mobileSummaryColumn.render(row)
+                            : row[mobileSummaryColumn.accessor ?? mobileSummaryColumn.id]}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                  <span className="routes-mobile-card__toggle">
+                    {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </span>
+                </button>
+
+                {isExpanded ? (
+                  <div className="routes-mobile-card__details">
+                    {mobileDetailColumns.map((column) => (
+                      <div key={column.id} className="routes-mobile-card__detail-row">
+                        <span className="routes-mobile-card__label">{getColumnMobileLabel(column)}</span>
+                        <div className="routes-mobile-card__detail-value">
+                          {column.render ? column.render(row) : row[column.accessor ?? column.id]}
+                        </div>
+                      </div>
+                    ))}
+                    {renderRowActions ? (
+                      <div className="routes-mobile-card__detail-row">
+                        <span className="routes-mobile-card__label">Actions</span>
+                        <div className="routes-mobile-card__actions">{renderRowActions(row)}</div>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </article>
+            )
+          })
+        ) : (
+          <div className="routes-mobile-card routes-mobile-card--empty">{emptyMessage}</div>
+        )}
+      </div>
+
+      <table className="routes-table hidden md:table">
         <thead>
           <tr>
             {visibleColumns.map((column) => (
@@ -223,11 +326,15 @@ export default function AdminDataTable({
             data.map((row) => (
               <tr key={getRowKey(row)}>
                 {visibleColumns.map((column) => (
-                  <td key={column.id} className={column.className}>
+                  <td key={column.id} className={column.className} data-label={getColumnMobileLabel(column)}>
                     {column.render ? column.render(row) : row[column.accessor ?? column.id]}
                   </td>
                 ))}
-                {renderRowActions ? <td className="routes-table__actions-cell">{renderRowActions(row)}</td> : null}
+                {renderRowActions ? (
+                  <td className="routes-table__actions-cell" data-label="Actions">
+                    {renderRowActions(row)}
+                  </td>
+                ) : null}
               </tr>
             ))
           ) : (

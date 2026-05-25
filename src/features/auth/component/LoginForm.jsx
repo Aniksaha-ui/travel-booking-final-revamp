@@ -52,7 +52,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full rounded-lg border border-[#2d282b] bg-[#171314] p-8 shadow-2xl shadow-black/30"
+      className="w-full max-w-[520px] rounded-lg border border-[#2d282b] bg-[#171314] p-5 shadow-2xl shadow-black/30 sm:p-8"
     >
       <div className="mb-8">
         <p className="text-sm font-semibold text-blue-400">Admin panel</p>

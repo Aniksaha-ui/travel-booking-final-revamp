@@ -40,7 +40,7 @@ function MetricCard({ metric, index }) {
   const Icon = metricIcons[index] ?? BarChart3
 
   return (
-    <article className="rounded-lg border border-[#332d30] bg-[#231f21] p-5">
+    <article className="rounded-lg border border-[#332d30] bg-[#231f21] p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">
         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
           <Icon size={20} />
@@ -133,8 +133,8 @@ function TripSalesChart({ tripSales }) {
   const total = tripSales.totalAmountLabel ?? 'BDT 0'
 
   return (
-    <div className="grid min-h-[310px] grid-cols-[280px_1fr] items-center gap-4 p-5">
-      <div className="relative h-[240px]">
+    <div className="grid min-h-[310px] grid-cols-1 items-center gap-5 p-4 sm:p-5 lg:grid-cols-[280px_1fr]">
+      <div className="relative mx-auto h-[220px] w-full max-w-[280px] sm:h-[240px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie data={items} dataKey="value" innerRadius={70} outerRadius={105} paddingAngle={2} stroke="none">
@@ -206,7 +206,7 @@ function PackageMarginChart({ packageProfitMargin }) {
 
 function SummaryGrid({ items }) {
   return (
-    <div className="grid grid-cols-2 gap-3 p-5 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-4">
       {items.map((item) => (
         <article key={item.id} className="rounded-md border border-[#2d282b] bg-[#171314] p-4">
           <p className="text-xs font-medium text-[#8fa0bd]">{item.label}</p>
@@ -231,8 +231,8 @@ function BookingPulse({ isMonthBookingsLoading, onMonthBookingsClick, totals, pa
   ]
 
   return (
-    <div className="p-5">
-      <div className="grid grid-cols-2 gap-3">
+    <div className="p-4 sm:p-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {pulseItems.map((item) => (
           item.isInteractive ? (
             <button
@@ -346,7 +346,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <main className="min-h-full bg-[#100d0e] px-6 py-7 text-white sm:px-8">
+      <main className="min-h-full bg-[#100d0e] px-4 py-5 text-white sm:px-6 sm:py-6 lg:px-8 lg:py-7">
         <div className="mx-auto max-w-[1920px]">
           <header className="mb-7 flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
             <div>
@@ -357,7 +357,7 @@ export default function Dashboard() {
               <p className="mt-3 text-sm text-[#b4c5df]">{copy.pageSubtitle}</p>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 xl:w-auto">
               <div className="rounded-md border border-[#332d30] bg-[#231f21] px-4 py-3">
                 <p className="text-[11px] font-bold uppercase tracking-wide text-[#8fa0bd]">Monthly payments</p>
                 <strong className="mt-1 block text-sm text-white">{totals.monthlyPayments ?? 'BDT 0'}</strong>

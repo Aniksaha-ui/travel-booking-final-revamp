@@ -106,11 +106,11 @@ export function Sidebar({ isCollapsed, isOpen, onClose, onExpand }) {
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[256px] flex-col justify-between border-r border-[#2d282b] bg-[#171314] text-[#969baa] transition-[width,transform] duration-200 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[280px] max-w-[86vw] flex-col border-r border-[#2d282b] bg-[#171314] text-[#969baa] transition-[width,transform] duration-200 md:static md:w-[256px] md:max-w-none md:translate-x-0 ${
           isCollapsed ? 'md:w-[88px]' : 'md:w-[256px]'
         } ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div>
+        <div className="flex min-h-0 flex-1 flex-col">
           <div
             className={`flex h-[74px] items-center border-b border-[#2d282b] ${
               isCollapsed ? 'justify-center px-3 md:px-0' : 'gap-3 px-4'
@@ -135,7 +135,7 @@ export function Sidebar({ isCollapsed, isOpen, onClose, onExpand }) {
             </button>
           </div>
 
-          <nav className="space-y-2 px-3 py-5">
+          <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 py-5">
             {menu.status === 'loading' && !hasMenu && !isCollapsed ? (
               <div className="rounded-lg border border-[#2d282b] px-3 py-4 text-sm font-medium text-[#969baa]">
                 Loading menu items...

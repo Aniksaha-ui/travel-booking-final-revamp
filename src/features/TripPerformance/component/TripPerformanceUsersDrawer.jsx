@@ -1,4 +1,5 @@
 import { Users2, X } from 'lucide-react'
+import { MobileDisclosureCards } from '../../../components/ui/MobileDisclosureCards.jsx'
 import { calculateBookingTotal } from '../../Trips/utils/calculate'
 
 const countBookedSeats = (users = []) =>
@@ -18,6 +19,23 @@ const countBookedSeats = (users = []) =>
 export function TripPerformanceUsersDrawer({ loading, onClose, trip, users }) {
   const totalRevenue = users.reduce((sum, user) => sum + calculateBookingTotal(user.seat_ids, user.price), 0)
   const totalBookedSeats = countBookedSeats(users)
+  const mobileItems = users.map((user, index) => {
+    const rowTotal = calculateBookingTotal(user.seat_ids, user.price)
+
+    return {
+      id: user.booking_id ?? user.id ?? `trip-user-${index}`,
+      rows: [
+        { label: 'Email', value: user.user_email ?? user.email ?? '-' },
+        { label: 'Seats', value: user.seat_ids ?? '-' },
+        { label: 'Price', value: `BDT ${user.price ?? 0}` },
+        { label: 'Total', value: `BDT ${new Intl.NumberFormat('en-US').format(rowTotal)}` },
+        { label: 'Status', value: user.booking_status ?? user.status ?? '-' },
+      ],
+      secondaryValue: `${user.seat_ids ?? '-'} • BDT ${new Intl.NumberFormat('en-US').format(rowTotal)}`,
+      summaryLabel: 'User',
+      summaryValue: user.user_name ?? user.name ?? 'Guest User',
+    }
+  })
 
   return (
     <div className="report-drawer" role="dialog" aria-modal="true">
@@ -68,7 +86,9 @@ export function TripPerformanceUsersDrawer({ loading, onClose, trip, users }) {
                   <span className="text-xs font-semibold text-[#8fa0bd]">{users.length} rows</span>
                 </div>
 
-                <table className="trip-summary-table">
+                <MobileDisclosureCards emptyMessage="No users found for this trip." items={mobileItems} />
+
+                <table className="trip-summary-table hidden md:table">
                   <thead>
                     <tr>
                       <th>User</th>

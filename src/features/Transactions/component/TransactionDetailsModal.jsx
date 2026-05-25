@@ -24,7 +24,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
             <h2>{transaction.transactionIdLabel}</h2>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end">
             <span
               className={`inline-flex min-w-[96px] justify-center rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] ${transaction.paymentMethodToneClassName}`}
             >
@@ -36,7 +36,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
           </div>
         </header>
 
-        <div className="max-h-[72vh] overflow-y-auto p-5">
+        <div className="max-h-[72vh] overflow-y-auto p-4 sm:p-5">
           <section className="mb-5 grid gap-3 md:grid-cols-3">
             <article className="rounded-lg border border-[#332d30] bg-[#171314] p-4">
               <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#8fa0bd]">Transaction Amount</p>
@@ -55,7 +55,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
           <section className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
             <div className="space-y-5">
               <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                <header className="flex h-[50px] items-center gap-2 border-b border-[#2d282b] px-5">
+                <header className="flex min-h-[50px] items-center gap-2 border-b border-[#2d282b] px-4 sm:px-5">
                   <ReceiptText size={16} className="text-blue-400" />
                   <h3 className="text-sm font-bold text-white">Core Details</h3>
                 </header>
@@ -70,7 +70,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
               </div>
 
               <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                <header className="flex h-[50px] items-center border-b border-[#2d282b] px-5">
+                <header className="flex min-h-[50px] items-center border-b border-[#2d282b] px-4 sm:px-5">
                   <h3 className="text-sm font-bold text-white">Customer Details</h3>
                 </header>
                 <div className="grid gap-3 p-4 md:grid-cols-2">
@@ -82,7 +82,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
 
             <div className="space-y-5">
               <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                <header className="flex h-[50px] items-center border-b border-[#2d282b] px-5">
+                <header className="flex min-h-[50px] items-center border-b border-[#2d282b] px-4 sm:px-5">
                   <h3 className="text-sm font-bold text-white">Bank & Card</h3>
                 </header>
                 <div className="grid gap-3 p-4">
@@ -94,7 +94,7 @@ export function TransactionDetailsModal({ onClose, transaction }) {
               </div>
 
               <div className="rounded-lg border border-[#332d30] bg-[#231f21]">
-                <header className="flex h-[50px] items-center border-b border-[#2d282b] px-5">
+                <header className="flex min-h-[50px] items-center border-b border-[#2d282b] px-4 sm:px-5">
                   <h3 className="text-sm font-bold text-white">Risk & Settlement</h3>
                 </header>
                 <div className="grid gap-3 p-4">
@@ -122,4 +122,3 @@ export function TransactionDetailsModal({ onClose, transaction }) {
     </div>
   )
 }
-

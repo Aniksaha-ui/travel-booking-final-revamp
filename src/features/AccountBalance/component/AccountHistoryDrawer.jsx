@@ -1,4 +1,5 @@
 import { History, ReceiptText, X } from 'lucide-react'
+import { MobileDisclosureCards } from '../../../components/ui/MobileDisclosureCards.jsx'
 
 function SummaryCard({ label, value }) {
   return (
@@ -17,6 +18,20 @@ export function AccountHistoryDrawer({
   summary,
   typeLabel,
 }) {
+  const mobileItems = rows.map((row) => ({
+    id: row.id,
+    rows: [
+      { label: 'Gateway', value: row.gatewayLabel },
+      { label: 'Amount', value: row.amountLabel },
+      { label: 'Reference', value: row.transactionReference },
+      { label: 'Purpose', value: row.purposeLabel },
+      { label: 'Transaction Date', value: row.transactionDateLabel },
+    ],
+    secondaryValue: `${row.amountLabel} • ${row.transactionDateLabel}`,
+    summaryLabel: 'User Account No',
+    summaryValue: row.userAccountNumber,
+  }))
+
   return (
     <div className="report-drawer" role="dialog" aria-modal="true">
       <button type="button" className="report-drawer__backdrop" aria-label="Close account history drawer" onClick={onClose} />
@@ -68,7 +83,9 @@ export function AccountHistoryDrawer({
                   <span className="text-xs font-semibold text-[#8fa0bd]">{rows.length} rows</span>
                 </div>
 
-                <table className="trip-summary-table">
+                <MobileDisclosureCards emptyMessage="No account history found for this type." items={mobileItems} />
+
+                <table className="trip-summary-table hidden md:table">
                   <thead>
                     <tr>
                       <th>User Account No</th>
@@ -111,4 +128,3 @@ export function AccountHistoryDrawer({
     </div>
   )
 }
-

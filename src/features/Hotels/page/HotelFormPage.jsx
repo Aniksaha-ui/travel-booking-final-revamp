@@ -20,11 +20,11 @@ import {
 function SectionCard({ children, description, title }) {
   return (
     <section className="rounded-[24px] border border-[#2d282b] bg-[#171314] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-      <header className="border-b border-[#2d282b] px-5 py-4">
+      <header className="border-b border-[#2d282b] px-4 py-4 sm:px-5">
         <h2 className="text-sm font-bold text-white">{title}</h2>
         <p className="mt-2 text-sm text-[#8fa0bd]">{description}</p>
       </header>
-      <div className="p-5">{children}</div>
+      <div className="p-4 sm:p-5">{children}</div>
     </section>
   )
 }
@@ -233,7 +233,7 @@ export default function HotelFormPage({ action = 'add' }) {
               </div>
             </div>
 
-            <div className="inline-flex h-10 items-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7]">
+            <div className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7] sm:w-auto">
               <BedDouble size={16} />
               <span>{formData.rooms.length} room type entries</span>
             </div>
@@ -386,7 +386,7 @@ export default function HotelFormPage({ action = 'add' }) {
 
                     <button
                       type="button"
-                      className="inline-flex items-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20 sm:w-auto"
                       onClick={() => removeRoom(roomIndex)}
                     >
                       <Trash2 size={14} />
@@ -457,9 +457,9 @@ export default function HotelFormPage({ action = 'add' }) {
 
                       <button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-lg border border-[#332d30] bg-[#211d20] px-3 py-2 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 hover:text-white"
-                        onClick={() => addPrice(roomIndex)}
-                      >
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#332d30] bg-[#211d20] px-3 py-2 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 hover:text-white sm:w-auto"
+                      onClick={() => addPrice(roomIndex)}
+                    >
                         <Plus size={14} />
                         Add Price
                       </button>
@@ -522,9 +522,9 @@ export default function HotelFormPage({ action = 'add' }) {
 
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#332d30] bg-[#171314] px-4 py-3 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 hover:text-white"
-                onClick={addRoom}
-              >
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#332d30] bg-[#171314] px-4 py-3 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 hover:text-white sm:w-auto"
+              onClick={addRoom}
+            >
                 <Plus size={15} />
                 Add Room Type
               </button>
@@ -534,7 +534,7 @@ export default function HotelFormPage({ action = 'add' }) {
           <div className="flex flex-wrap justify-end gap-3">
             <button
               type="button"
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7]"
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#332d30] bg-[#171314] px-4 text-sm font-semibold text-[#c5d9f7] sm:w-auto"
               onClick={() => navigate(APP_ROUTES.hotels)}
             >
               <ArrowLeft size={15} />
@@ -542,7 +542,7 @@ export default function HotelFormPage({ action = 'add' }) {
             </button>
             <button
               type="submit"
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
               disabled={isSubmitting}
             >
               <Save size={15} />

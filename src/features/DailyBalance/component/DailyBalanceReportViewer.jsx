@@ -17,14 +17,14 @@ export function DailyBalanceReportViewer({ onClose, report }) {
           </button>
         </header>
 
-        <div className="border-t border-[#2d282b] p-5">
+        <div className="border-t border-[#2d282b] p-4 sm:p-5">
           {canPreview ? (
             <div className="overflow-hidden rounded-lg border border-[#332d30] bg-[#100d0e]">
               <iframe
                 src={report.fileUrl}
                 title={report.reportName}
-                className="w-full"
-                style={{ height: '72vh', border: 0 }}
+                className="h-[60vh] w-full sm:h-[72vh]"
+                style={{ border: 0 }}
               />
             </div>
           ) : (

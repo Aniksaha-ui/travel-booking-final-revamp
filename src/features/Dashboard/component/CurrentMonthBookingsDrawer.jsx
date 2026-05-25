@@ -1,4 +1,5 @@
 import { CalendarCheck, RefreshCcw, X } from 'lucide-react'
+import { MobileDisclosureCards } from '../../../components/ui/MobileDisclosureCards.jsx'
 
 function SummaryCard({ label, value }) {
   return (
@@ -18,6 +19,22 @@ export function CurrentMonthBookingsDrawer({
   rows,
   summary,
 }) {
+  const mobileItems = rows.map((row) => ({
+    id: row.id,
+    rows: [
+      { label: 'Customer', value: row.userName },
+      { label: 'Trip', value: row.tripNameLabel },
+      { label: 'Type', value: row.bookingTypeLabel },
+      { label: 'Product', value: row.productNameLabel },
+      { label: 'Status', value: row.paymentStatusLabel },
+      { label: 'Seats', value: row.seatCountLabel },
+      { label: 'Date', value: row.bookingDateLabel },
+    ],
+    secondaryValue: `${row.userName} • ${row.bookingDateLabel}`,
+    summaryLabel: 'Booking ID',
+    summaryValue: row.bookingIdLabel,
+  }))
+
   return (
     <div className="report-drawer" role="dialog" aria-modal="true">
       <button
@@ -37,7 +54,7 @@ export function CurrentMonthBookingsDrawer({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
             <button type="button" className="report-drawer__close" onClick={onRefresh}>
               <RefreshCcw size={16} />
               Refresh
@@ -81,7 +98,9 @@ export function CurrentMonthBookingsDrawer({
                   <span className="text-xs font-semibold text-[#8fa0bd]">{rows.length} rows</span>
                 </div>
 
-                <table className="trip-summary-table">
+                <MobileDisclosureCards emptyMessage="No bookings found for this month." items={mobileItems} />
+
+                <table className="trip-summary-table hidden md:table">
                   <thead>
                     <tr>
                       <th>Booking ID</th>

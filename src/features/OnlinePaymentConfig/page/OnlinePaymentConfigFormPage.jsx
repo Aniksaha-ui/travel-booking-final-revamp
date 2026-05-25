@@ -22,11 +22,11 @@ import {
 function SectionCard({ children, description, title }) {
   return (
     <section className="rounded-[24px] border border-[#2d282b] bg-[#171314] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-      <header className="border-b border-[#2d282b] px-5 py-4">
+      <header className="border-b border-[#2d282b] px-4 py-4 sm:px-5">
         <h2 className="text-sm font-bold text-white">{title}</h2>
         <p className="mt-2 text-sm text-[#8fa0bd]">{description}</p>
       </header>
-      <div className="p-5">{children}</div>
+      <div className="p-4 sm:p-5">{children}</div>
     </section>
   )
 }
@@ -157,7 +157,7 @@ export default function OnlinePaymentConfigFormPage({ action = 'add' }) {
             </div>
 
             <div
-              className={`inline-flex h-10 items-center rounded-lg border px-4 text-sm font-semibold ${statusMeta.badgeClassName}`}
+              className={`inline-flex h-10 w-full items-center justify-center rounded-lg border px-4 text-sm font-semibold sm:w-auto ${statusMeta.badgeClassName}`}
             >
               {statusMeta.label}
             </div>
@@ -205,14 +205,14 @@ export default function OnlinePaymentConfigFormPage({ action = 'add' }) {
             <div className="mt-5 flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
-                className="inline-flex h-11 items-center gap-2 rounded-xl border border-[#332d30] bg-[#211d20] px-5 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#332d30] bg-[#211d20] px-5 text-sm font-semibold text-[#c5d9f7] transition hover:bg-white/5 sm:w-auto"
                 onClick={() => navigate(APP_ROUTES.onlinePaymentConfig)}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="inline-flex h-11 items-center gap-2 rounded-xl border border-blue-500/30 bg-[linear-gradient(135deg,rgba(37,99,235,0.24),rgba(8,47,73,0.4))] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(37,99,235,0.18)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-75"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-blue-500/30 bg-[linear-gradient(135deg,rgba(37,99,235,0.24),rgba(8,47,73,0.4))] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(37,99,235,0.18)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-75 sm:w-auto"
                 disabled={isSubmitting}
               >
                 <Save size={16} />
@@ -269,4 +269,3 @@ export default function OnlinePaymentConfigFormPage({ action = 'add' }) {
     </main>
   )
 }
-
