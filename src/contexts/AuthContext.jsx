@@ -98,11 +98,13 @@ export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(getPersistedAuthSession);
   const [menu, setMenu] = useState(getPersistedMenuState);
   const [loginState, setLoginState] = useState({ status: "idle", error: null });
+  const [logoutState, setLogoutState] = useState({ status: "idle", error: null });
   const [sessionMessage, setSessionMessage] = useState("");
 
   const clearSession = useCallback(() => {
     window.localStorage.removeItem(APP_CONFIG.authStorageKey);
     window.localStorage.removeItem(APP_CONFIG.menuStorageKey);
+    resetSessionTimeoutState();
     setAuth(defaultAuthState);
     setMenu(defaultMenuState);
   }, []);
@@ -171,9 +173,15 @@ export function AuthProvider({ children }) {
     [loadMenu, toast]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    setLogoutState({ status: "loading", error: null });
+
     clearSession();
-  }, [clearSession]);
+    setSessionMessage("");
+    setLoginState({ status: "idle", error: null });
+    setLogoutState({ status: "succeeded", error: null });
+    toast.success("Signed out successfully.");
+  }, [clearSession, toast]);
 
   useEffect(() => {
     if (!auth.isAuthenticated || menu.status !== "idle") {
@@ -209,11 +217,12 @@ export function AuthProvider({ children }) {
       login,
       loginState,
       logout,
+      logoutState,
       loadMenu,
       sessionMessage,
       clearSessionMessage: () => setSessionMessage(""),
     }),
-    [auth, loadMenu, login, loginState, logout, menu, sessionMessage]
+    [auth, loadMenu, login, loginState, logout, logoutState, menu, sessionMessage]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
