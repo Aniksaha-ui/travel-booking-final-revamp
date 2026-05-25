@@ -10,15 +10,30 @@ export const API_URLS = {
     invoice: "/admin/booking-invoice",
     list: "/admin/booking",
   },
+  blogs: {
+    byId: (blogId) => `/admin/blogs/${blogId}`,
+    list: "/admin/blogs",
+    update: (blogId) => `/admin/blogs/update/${blogId}`,
+  },
   dashboard: {
     overview: "/admin/dashboard",
     currentMonthTripSales: "/admin/current-month-trip-sales-report",
     packageProfitMargin: "/admin/package-profit-margin",
   },
+  onlinePaymentConfig: {
+    byId: (configurationId) => `/admin/online-configure/${configurationId}`,
+    list: "/admin/online-configure",
+    update: "/admin/online-configure/update",
+  },
   hotels: {
     byId: (hotelId) => `/hotel/${hotelId}`,
     list: "/admin/hotel",
     update: (hotelId) => `/admin/hotel/update/${hotelId}`,
+  },
+  menuItems: {
+    byId: (menuItemId) => `/admin/menu_items/${menuItemId}`,
+    list: "/admin/menu_items",
+    update: (menuItemId) => `/admin/menu_items/update/${menuItemId}`,
   },
   reports: {
     accountBalance: "/admin/accountBalance",

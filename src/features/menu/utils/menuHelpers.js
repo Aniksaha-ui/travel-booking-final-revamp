@@ -220,6 +220,41 @@ export const getSupportedRoute = (path) => {
   }
 
   if (
+    path === "/admin/blog-list" ||
+    path === "/blog-list" ||
+    path === "admin/blog-list" ||
+    path === "blog-list" ||
+    path === "/admin/blogs" ||
+    path === "/blogs" ||
+    path === "/admin/blog/add" ||
+    path === "/admin/blog/update/:id" ||
+    path?.startsWith("/admin/blog/update/")
+  ) {
+    return APP_ROUTES.blogs;
+  }
+
+  if (
+    path === "/admin/menu-items" ||
+    path === "/menu-items" ||
+    path === "admin/menu-items" ||
+    path === "menu-items" ||
+    path === "/admin/menu-items/add" ||
+    path === "/admin/menu-items/update/:id" ||
+    path?.startsWith("/admin/menu-items/update/")
+  ) {
+    return APP_ROUTES.menuItems;
+  }
+
+  if (
+    path === "/admin/users" ||
+    path === "/users" ||
+    path === "admin/users" ||
+    path === "users"
+  ) {
+    return APP_ROUTES.users;
+  }
+
+  if (
     path === "/admin/bookings" ||
     path === "/bookings" ||
     path === "admin/bookings" ||
@@ -240,6 +275,22 @@ export const getSupportedRoute = (path) => {
     path?.startsWith("/admin/hotel/update/")
   ) {
     return APP_ROUTES.hotels;
+  }
+
+  if (
+    path === "/admin/online-payment-configure" ||
+    path === "/online-payment-configure" ||
+    path === "admin/online-payment-configure" ||
+    path === "online-payment-configure" ||
+    path === "/admin/online-payment-configure/add" ||
+    path === "/admin/online-payment-configure/update/:id" ||
+    path?.startsWith("/admin/online-payment-configure/update/") ||
+    path === "/admin/online-configure" ||
+    path === "/online-configure" ||
+    path === "admin/online-configure" ||
+    path === "online-configure"
+  ) {
+    return APP_ROUTES.onlinePaymentConfig;
   }
 
   if (
@@ -350,6 +401,10 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/packages" || path === "/packages") {
     return APP_ROUTES.packages;
+  }
+
+  if (path === "/admin/menu-items" || path === "/menu-items") {
+    return APP_ROUTES.menuItems;
   }
 
   if (path === "/admin/hotel" || path === "/hotel") {
