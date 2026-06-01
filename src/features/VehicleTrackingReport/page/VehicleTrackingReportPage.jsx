@@ -3,6 +3,7 @@ import { BusFront, RefreshCcw } from 'lucide-react'
 import { useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
 import { useToast } from '../../../components/common/Toaster'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { vehicleTrackingReportColumns } from '../component/column.jsx'
 import { VehicleTrackingReportFilters } from '../component/VehicleTrackingReportFilters.jsx'
 import { VehicleTrackingReportOverview } from '../component/VehicleTrackingReportOverview.jsx'
@@ -66,6 +67,7 @@ export default function VehicleTrackingReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

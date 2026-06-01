@@ -1,5 +1,6 @@
 import { RefreshCcw, Trophy } from 'lucide-react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { customerValueColumns } from '../component/column.jsx'
 import { CustomerValueOverview } from '../component/CustomerValueOverview.jsx'
 import { CUSTOMER_VALUE_REPORT_COPY } from '../constants/customerValueReport.constants'
@@ -13,6 +14,7 @@ export default function CustomerValueReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

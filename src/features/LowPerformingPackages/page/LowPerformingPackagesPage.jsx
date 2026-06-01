@@ -1,6 +1,7 @@
 import { AlertTriangle, Printer, RefreshCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { lowPerformingPackagesColumns } from '../component/column.jsx'
 import { LowPerformingPackagesOverview } from '../component/LowPerformingPackagesOverview.jsx'
 import { LOW_PERFORMING_PACKAGES_COPY } from '../constants/lowPerformingPackages.constants'
@@ -16,6 +17,7 @@ export default function LowPerformingPackagesPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

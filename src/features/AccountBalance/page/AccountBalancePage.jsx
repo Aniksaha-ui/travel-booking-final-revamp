@@ -1,6 +1,7 @@
 import { Landmark, RefreshCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { AccountBalanceOverview } from '../component/AccountBalanceOverview.jsx'
 import { AccountHistoryDrawer } from '../component/AccountHistoryDrawer.jsx'
 import { accountBalanceColumns } from '../component/column.jsx'
@@ -78,6 +79,7 @@ export default function AccountBalancePage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

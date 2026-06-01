@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import AdminDataTable from '../../../components/ui/AdminDataTable'
 import { DashboardMetricCard } from '../../../components/ui/DashboardMetricCard'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { MonthBalanceManagementOverview } from '../component/MonthBalanceManagementOverview'
 import { monthRunningBalanceColumns } from '../component/column.jsx'
 import { MONTH_RUNNING_BALANCE_COPY } from '../constants/monthRunningBalance.constants.jsx'
@@ -62,6 +63,7 @@ export default function MonthRunningBalancePage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="routes-page__title">
             <CalendarRange size={20} color="#4f83ff" />

@@ -1,6 +1,7 @@
 import { Printer, RefreshCcw, Ticket } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { SalesReportTabs } from '../../SalesReports/component/SalesReportTabs.jsx'
 import { ticketStatusReportColumns } from '../component/column.jsx'
 import { TicketStatusReportOverview } from '../component/TicketStatusReportOverview.jsx'
@@ -17,6 +18,7 @@ export default function TicketStatusReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

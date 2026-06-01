@@ -2,6 +2,7 @@ import { BusFront, Eye, RefreshCcw } from 'lucide-react'
 import { useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
 import { useToast } from '../../../components/common/Toaster'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { VehicleSeatLayoutModal } from '../component/VehicleSeatLayoutModal.jsx'
 import { VehicleWiseSeatReportOverview } from '../component/VehicleWiseSeatReportOverview.jsx'
 import { vehicleWiseSeatReportColumns } from '../component/column.jsx'
@@ -47,6 +48,7 @@ export default function VehicleWiseSeatReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

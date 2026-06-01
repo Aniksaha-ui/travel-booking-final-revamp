@@ -1,6 +1,7 @@
 import { AlertTriangle, Printer, RefreshCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { highCancellationPackagesColumns } from '../component/column.jsx'
 import { HighCancellationPackagesOverview } from '../component/HighCancellationPackagesOverview.jsx'
 import { HIGH_CANCELLATION_PACKAGES_COPY } from '../constants/highCancellationPackages.constants'
@@ -16,6 +17,7 @@ export default function HighCancellationPackagesPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

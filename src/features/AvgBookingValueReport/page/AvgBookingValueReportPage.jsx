@@ -1,6 +1,7 @@
 import { BarChart3, Printer, RefreshCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { avgBookingValueColumns } from '../component/column.jsx'
 import { AvgBookingValueOverview } from '../component/AvgBookingValueOverview.jsx'
 import { AVG_BOOKING_VALUE_REPORT_COPY } from '../constants/avgBookingValueReport.constants'
@@ -16,6 +17,7 @@ export default function AvgBookingValueReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

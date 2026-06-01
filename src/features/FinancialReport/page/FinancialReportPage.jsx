@@ -1,5 +1,6 @@
 import { CircleDollarSign } from 'lucide-react'
 import AdminDataTable from '../../../components/ui/AdminDataTable'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { FINANCIAL_REPORT_COPY } from '../constants/financialReport.constants'
 import useFinancialReport from '../hooks/useFinancialReport'
 import { financialReportColumns } from '../component/column.jsx'
@@ -13,6 +14,7 @@ export default function FinancialReportPage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

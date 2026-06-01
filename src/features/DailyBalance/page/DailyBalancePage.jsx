@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useToast } from '../../../components/common/Toaster'
 import { DashboardMetricCard } from '../../../components/ui/DashboardMetricCard'
+import { ReportHubBackLink } from '../../Reports/component/ReportHubBackLink.jsx'
 import { DailyBalanceMonthFilter } from '../component/DailyBalanceMonthFilter'
 import { DailyBalanceHistoryTable } from '../component/DailyBalanceHistoryTable'
 import { DailyBalanceLedger } from '../component/DailyBalanceLedger'
@@ -98,6 +99,7 @@ export default function DailyBalancePage() {
   return (
     <main className="routes-page">
       <div className="routes-page__inner">
+        <ReportHubBackLink />
         <header className="routes-page__header">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
