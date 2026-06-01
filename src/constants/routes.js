@@ -8,6 +8,7 @@ export const APP_ROUTES = {
   dailyBalance: "/admin/account/daily-balance",
   customerValueReport: "/admin/customerValueReport",
   financialReport: "/admin/financialReport",
+  reports: "/admin/reports",
   overallSales: "/admin/account/overall-sales",
   routeWiseSales: "/admin/account/route-wise-sales",
   ticketStatusReport: "/admin/account/ticket-status-report",

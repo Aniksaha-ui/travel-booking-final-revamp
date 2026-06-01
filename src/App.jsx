@@ -31,6 +31,7 @@ const OnlinePaymentConfigFormPage = lazy(() => import('./features/OnlinePaymentC
 const OnlinePaymentConfigPage = lazy(() => import('./features/OnlinePaymentConfig/page/OnlinePaymentConfigPage'))
 const OverallSalesReportPage = lazy(() => import('./features/OverallSalesReport/page/OverallSalesReportPage'))
 const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
+const ReportsPage = lazy(() => import('./features/Reports/page/ReportsPage'))
 const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
 const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
 const RouteWiseSalesReportPage = lazy(() => import('./features/RouteWiseSalesReport/page/RouteWiseSalesReportPage'))
@@ -186,6 +187,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading financial report..." />}>
               <FinancialReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.reports}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading reports..." />}>
+              <ReportsPage />
             </Suspense>
           }
         />
