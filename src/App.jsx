@@ -38,6 +38,7 @@ const RouteWiseSalesReportPage = lazy(() => import('./features/RouteWiseSalesRep
 const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
 const TicketStatusReportPage = lazy(() => import('./features/TicketStatusReport/page/TicketStatusReportPage'))
 const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
+const TopActiveCustomersPage = lazy(() => import('./features/TopActiveCustomers/page/TopActiveCustomersPage'))
 const TransactionsPage = lazy(() => import('./features/Transactions/page/TransactionsPage'))
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
@@ -219,6 +220,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading ticket status report..." />}>
               <TicketStatusReportPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.topActiveCustomers}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading top active customers..." />}>
+              <TopActiveCustomersPage />
             </Suspense>
           }
         />

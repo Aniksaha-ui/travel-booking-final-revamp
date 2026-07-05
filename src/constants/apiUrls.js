@@ -53,6 +53,7 @@ export const API_URLS = {
     overallSales: "/admin/overall-sales-summary",
     routeWiseSales: "/admin/route-wise-sales-summary",
     ticketStatusReport: "/admin/ticket-status-report",
+    topActiveCustomers: "/admin/top-active-customers",
     tripPerformance: "/admin/tripPerformance",
     vehicleTracking: "/admin/useageOfVehicle",
     vehicleWiseSeatDetails: (vehicleId) => `/admin/vehiclewiseseat/${vehicleId}`,

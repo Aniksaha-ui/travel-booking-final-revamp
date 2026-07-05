@@ -12,6 +12,7 @@ export const APP_ROUTES = {
   overallSales: "/admin/account/overall-sales",
   routeWiseSales: "/admin/account/route-wise-sales",
   ticketStatusReport: "/admin/account/ticket-status-report",
+  topActiveCustomers: "/admin/top-active-customers",
   highCancellationPackages: "/admin/high-cancellation-packages",
   hotels: "/admin/hotel",
   lowOccupancyReport: "/admin/low-occupancy-report",
