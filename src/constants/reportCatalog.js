@@ -2,6 +2,7 @@ import { APP_ROUTES } from './routes'
 
 export const REPORT_CATALOG = [
   {
+    category: 'Account Reports',
     key: 'account-balance',
     title: 'Account Balance',
     description: 'Review live balances and account positions in one place.',
@@ -9,6 +10,7 @@ export const REPORT_CATALOG = [
     order: 1000,
   },
   {
+    category: 'Account Reports',
     key: 'account-history',
     title: 'Account History',
     description: 'Track account activity and balance movement over time.',
@@ -16,6 +18,7 @@ export const REPORT_CATALOG = [
     order: 1001,
   },
   {
+    category: 'Account Reports',
     key: 'financial-report',
     title: 'Financial Report',
     description: 'Inspect revenue, expenses, and overall financial performance.',
@@ -23,6 +26,7 @@ export const REPORT_CATALOG = [
     order: 1002,
   },
   {
+    category: 'Account Reports',
     key: 'customer-value-report',
     title: 'Customer Value Report',
     description: 'Measure repeat value and contribution across customers.',
@@ -30,6 +34,7 @@ export const REPORT_CATALOG = [
     order: 1003,
   },
   {
+    category: 'Booking Reports',
     key: 'avg-booking-value-report',
     title: 'Average Booking Value',
     description: 'Monitor average ticket and booking value trends.',
@@ -37,6 +42,7 @@ export const REPORT_CATALOG = [
     order: 1004,
   },
   {
+    category: 'Booking Reports',
     key: 'booking-summary-report',
     title: 'Booking Summary Report',
     description: 'Summarize booking volume, status, and totals quickly.',
@@ -44,6 +50,7 @@ export const REPORT_CATALOG = [
     order: 1005,
   },
   {
+    category: 'Account Reports',
     key: 'monthly-daily-balance',
     title: 'Monthly Daily Balance',
     description: 'Audit daily cash movement for the selected month.',
@@ -51,6 +58,7 @@ export const REPORT_CATALOG = [
     order: 1006,
   },
   {
+    category: 'Account Reports',
     key: 'monthly-running-balance',
     title: 'Monthly Running Balance',
     description: 'Follow month-to-date balance changes and rollups.',
@@ -58,6 +66,7 @@ export const REPORT_CATALOG = [
     order: 1007,
   },
   {
+    category: 'Sales Reports',
     key: 'overall-sales',
     title: 'Overall Sales',
     description: 'See total sales performance across the business.',
@@ -65,6 +74,7 @@ export const REPORT_CATALOG = [
     order: 1008,
   },
   {
+    category: 'Sales Reports',
     key: 'route-wise-sales',
     title: 'Route Wise Sales',
     description: 'Compare revenue and demand route by route.',
@@ -72,6 +82,7 @@ export const REPORT_CATALOG = [
     order: 1009,
   },
   {
+    category: 'Booking Reports',
     key: 'ticket-status-analysis',
     title: 'Ticket Status Analysis',
     description: 'Break down ticket states, trends, and fulfillment progress.',
@@ -79,6 +90,7 @@ export const REPORT_CATALOG = [
     order: 1010,
   },
   {
+    category: 'Trip Reports',
     key: 'trip-performance',
     title: 'Trip Performance',
     description: 'Review occupancy, revenue, and outcomes by trip.',
@@ -86,6 +98,7 @@ export const REPORT_CATALOG = [
     order: 1011,
   },
   {
+    category: 'Trip Reports',
     key: 'low-occupancy-report',
     title: 'Low Occupancy Report',
     description: 'Spot trips that need attention because seats remain unsold.',
@@ -93,6 +106,7 @@ export const REPORT_CATALOG = [
     order: 1012,
   },
   {
+    category: 'Package Reports',
     key: 'low-performing-packages',
     title: 'Low Performing Packages',
     description: 'Identify packages that are lagging on conversion or sales.',
@@ -100,6 +114,7 @@ export const REPORT_CATALOG = [
     order: 1013,
   },
   {
+    category: 'Package Reports',
     key: 'high-cancellation-packages',
     title: 'High Cancellation Packages',
     description: 'Find packages with unusually high cancellation pressure.',
@@ -107,6 +122,7 @@ export const REPORT_CATALOG = [
     order: 1014,
   },
   {
+    category: 'Vehicle Reports',
     key: 'vehicle-tracking-report',
     title: 'Vehicle Tracking Report',
     description: 'Monitor route activity and movement from the vehicle side.',
@@ -114,6 +130,7 @@ export const REPORT_CATALOG = [
     order: 1015,
   },
   {
+    category: 'Vehicle Reports',
     key: 'vehicle-wise-seat-report',
     title: 'Vehicle Wise Seat Report',
     description: 'Inspect seat availability and allocation by vehicle.',
@@ -127,6 +144,13 @@ export const REPORT_ROUTE_SET = new Set(REPORT_CATALOG.map((report) => report.pa
 export const REPORT_CATALOG_BY_PATH = Object.fromEntries(
   REPORT_CATALOG.map((report) => [report.path, report]),
 )
+
+export const slugifyReportCategory = (value = '') =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 
 export const REPORTS_MENU_FALLBACK_ITEM = {
   id: 'frontend-reports-hub',
