@@ -13,6 +13,7 @@ const AccountHistoryPage = lazy(() => import('./features/AccountHistory/page/Acc
 const BlogFormPage = lazy(() => import('./features/Blogs/page/BlogFormPage'))
 const BlogsPage = lazy(() => import('./features/Blogs/page/BlogsPage'))
 const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
+const BookingFrequencyPerUserPage = lazy(() => import('./features/BookingFrequencyPerUser/page/BookingFrequencyPerUserPage'))
 const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
 const CustomerValueReportPage = lazy(() => import('./features/CustomerValueReport/page/CustomerValueReportPage'))
 const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
@@ -155,6 +156,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading bookings..." />}>
               <BookingsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.bookingFrequencyPerUser}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading booking frequency report..." />}>
+              <BookingFrequencyPerUserPage />
             </Suspense>
           }
         />

@@ -42,12 +42,20 @@ export const REPORT_CATALOG = [
     order: 1004,
   },
   {
+    category: 'Customer Reports',
+    key: 'booking-frequency-per-user',
+    title: 'Booking Frequency per User',
+    description: 'Review booking count and active booking span for every customer.',
+    path: APP_ROUTES.bookingFrequencyPerUser,
+    order: 1005,
+  },
+  {
     category: 'Booking Reports',
     key: 'avg-booking-value-report',
     title: 'Average Booking Value',
     description: 'Monitor average ticket and booking value trends.',
     path: APP_ROUTES.avgBookingValueReport,
-    order: 1005,
+    order: 1006,
   },
   {
     category: 'Booking Reports',
@@ -55,7 +63,7 @@ export const REPORT_CATALOG = [
     title: 'Booking Summary Report',
     description: 'Summarize booking volume, status, and totals quickly.',
     path: APP_ROUTES.bookingSummary,
-    order: 1006,
+    order: 1007,
   },
   {
     category: 'Account Reports',
@@ -63,7 +71,7 @@ export const REPORT_CATALOG = [
     title: 'Monthly Daily Balance',
     description: 'Audit daily cash movement for the selected month.',
     path: APP_ROUTES.dailyBalance,
-    order: 1007,
+    order: 1008,
   },
   {
     category: 'Account Reports',
@@ -71,7 +79,7 @@ export const REPORT_CATALOG = [
     title: 'Monthly Running Balance',
     description: 'Follow month-to-date balance changes and rollups.',
     path: APP_ROUTES.monthRunningBalance,
-    order: 1008,
+    order: 1009,
   },
   {
     category: 'Sales Reports',
@@ -79,7 +87,7 @@ export const REPORT_CATALOG = [
     title: 'Overall Sales',
     description: 'See total sales performance across the business.',
     path: APP_ROUTES.overallSales,
-    order: 1009,
+    order: 1010,
   },
   {
     category: 'Sales Reports',
@@ -87,7 +95,7 @@ export const REPORT_CATALOG = [
     title: 'Route Wise Sales',
     description: 'Compare revenue and demand route by route.',
     path: APP_ROUTES.routeWiseSales,
-    order: 1010,
+    order: 1011,
   },
   {
     category: 'Booking Reports',
@@ -95,7 +103,7 @@ export const REPORT_CATALOG = [
     title: 'Ticket Status Analysis',
     description: 'Break down ticket states, trends, and fulfillment progress.',
     path: APP_ROUTES.ticketStatusReport,
-    order: 1011,
+    order: 1012,
   },
   {
     category: 'Trip Reports',
@@ -103,7 +111,7 @@ export const REPORT_CATALOG = [
     title: 'Trip Performance',
     description: 'Review occupancy, revenue, and outcomes by trip.',
     path: APP_ROUTES.tripPerformance,
-    order: 1012,
+    order: 1013,
   },
   {
     category: 'Trip Reports',
@@ -111,7 +119,7 @@ export const REPORT_CATALOG = [
     title: 'Low Occupancy Report',
     description: 'Spot trips that need attention because seats remain unsold.',
     path: APP_ROUTES.lowOccupancyReport,
-    order: 1013,
+    order: 1014,
   },
   {
     category: 'Package Reports',
@@ -119,7 +127,7 @@ export const REPORT_CATALOG = [
     title: 'Low Performing Packages',
     description: 'Identify packages that are lagging on conversion or sales.',
     path: APP_ROUTES.lowPerformingPackages,
-    order: 1014,
+    order: 1015,
   },
   {
     category: 'Package Reports',
@@ -127,7 +135,7 @@ export const REPORT_CATALOG = [
     title: 'High Cancellation Packages',
     description: 'Find packages with unusually high cancellation pressure.',
     path: APP_ROUTES.highCancellationPackages,
-    order: 1015,
+    order: 1016,
   },
   {
     category: 'Vehicle Reports',
@@ -135,7 +143,7 @@ export const REPORT_CATALOG = [
     title: 'Vehicle Tracking Report',
     description: 'Monitor route activity and movement from the vehicle side.',
     path: APP_ROUTES.vehicleTrackingReport,
-    order: 1016,
+    order: 1017,
   },
   {
     category: 'Vehicle Reports',
@@ -143,7 +151,7 @@ export const REPORT_CATALOG = [
     title: 'Vehicle Wise Seat Report',
     description: 'Inspect seat availability and allocation by vehicle.',
     path: APP_ROUTES.vehicleWiseSeatReport,
-    order: 1017,
+    order: 1018,
   },
 ]
 

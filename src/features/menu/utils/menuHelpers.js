@@ -320,6 +320,24 @@ export const getSupportedRoute = (path) => {
   }
 
   if (
+    path === "/admin/top-active-customers" ||
+    path === "/top-active-customers" ||
+    path === "admin/top-active-customers" ||
+    path === "top-active-customers"
+  ) {
+    return APP_ROUTES.topActiveCustomers;
+  }
+
+  if (
+    path === "/admin/booking-frequency-per-user" ||
+    path === "/booking-frequency-per-user" ||
+    path === "admin/booking-frequency-per-user" ||
+    path === "booking-frequency-per-user"
+  ) {
+    return APP_ROUTES.bookingFrequencyPerUser;
+  }
+
+  if (
     path === "/admin/financialReport" ||
     path === "/financialReport" ||
     path === "admin/financialReport" ||

@@ -40,6 +40,7 @@ export const API_URLS = {
     accountBalanceHistory: (type) => `/admin/accountHistory/${encodeURIComponent(type)}`,
     accountHistorySearch: "/admin/account-history",
     avgBookingValue: "/admin/avg-booking-value-report",
+    bookingFrequencyPerUser: "/admin/booking-frequency-per-user",
     bookingSummary: "/admin/booking-summary",
     customerValue: "/admin/customerValue",
     dailyBalance: "/admin/monthlyDailyBalanceReport",

@@ -4,6 +4,7 @@ export const APP_ROUTES = {
   accountHistory: "/admin/account/history",
   blogs: "/admin/blog-list",
   bookings: "/admin/bookings",
+  bookingFrequencyPerUser: "/admin/booking-frequency-per-user",
   bookingSummary: "/admin/bookings/summary",
   dailyBalance: "/admin/account/daily-balance",
   customerValueReport: "/admin/customerValueReport",
