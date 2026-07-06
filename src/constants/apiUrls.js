@@ -4,6 +4,7 @@ export const API_URLS = {
   },
   admin: {
     menu: "/admin/menu",
+    userCompare: "/admin/customer-compare",
     users: "/admin/users",
     userProfile: (userId) => `/admin/users/${userId}/profile`,
   },

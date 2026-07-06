@@ -1,6 +1,12 @@
 import { API_URLS } from '../../../constants/apiUrls'
 import { apiRequest } from '../../../services/apiClient'
-import { emptyUserProfileDetails, normalizeUser, normalizeUserProfileDetails } from '../utils/usersUtils'
+import {
+  emptyUserProfileDetails,
+  emptyUsersComparison,
+  normalizeUser,
+  normalizeUserProfileDetails,
+  normalizeUsersComparison,
+} from '../utils/usersUtils'
 
 const defaultPagination = {
   currentPage: 1,
@@ -108,3 +114,15 @@ export const getUserProfile = async (userId) => {
 }
 
 export { emptyUserProfileDetails }
+
+export const getUsersComparison = async (userIds = []) => {
+  const ids = [...new Set(userIds.map((id) => Number(id)).filter((id) => Number.isFinite(id) && id > 0))]
+  const payload = ensureUsersPayload(
+    await apiRequest(`${API_URLS.admin.userCompare}?ids=${ids.join(',')}`),
+    'Unable to load customer comparison.',
+  )
+
+  return normalizeUsersComparison(extractUserProfileRecord(payload))
+}
+
+export { emptyUsersComparison }

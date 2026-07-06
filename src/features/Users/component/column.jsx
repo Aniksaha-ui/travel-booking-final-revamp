@@ -1,6 +1,6 @@
 import { formatUserRoleLabel, getUserRoleToneClassName } from '../utils/usersUtils'
 
-export const usersColumns = ({ loadingUserId = null, onViewProfile } = {}) => [
+export const usersColumns = ({ loadingUserId = null, onToggleCompare, selectedUserIds = [] } = {}) => [
   {
     id: 'serial',
     label: 'SL',
@@ -56,18 +56,27 @@ export const usersColumns = ({ loadingUserId = null, onViewProfile } = {}) => [
   },
   {
     id: 'profileAction',
-    label: 'Profile',
-    width: '160px',
+    label: 'Actions',
+    width: '250px',
     sortable: false,
     render: (user) => (
-      <button
-        type="button"
-        className="routes-control routes-control--blue"
-        disabled={loadingUserId === user.id}
-        onClick={() => onViewProfile?.(user)}
-      >
-        Show Profile
-      </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          className={`routes-control ${selectedUserIds.includes(user.id) ? 'routes-control--blue' : ''}`}
+          onClick={() => onToggleCompare?.(user)}
+        >
+          {selectedUserIds.includes(user.id) ? 'Selected' : 'Select'}
+        </button>
+        <button
+          type="button"
+          className="routes-control routes-control--blue"
+          disabled={loadingUserId === user.id}
+          onClick={() => onViewProfile?.(user)}
+        >
+          Show Profile
+        </button>
+      </div>
     ),
   },
   {

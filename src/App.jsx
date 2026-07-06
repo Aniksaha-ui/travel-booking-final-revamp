@@ -44,6 +44,7 @@ const TransactionsPage = lazy(() => import('./features/Transactions/page/Transac
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
 const UsersPage = lazy(() => import('./features/Users/page/UsersPage'))
+const UserComparePage = lazy(() => import('./features/Users/page/UserComparePage'))
 const UserProfilePage = lazy(() => import('./features/Users/page/UserProfilePage'))
 const VisaApplicationDetailsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationDetailsPage'))
 const VisaApplicationsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationsPage'))
@@ -384,6 +385,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading users..." />}>
               <UsersPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.userCompare}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading customer comparison..." />}>
+              <UserComparePage />
             </Suspense>
           }
         />

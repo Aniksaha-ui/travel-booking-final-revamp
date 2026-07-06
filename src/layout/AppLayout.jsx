@@ -33,6 +33,7 @@ const pageTitles = {
   '/admin/transactions': 'Transactions',
   '/admin/tickets': 'Ticket Management',
   '/admin/tripPerformance': 'Trip Performance',
+  '/admin/users/compare': 'Customer Compare',
   '/admin/users': 'User Management',
   '/admin/visa/applications': 'Visa Applications',
   '/admin/visa/countries': 'Visa Country Information',

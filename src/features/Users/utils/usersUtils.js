@@ -119,6 +119,11 @@ export const normalizeUser = (item = {}, index = 0, pagination = {}) => {
   }
 }
 
+export const normalizeSelectableUser = (user, selectionControl = null) => ({
+  ...user,
+  selectionControl,
+})
+
 export const buildUserMetrics = (rows = []) => {
   const adminCount = rows.filter((row) => row.roleKey.includes('admin')).length
   const verifiedCount = rows.filter((row) => row.isVerified).length
@@ -360,5 +365,80 @@ export const normalizeUserProfileDetails = (payload = {}) => {
     visaApplications: Array.isArray(payload?.visa_applications)
       ? payload.visa_applications.map((application, index) => normalizeUserProfileVisa(application, index))
       : [],
+  }
+}
+
+export const emptyUsersComparison = {
+  customers: [],
+  summary: {
+    avgNetSpentLabel: formatUserProfileCurrency(0),
+    comparedCustomers: 0,
+    topActivityCustomer: null,
+    topBookingCustomer: null,
+    topValueCustomer: null,
+    totalBookings: 0,
+    totalNetSpentLabel: formatUserProfileCurrency(0),
+  },
+}
+
+export const normalizeUsersComparison = (payload = {}) => {
+  const summary = payload?.summary ?? {}
+  const customers = Array.isArray(payload?.customers) ? payload.customers : []
+
+  return {
+    customers: customers.map((customer, index) => {
+      const metrics = customer?.metrics ?? {}
+      const selectedRanks = customer?.rankings?.selected ?? {}
+      const globalRanks = customer?.rankings?.global ?? {}
+
+      return {
+        activityRankGlobal: toNumber(globalRanks.activity_rank),
+        activityScore: toNumber(metrics.activity_score),
+        avgBookingValueLabel: formatUserProfileCurrency(metrics.avg_booking_value),
+        bookingRankGlobal: toNumber(globalRanks.booking_rank),
+        createdAtLabel: formatUserProfileDateTime(customer?.created_at, '-'),
+        email: normalizeText(customer?.email, USERS_EMPTY_STATE.noEmail),
+        hotelBookings: toNumber(metrics.hotel_bookings),
+        id: customer?.id ?? `comparison-${index}`,
+        monthlyTrends: Array.isArray(customer?.monthly_trends)
+          ? customer.monthly_trends.map((trend) => ({
+              amount: toNumber(trend.amount),
+              amountLabel: formatUserProfileCurrency(trend.amount),
+              bookingCount: toNumber(trend.booking_count),
+              month: normalizeText(trend.month, 'Unknown'),
+              monthKey: normalizeText(trend.month_key, ''),
+            }))
+          : [],
+        name: normalizeText(customer?.name, USERS_EMPTY_STATE.noName),
+        netSpent: toNumber(metrics.net_spent),
+        netSpentLabel: formatUserProfileCurrency(metrics.net_spent),
+        openTickets: toNumber(metrics.open_tickets),
+        packageBookings: toNumber(metrics.package_bookings),
+        paidBookings: toNumber(metrics.paid_bookings),
+        pendingBookings: toNumber(metrics.pending_bookings),
+        refundPending: toNumber(metrics.refund_pending),
+        roleLabel: formatUserRoleLabel(customer?.role),
+        selectedActivityRank: toNumber(selectedRanks.activity_rank),
+        selectedBookingRank: toNumber(selectedRanks.booking_rank),
+        selectedValueRank: toNumber(selectedRanks.value_rank),
+        totalBookings: toNumber(metrics.total_bookings),
+        totalPaidLabel: formatUserProfileCurrency(metrics.total_paid),
+        totalRefundedLabel: formatUserProfileCurrency(metrics.total_refunded),
+        totalRefunds: toNumber(metrics.total_refunds),
+        totalTickets: toNumber(metrics.total_tickets),
+        tripBookings: toNumber(metrics.trip_bookings),
+        valueRankGlobal: toNumber(globalRanks.value_rank),
+        visaApplications: toNumber(metrics.visa_applications),
+      }
+    }),
+    summary: {
+      avgNetSpentLabel: formatUserProfileCurrency(summary.avg_net_spent),
+      comparedCustomers: toNumber(summary.compared_customers),
+      topActivityCustomer: summary.top_activity_customer ?? null,
+      topBookingCustomer: summary.top_booking_customer ?? null,
+      topValueCustomer: summary.top_value_customer ?? null,
+      totalBookings: toNumber(summary.total_bookings),
+      totalNetSpentLabel: formatUserProfileCurrency(summary.total_net_spent),
+    },
   }
 }
