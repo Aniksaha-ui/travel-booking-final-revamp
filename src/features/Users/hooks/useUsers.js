@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useToast } from '../../../components/common/Toaster'
-import { emptyUsersCollection, getUsers } from '../service/usersService'
+import { emptyUserProfileDetails, emptyUsersCollection, getUserProfile, getUsers } from '../service/usersService'
 
 export default function useUsers() {
   const toast = useToast()
@@ -10,6 +10,12 @@ export default function useUsers() {
   const [search, setSearch] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [details, setDetails] = useState(emptyUserProfileDetails)
+  const [detailsError, setDetailsError] = useState('')
+  const [detailsLoading, setDetailsLoading] = useState(false)
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [loadingUserId, setLoadingUserId] = useState(null)
 
   const loadUsers = useCallback(
     async (overrides = {}) => {
@@ -44,16 +50,53 @@ export default function useUsers() {
     return () => window.clearTimeout(timeoutId)
   }, [loadUsers])
 
+  const openDetails = async (user) => {
+    setSelectedUser(user)
+    setDetails(emptyUserProfileDetails)
+    setDetailsError('')
+    setDetailsOpen(true)
+    setDetailsLoading(true)
+    setLoadingUserId(user.id)
+
+    try {
+      const response = await getUserProfile(user.id)
+      setDetails(response)
+    } catch (loadError) {
+      const message = loadError.message || 'Unable to load user profile.'
+      setDetailsError(message)
+      toast.error(message)
+    } finally {
+      setDetailsLoading(false)
+      setLoadingUserId(null)
+    }
+  }
+
+  const closeDetails = () => {
+    setDetails(emptyUserProfileDetails)
+    setDetailsError('')
+    setDetailsLoading(false)
+    setDetailsOpen(false)
+    setLoadingUserId(null)
+    setSelectedUser(null)
+  }
+
   return {
+    closeDetails,
+    details,
+    detailsError,
+    detailsLoading,
+    detailsOpen,
     error,
     isLoading,
     items,
+    loadingUserId,
+    openDetails,
     page,
     pagination,
     refresh: loadUsers,
     search,
+    selectedUser,
     setPage,
     setSearch,
   }
 }
-

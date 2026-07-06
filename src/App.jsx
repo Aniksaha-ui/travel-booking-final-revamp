@@ -44,6 +44,7 @@ const TransactionsPage = lazy(() => import('./features/Transactions/page/Transac
 const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
 const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
 const UsersPage = lazy(() => import('./features/Users/page/UsersPage'))
+const UserProfilePage = lazy(() => import('./features/Users/page/UserProfilePage'))
 const VisaApplicationDetailsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationDetailsPage'))
 const VisaApplicationsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationsPage'))
 const VisaCountriesPage = lazy(() => import('./features/VisaCountries/page/VisaCountriesPage'))
@@ -383,6 +384,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<FullPageLoader message="Loading users..." />}>
               <UsersPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={APP_ROUTES.userProfile()}
+          element={
+            <Suspense fallback={<FullPageLoader message="Loading customer profile..." />}>
+              <UserProfilePage />
             </Suspense>
           }
         />

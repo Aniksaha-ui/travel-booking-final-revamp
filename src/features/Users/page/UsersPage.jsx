@@ -1,6 +1,8 @@
 import { RefreshCcw, UsersRound } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AdminDataTable, { AdminTableButton } from '../../../components/ui/AdminDataTable'
+import { APP_ROUTES } from '../../../constants/routes'
 import { UsersOverview } from '../component/UsersOverview.jsx'
 import { usersColumns } from '../component/column.jsx'
 import { USERS_PAGE_COPY } from '../constants/users.constants'
@@ -8,6 +10,7 @@ import useUsers from '../hooks/useUsers'
 import { buildUserMetrics, buildUserRoleFilters, filterUsersByRole } from '../utils/usersUtils'
 
 export default function UsersPage() {
+  const navigate = useNavigate()
   const apiState = useUsers()
   const [roleFilter, setRoleFilter] = useState('all')
   const roleFilters = useMemo(() => buildUserRoleFilters(apiState.items), [apiState.items])
@@ -16,6 +19,14 @@ export default function UsersPage() {
     [apiState.items, roleFilter],
   )
   const metrics = useMemo(() => buildUserMetrics(apiState.items), [apiState.items])
+  const columns = useMemo(
+    () =>
+      usersColumns({
+        loadingUserId: apiState.loadingUserId,
+        onViewProfile: (user) => navigate(APP_ROUTES.userProfile(user.id)),
+      }),
+    [apiState.loadingUserId, navigate],
+  )
 
   useEffect(() => {
     if (!roleFilters.some((filter) => filter.key === roleFilter)) {
@@ -80,7 +91,7 @@ export default function UsersPage() {
               Refresh
             </AdminTableButton>
           }
-          columns={usersColumns}
+          columns={columns}
           data={visibleUsers}
           emptyMessage={
             roleFilter === 'all'

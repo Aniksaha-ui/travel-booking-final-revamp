@@ -168,3 +168,197 @@ export const filterUsersByRole = (rows = [], roleFilter = 'all') => {
   return rows.filter((row) => row.roleKey === roleFilter)
 }
 
+export const formatUserProfileDateTime = (value, fallback = '-') => {
+  const parsedValue = dayjs(value)
+  return parsedValue.isValid() ? parsedValue.format('DD MMM YYYY, hh:mm A') : fallback
+}
+
+export const formatUserProfileCurrency = (value, currency = 'BDT') => {
+  const amount = toNumber(value)
+  return `${currency} ${integerFormatter.format(amount)}`
+}
+
+const normalizeStatusKey = (value) =>
+  normalizeText(value, '')
+    .toLowerCase()
+    .replace(/\s+/g, '_')
+
+export const getUserProfileStatusToneClassName = (status) => {
+  const statusKey = normalizeStatusKey(status)
+
+  if (
+    ['paid', 'confirmed', 'resolved', 'approved', 'closed', 'checked_in', 'active'].includes(statusKey)
+  ) {
+    return 'border-emerald-500/20 bg-emerald-500/10 text-emerald-100'
+  }
+
+  if (['pending', 'submitted', 'processing', 'open'].includes(statusKey)) {
+    return 'border-amber-500/20 bg-amber-500/10 text-amber-100'
+  }
+
+  if (['cancelled', 'cancle_booking', 'rejected', 'declined'].includes(statusKey)) {
+    return 'border-rose-500/20 bg-rose-500/10 text-rose-100'
+  }
+
+  return 'border-slate-500/20 bg-slate-500/10 text-slate-100'
+}
+
+const normalizeBookingDisplayTitle = (booking) =>
+  normalizeText(
+    booking?.display_title ??
+      booking?.trip_name ??
+      booking?.package_name ??
+      booking?.hotel_name ??
+      (booking?.application_no ? `Visa Application ${booking.application_no}` : ''),
+    `Booking #${booking?.id ?? '-'}`,
+  )
+
+const normalizeBookingAmount = (booking) =>
+  toNumber(
+    booking?.payment_amount ??
+      booking?.package_total_cost ??
+      booking?.hotel_total_cost ??
+      booking?.fee_snapshot ??
+      booking?.trip_price,
+  )
+
+const normalizeBookingPaymentLabel = (booking) =>
+  normalizeText(
+    booking?.payment_method ??
+      booking?.package_payment_status ??
+      booking?.hotel_payment_status ??
+      booking?.visa_payment_status,
+    'N/A',
+  )
+
+const normalizeBookingExtraStatus = (booking) =>
+  normalizeText(booking?.hotel_booking_status ?? booking?.visa_status ?? booking?.refund_status, 'N/A')
+
+const normalizeUserProfileBooking = (booking = {}, index = 0) => ({
+  amount: normalizeBookingAmount(booking),
+  amountLabel: formatUserProfileCurrency(normalizeBookingAmount(booking)),
+  bookingType: normalizeText(booking.booking_type, 'N/A'),
+  createdAt: booking.created_at ?? '',
+  createdAtLabel: formatUserProfileDateTime(booking.created_at, 'N/A'),
+  displayTitle: normalizeBookingDisplayTitle(booking),
+  extraStatus: normalizeBookingExtraStatus(booking),
+  extraStatusToneClassName: getUserProfileStatusToneClassName(normalizeBookingExtraStatus(booking)),
+  id: booking.id ?? `booking-${index}`,
+  paymentLabel: normalizeBookingPaymentLabel(booking),
+  refundAmountLabel: booking.refund_id ? formatUserProfileCurrency(booking.refund_amount) : 'N/A',
+  refundReason: normalizeText(booking.refund_reason, 'No refund reason added'),
+  refundStatus: normalizeText(booking.refund_status, 'N/A'),
+  seatNumbers: normalizeText(booking.seat_numbers, 'N/A'),
+  status: normalizeText(booking.status, 'N/A'),
+  statusToneClassName: getUserProfileStatusToneClassName(booking.status),
+  travelDateLabel: normalizeText(booking.departure_time ?? booking.check_in_date, 'N/A'),
+  visaApplicationNo: normalizeText(booking.application_no, ''),
+  visaCountry: normalizeText(booking.country_name_snapshot, ''),
+  visaStatus: normalizeText(booking.visa_status, ''),
+  visaType: normalizeText(booking.visa_type_snapshot, ''),
+})
+
+const normalizeUserProfileTicket = (ticket = {}, index = 0) => ({
+  createdAtLabel: formatUserProfileDateTime(ticket.created_at, 'N/A'),
+  description: normalizeText(ticket.description, 'No description provided'),
+  id: ticket.id ?? `ticket-${index}`,
+  resolvedBy: normalizeText(ticket.resolved_by, 'Not resolved'),
+  status: normalizeText(ticket.status, 'N/A'),
+  statusToneClassName: getUserProfileStatusToneClassName(ticket.status),
+  title: normalizeText(ticket.title, 'Untitled ticket'),
+})
+
+const normalizeUserProfileRefund = (refund = {}, index = 0) => ({
+  amountLabel: formatUserProfileCurrency(refund.amount),
+  bookingLabel: normalizeText(
+    refund.trip_name ?? refund.package_name ?? refund.hotel_name,
+    `Booking #${refund.booking_id ?? '-'}`,
+  ),
+  createdAtLabel: formatUserProfileDateTime(refund.created_at, 'N/A'),
+  id: refund.id ?? `refund-${index}`,
+  reason: normalizeText(refund.reason, 'No reason added'),
+  status: normalizeText(refund.status, 'N/A'),
+  statusToneClassName: getUserProfileStatusToneClassName(refund.status),
+})
+
+const normalizeUserProfileVisa = (application = {}, index = 0) => ({
+  applicationNo: normalizeText(application.application_no, 'N/A'),
+  countryAndTypeLabel: normalizeText(
+    [application.country_name_snapshot, application.visa_type_snapshot].filter(Boolean).join(' • '),
+    'N/A',
+  ),
+  createdAtLabel: formatUserProfileDateTime(application.created_at, 'N/A'),
+  feeLabel: formatUserProfileCurrency(application.fee_snapshot),
+  id: application.id ?? `visa-${index}`,
+  packageLabel: normalizeText(application.visa_package_name ?? application.full_name, 'N/A'),
+  paymentStatus: normalizeText(application.payment_status, 'N/A'),
+  status: normalizeText(application.status, 'N/A'),
+  statusToneClassName: getUserProfileStatusToneClassName(application.status),
+})
+
+export const emptyUserProfileDetails = {
+  bookings: [],
+  refunds: [],
+  summary: {
+    cancelledBookings: 0,
+    lastBookingAtLabel: 'N/A',
+    lastTicketAtLabel: 'N/A',
+    openTickets: 0,
+    paidBookings: 0,
+    pendingBookings: 0,
+    refundPending: 0,
+    totalBookings: 0,
+    totalRefunds: 0,
+    totalSpentLabel: formatUserProfileCurrency(0),
+    totalTickets: 0,
+    visaApplications: 0,
+  },
+  tickets: [],
+  user: {
+    email: USERS_EMPTY_STATE.noEmail,
+    joinedAtLabel: '-',
+    name: USERS_EMPTY_STATE.noName,
+    roleLabel: USERS_EMPTY_STATE.noRole,
+  },
+  visaApplications: [],
+}
+
+export const normalizeUserProfileDetails = (payload = {}) => {
+  const user = payload?.user ?? {}
+  const summary = payload?.summary ?? {}
+
+  return {
+    bookings: Array.isArray(payload?.bookings)
+      ? payload.bookings.map((booking, index) => normalizeUserProfileBooking(booking, index))
+      : [],
+    refunds: Array.isArray(payload?.refunds)
+      ? payload.refunds.map((refund, index) => normalizeUserProfileRefund(refund, index))
+      : [],
+    summary: {
+      cancelledBookings: toNumber(summary.cancelled_bookings),
+      lastBookingAtLabel: formatUserProfileDateTime(summary.last_booking_at, 'N/A'),
+      lastTicketAtLabel: formatUserProfileDateTime(summary.last_ticket_at, 'N/A'),
+      openTickets: toNumber(summary.open_tickets),
+      paidBookings: toNumber(summary.paid_bookings),
+      pendingBookings: toNumber(summary.pending_bookings),
+      refundPending: toNumber(summary.refund_pending),
+      totalBookings: toNumber(summary.total_bookings),
+      totalRefunds: toNumber(summary.total_refunds),
+      totalSpentLabel: formatUserProfileCurrency(summary.total_spent),
+      totalTickets: toNumber(summary.total_tickets),
+      visaApplications: toNumber(summary.visa_applications),
+    },
+    tickets: Array.isArray(payload?.tickets)
+      ? payload.tickets.map((ticket, index) => normalizeUserProfileTicket(ticket, index))
+      : [],
+    user: {
+      email: normalizeText(user.email, USERS_EMPTY_STATE.noEmail),
+      joinedAtLabel: formatUserProfileDateTime(user.created_at, '-'),
+      name: normalizeText(user.name, USERS_EMPTY_STATE.noName),
+      roleLabel: formatUserRoleLabel(user.role),
+    },
+    visaApplications: Array.isArray(payload?.visa_applications)
+      ? payload.visa_applications.map((application, index) => normalizeUserProfileVisa(application, index))
+      : [],
+  }
+}

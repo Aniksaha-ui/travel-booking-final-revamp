@@ -1,6 +1,6 @@
 import { API_URLS } from '../../../constants/apiUrls'
 import { apiRequest } from '../../../services/apiClient'
-import { normalizeUser } from '../utils/usersUtils'
+import { emptyUserProfileDetails, normalizeUser, normalizeUserProfileDetails } from '../utils/usersUtils'
 
 const defaultPagination = {
   currentPage: 1,
@@ -92,3 +92,19 @@ export const emptyUsersCollection = {
   rows: [],
 }
 
+const extractUserProfileRecord = (payload) =>
+  payload?.data?.data ??
+  payload?.data ??
+  payload ??
+  {}
+
+export const getUserProfile = async (userId) => {
+  const payload = ensureUsersPayload(
+    await apiRequest(API_URLS.admin.userProfile(userId)),
+    'Unable to load user profile.',
+  )
+
+  return normalizeUserProfileDetails(extractUserProfileRecord(payload))
+}
+
+export { emptyUserProfileDetails }

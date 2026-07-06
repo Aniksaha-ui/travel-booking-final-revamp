@@ -1,6 +1,6 @@
 import { formatUserRoleLabel, getUserRoleToneClassName } from '../utils/usersUtils'
 
-export const usersColumns = [
+export const usersColumns = ({ loadingUserId = null, onViewProfile } = {}) => [
   {
     id: 'serial',
     label: 'SL',
@@ -55,6 +55,22 @@ export const usersColumns = [
     width: '14%',
   },
   {
+    id: 'profileAction',
+    label: 'Profile',
+    width: '160px',
+    sortable: false,
+    render: (user) => (
+      <button
+        type="button"
+        className="routes-control routes-control--blue"
+        disabled={loadingUserId === user.id}
+        onClick={() => onViewProfile?.(user)}
+      >
+        Show Profile
+      </button>
+    ),
+  },
+  {
     id: 'verifiedStatus',
     label: 'Verification',
     defaultHidden: true,
@@ -64,4 +80,3 @@ export const usersColumns = [
     width: '14%',
   },
 ]
-

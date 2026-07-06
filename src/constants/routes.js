@@ -28,6 +28,7 @@ export const APP_ROUTES = {
   tickets: "/admin/tickets",
   tripPerformance: "/admin/tripPerformance",
   users: "/admin/users",
+  userProfile: (userId = ':id') => `/admin/users/${userId}/profile`,
   visaApplications: "/admin/visa/applications",
   visaCountries: "/admin/visa/countries",
   visaTypes: "/admin/visa/types",

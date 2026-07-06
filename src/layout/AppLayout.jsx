@@ -52,7 +52,9 @@ export function AppLayout() {
   const location = useLocation()
   const { menu } = useAuthContext()
   const supportedPath = getSupportedRoute(location.pathname) ?? location.pathname
+  const dynamicPageTitle = getDynamicPageTitle(location.pathname)
   const title =
+    dynamicPageTitle ??
     findMenuTitle([...menu.mainMenuItems, ...menu.bottomMenuItems], supportedPath) ??
     pageTitles[location.pathname] ??
     pageTitles[supportedPath] ??
@@ -128,4 +130,12 @@ function getPersistedSidebarCollapsed() {
   } catch {
     return false
   }
+}
+
+function getDynamicPageTitle(pathname) {
+  if (/^\/admin\/users\/[^/]+\/profile$/.test(pathname)) {
+    return 'Customer Profile'
+  }
+
+  return null
 }

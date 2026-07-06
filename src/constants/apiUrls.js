@@ -5,6 +5,7 @@ export const API_URLS = {
   admin: {
     menu: "/admin/menu",
     users: "/admin/users",
+    userProfile: (userId) => `/admin/users/${userId}/profile`,
   },
   bookings: {
     invoice: "/admin/booking-invoice",
