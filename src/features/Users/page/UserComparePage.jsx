@@ -7,6 +7,8 @@ import {
   Medal,
   Scale,
   Ticket,
+  TrendingDown,
+  TrendingUp,
 } from 'lucide-react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -17,6 +19,9 @@ import {
   Legend,
   Line,
   LineChart,
+  Pie,
+  PieChart,
+  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -70,6 +75,15 @@ const buildComparisonSections = (customers = []) => [
       {
         label: 'Refunded Amount',
         getValue: (customer) => customer.totalRefundedLabel,
+      },
+      {
+        label: 'Average Profit Margin',
+        getValue: (customer) => customer.avgProfitMarginLabel,
+        valueClassName: 'text-emerald-300',
+      },
+      {
+        label: 'Gross Profit',
+        getValue: (customer) => customer.grossProfitLabel,
       },
     ],
   },
@@ -126,9 +140,51 @@ const buildComparisonSections = (customers = []) => [
         label: 'Refund Pending',
         getValue: (customer) => customer.refundPending,
       },
+      {
+        label: 'Revenue Growth Trend',
+        getValue: (customer) => customer.revenueGrowthPercentageLabel,
+        valueClassName: (customer) => getGrowthToneClassName(customer.revenueGrowthDirection),
+        helper: (customer) => `vs previous month • ${customer.growthReferenceMonth}`,
+      },
+      {
+        label: 'Booking Growth Trend',
+        getValue: (customer) => customer.bookingGrowthPercentageLabel,
+        valueClassName: (customer) => getGrowthToneClassName(customer.bookingGrowthDirection),
+        helper: (customer) => `vs previous month • ${customer.growthReferenceMonth}`,
+      },
     ],
   },
 ]
+
+const getGrowthToneClassName = (direction) => {
+  if (direction === 'up') {
+    return 'text-emerald-300'
+  }
+
+  if (direction === 'down') {
+    return 'text-rose-300'
+  }
+
+  return 'text-slate-200'
+}
+
+function GrowthPill({ direction, label }) {
+  const isUp = direction === 'up'
+  const isDown = direction === 'down'
+  const toneClassName = isUp
+    ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200'
+    : isDown
+      ? 'border-rose-500/30 bg-rose-500/10 text-rose-200'
+      : 'border-slate-500/30 bg-slate-500/10 text-slate-200'
+  const Icon = isDown ? TrendingDown : TrendingUp
+
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold ${toneClassName}`}>
+      <Icon size={12} />
+      {label}
+    </span>
+  )
+}
 
 function MetricCard({ icon: Icon, label, value, hint, toneClassName = 'text-white' }) {
   return (
@@ -321,6 +377,48 @@ export default function UserComparePage() {
     [comparison.customers],
   )
 
+  const marginAndGrowthData = useMemo(
+    () =>
+      comparison.customers.map((customer) => ({
+        customer: customer.name.length > 12 ? `${customer.name.slice(0, 12)}…` : customer.name,
+        avgProfitMargin: customer.avgProfitMargin,
+        revenueGrowth: customer.revenueGrowthPercentage,
+      })),
+    [comparison.customers],
+  )
+
+  const customerValueShareData = useMemo(
+    () =>
+      comparison.customers.map((customer) => ({
+        name: customer.name,
+        value: customer.netSpent,
+      })),
+    [comparison.customers],
+  )
+
+  const supportLoadData = useMemo(
+    () =>
+      comparison.customers.map((customer) => ({
+        customer: customer.name.length > 12 ? `${customer.name.slice(0, 12)}…` : customer.name,
+        totalTickets: customer.totalTickets,
+        openTickets: customer.openTickets,
+        refundPending: customer.refundPending,
+      })),
+    [comparison.customers],
+  )
+
+  const paymentBalanceData = useMemo(
+    () =>
+      comparison.customers.map((customer) => ({
+        customer: customer.name.length > 12 ? `${customer.name.slice(0, 12)}…` : customer.name,
+        paid: customer.totalPaidLabel,
+        refunded: customer.totalRefundedLabel,
+        paidValue: customer.monthlyTrends.reduce((sum, trend) => sum + trend.amount, 0),
+        refundedValue: customer.totalRefunds,
+      })),
+    [comparison.customers],
+  )
+
   if (isLoading) {
     return <FullPageLoader message="Loading customer comparison..." subtext="Preparing side-by-side customer analytics and trend charts." />
   }
@@ -441,6 +539,92 @@ export default function UserComparePage() {
           </Panel>
         </section>
 
+        <section className="mb-6 grid gap-5 xl:grid-cols-3">
+          <Panel
+            icon={CircleDollarSign}
+            title="Customer Value Share"
+            subtitle="How much of the selected group value belongs to each customer."
+          >
+            <div className="h-[340px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={customerValueShareData}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius={70}
+                    outerRadius={112}
+                    paddingAngle={3}
+                  >
+                    {customerValueShareData.map((entry, index) => (
+                      <Cell key={`${entry.name}-value-share`} fill={SERIES_COLORS[index % SERIES_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ background: '#171314', border: '1px solid #332d30', borderRadius: 14 }}
+                    formatter={(value) => `BDT ${Number(value || 0).toLocaleString()}`}
+                  />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </Panel>
+
+          <Panel
+            icon={Ticket}
+            title="Support Pressure"
+            subtitle="Open tickets and pending refunds per customer."
+          >
+            <div className="h-[340px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={supportLoadData}>
+                  <CartesianGrid stroke="#2d282b" vertical={false} />
+                  <XAxis dataKey="customer" stroke="#8fa0bd" tickLine={false} axisLine={false} />
+                  <YAxis stroke="#8fa0bd" tickLine={false} axisLine={false} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: '#171314', border: '1px solid #332d30', borderRadius: 14 }} />
+                  <Legend />
+                  <Bar dataKey="totalTickets" name="Total Tickets" fill="#4f83ff" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="openTickets" name="Open Tickets" fill="#f59e0b" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="refundPending" name="Refund Pending" fill="#f43f5e" radius={[10, 10, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Panel>
+
+          <Panel
+            icon={Medal}
+            title="Customer Booking Share"
+            subtitle="Selected-customer booking distribution in one glance."
+          >
+            <div className="space-y-4">
+              {comparison.customers.map((customer, index) => {
+                const totalBookings = comparison.summary.totalBookings || 1
+                const share = (customer.totalBookings / totalBookings) * 100
+
+                return (
+                  <div key={`${customer.id}-share`} className="space-y-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-semibold text-white">{customer.name}</span>
+                      <span className="text-xs font-bold uppercase tracking-[0.08em] text-[#8fa0bd]">
+                        {share.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-[#171314]">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${Math.max(share, 4)}%`,
+                          backgroundColor: SERIES_COLORS[index % SERIES_COLORS.length],
+                        }}
+                      />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </Panel>
+        </section>
+
         <section className="mb-6 grid gap-5 xl:grid-cols-2">
           <Panel
             icon={BarChart3}
@@ -509,6 +693,94 @@ export default function UserComparePage() {
           </Panel>
         </section>
 
+        <section className="mb-6 grid gap-5 xl:grid-cols-2">
+          <Panel
+            icon={Medal}
+            title="Margin & Revenue Growth"
+            subtitle="Average profit margin and month-over-month revenue growth per customer."
+          >
+            <div className="h-[360px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={marginAndGrowthData}>
+                  <CartesianGrid stroke="#2d282b" vertical={false} />
+                  <XAxis dataKey="customer" stroke="#8fa0bd" tickLine={false} axisLine={false} />
+                  <YAxis stroke="#8fa0bd" tickLine={false} axisLine={false} />
+                  <Tooltip
+                    contentStyle={{ background: '#171314', border: '1px solid #332d30', borderRadius: 14 }}
+                    formatter={(value) => `${Number(value || 0).toFixed(2)}%`}
+                  />
+                  <Legend />
+                  <Bar dataKey="avgProfitMargin" name="Avg Profit Margin" fill="#2dd4bf" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="revenueGrowth" name="Revenue Growth" fill="#f59e0b" radius={[10, 10, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Panel>
+
+          <Panel
+            icon={BarChart3}
+            title="Growth Snapshot"
+            subtitle="Quick view of the latest customer growth direction."
+          >
+            <div className="grid gap-3">
+              {comparison.customers.map((customer) => (
+                <article
+                  key={`${customer.id}-growth`}
+                  className="rounded-2xl border border-[#332d30] bg-[#171314] p-4"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-bold text-white">{customer.name}</h3>
+                      <p className="mt-1 text-xs text-[#8fa0bd]">Reference month: {customer.growthReferenceMonth}</p>
+                    </div>
+                    <GrowthPill
+                      direction={customer.revenueGrowthDirection}
+                      label={`Revenue ${customer.revenueGrowthPercentageLabel}`}
+                    />
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <GrowthPill
+                      direction={customer.bookingGrowthDirection}
+                      label={`Bookings ${customer.bookingGrowthPercentageLabel}`}
+                    />
+                    <span className="inline-flex rounded-full border border-[#3a3337] bg-[#231f21] px-2.5 py-1 text-xs font-semibold text-[#dbe7fb]">
+                      Margin {customer.avgProfitMarginLabel}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </Panel>
+        </section>
+
+        <section className="mb-6">
+          <Panel
+            icon={BriefcaseBusiness}
+            title="Revenue Flow Overview"
+            subtitle="Compare total booking amount trend sum against refund count pressure."
+          >
+            <div className="h-[340px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={paymentBalanceData}>
+                  <CartesianGrid stroke="#2d282b" vertical={false} />
+                  <XAxis dataKey="customer" stroke="#8fa0bd" tickLine={false} axisLine={false} />
+                  <YAxis yAxisId="left" stroke="#8fa0bd" tickLine={false} axisLine={false} />
+                  <YAxis yAxisId="right" orientation="right" stroke="#8fa0bd" tickLine={false} axisLine={false} allowDecimals={false} />
+                  <Tooltip
+                    contentStyle={{ background: '#171314', border: '1px solid #332d30', borderRadius: 14 }}
+                    formatter={(value, name) =>
+                      name === 'Refund Count' ? Number(value || 0) : `BDT ${Number(value || 0).toLocaleString()}`
+                    }
+                  />
+                  <Legend />
+                  <Bar yAxisId="left" dataKey="paidValue" name="Revenue Trend Sum" fill="#2dd4bf" radius={[10, 10, 0, 0]} />
+                  <Bar yAxisId="right" dataKey="refundedValue" name="Refund Count" fill="#f43f5e" radius={[10, 10, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Panel>
+        </section>
+
         <section className="overflow-hidden rounded-[28px] border border-[#332d30] bg-[linear-gradient(180deg,rgba(34,29,31,0.98),rgba(20,16,18,0.98))] shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
           <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#2d282b] px-6 py-5">
             <div>
@@ -565,7 +837,12 @@ export default function UserComparePage() {
                             key={`${customer.id}-${section.title}-${row.label}`}
                             className="border-b border-[#2d282b] bg-[#231f21] px-6 py-4 text-center text-sm font-semibold text-white"
                           >
-                            <span className={row.valueClassName ?? ''}>{row.getValue(customer)}</span>
+                            <div className={typeof row.valueClassName === 'function' ? row.valueClassName(customer) : row.valueClassName ?? ''}>
+                              {row.getValue(customer)}
+                            </div>
+                            {row.helper ? (
+                              <div className="mt-1 text-[11px] font-medium text-[#8fa0bd]">{row.helper(customer)}</div>
+                            ) : null}
                           </td>
                         ))}
                       </tr>

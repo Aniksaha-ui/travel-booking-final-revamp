@@ -1,6 +1,6 @@
 import { formatUserRoleLabel, getUserRoleToneClassName } from '../utils/usersUtils'
 
-export const usersColumns = ({ loadingUserId = null, onToggleCompare, selectedUserIds = [] } = {}) => [
+export const usersColumns = ({ loadingUserId = null, onToggleCompare, onViewProfile, selectedUserIds = [] } = {}) => [
   {
     id: 'serial',
     label: 'SL',

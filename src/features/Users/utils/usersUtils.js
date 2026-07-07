@@ -183,6 +183,11 @@ export const formatUserProfileCurrency = (value, currency = 'BDT') => {
   return `${currency} ${integerFormatter.format(amount)}`
 }
 
+export const formatUserProfilePercentage = (value, fractionDigits = 2) => {
+  const amount = toNumber(value)
+  return `${amount.toFixed(fractionDigits)}%`
+}
+
 const normalizeStatusKey = (value) =>
   normalizeText(value, '')
     .toLowerCase()
@@ -395,11 +400,21 @@ export const normalizeUsersComparison = (payload = {}) => {
         activityRankGlobal: toNumber(globalRanks.activity_rank),
         activityScore: toNumber(metrics.activity_score),
         avgBookingValueLabel: formatUserProfileCurrency(metrics.avg_booking_value),
+        avgProfitMargin: toNumber(metrics.avg_profit_margin),
+        avgProfitMarginLabel: formatUserProfilePercentage(metrics.avg_profit_margin),
+        bookingGrowthDirection: normalizeText(metrics.booking_growth_direction, 'flat'),
+        bookingGrowthPercentage: toNumber(metrics.booking_growth_percentage),
+        bookingGrowthPercentageLabel: formatUserProfilePercentage(metrics.booking_growth_percentage),
         bookingRankGlobal: toNumber(globalRanks.booking_rank),
         createdAtLabel: formatUserProfileDateTime(customer?.created_at, '-'),
         email: normalizeText(customer?.email, USERS_EMPTY_STATE.noEmail),
+        grossProfit: toNumber(metrics.gross_profit),
+        grossProfitLabel: formatUserProfileCurrency(metrics.gross_profit),
+        growthReferenceMonth: normalizeText(metrics.growth_reference_month, 'Latest month'),
         hotelBookings: toNumber(metrics.hotel_bookings),
         id: customer?.id ?? `comparison-${index}`,
+        knownMarginCostLabel: formatUserProfileCurrency(metrics.known_margin_cost),
+        knownMarginRevenueLabel: formatUserProfileCurrency(metrics.known_margin_revenue),
         monthlyTrends: Array.isArray(customer?.monthly_trends)
           ? customer.monthly_trends.map((trend) => ({
               amount: toNumber(trend.amount),
@@ -417,6 +432,9 @@ export const normalizeUsersComparison = (payload = {}) => {
         paidBookings: toNumber(metrics.paid_bookings),
         pendingBookings: toNumber(metrics.pending_bookings),
         refundPending: toNumber(metrics.refund_pending),
+        revenueGrowthDirection: normalizeText(metrics.amount_growth_direction, 'flat'),
+        revenueGrowthPercentage: toNumber(metrics.amount_growth_percentage),
+        revenueGrowthPercentageLabel: formatUserProfilePercentage(metrics.amount_growth_percentage),
         roleLabel: formatUserRoleLabel(customer?.role),
         selectedActivityRank: toNumber(selectedRanks.activity_rank),
         selectedBookingRank: toNumber(selectedRanks.booking_rank),
