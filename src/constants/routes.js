@@ -32,6 +32,7 @@ export const APP_ROUTES = {
   userProfile: (userId = ':id') => `/admin/users/${userId}/profile`,
   visaApplications: "/admin/visa/applications",
   visaCountries: "/admin/visa/countries",
+  visaRequirements: "/admin/visa/requirements",
   visaTypes: "/admin/visa/types",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
   vehicleWiseSeatReport: "/admin/vehiclewiseseatreport",

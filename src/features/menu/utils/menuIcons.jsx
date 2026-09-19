@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  BriefcaseBusiness,
   Bus,
   CalendarCheck,
   CircleDollarSign,
@@ -37,6 +38,7 @@ const iconMap = {
   TripManagementIcon: Map,
   UserManagementIcon: Users,
   VehicleManagementIcon: Bus,
+  VisaManagementIcon: BriefcaseBusiness,
   TransactionsIcon: ReceiptText,
   SettingsIcon: Settings,
 };

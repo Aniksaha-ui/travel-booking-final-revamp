@@ -77,13 +77,17 @@ export const normalizeVisaCountry = (item = {}, index = 0, pagination = {}) => {
   }
 }
 
-export const toVisaCountryFormValues = (item = {}) => ({
-  flag: normalizeText(item.flag, ''),
-  is_popular: resolveIsPopular(item),
-  iso_code: normalizeText(item.iso_code, ''),
-  name: normalizeText(item.name, ''),
-  status: resolveIsActive(item),
-})
+export const toVisaCountryFormValues = (item) => {
+  const source = item ?? {}
+
+  return {
+    flag: normalizeText(source.flag, ''),
+    is_popular: resolveIsPopular(source),
+    iso_code: normalizeText(source.iso_code, ''),
+    name: normalizeText(source.name, ''),
+    status: resolveIsActive(source),
+  }
+}
 
 export const buildVisaCountryPayload = (values = {}, mode = 'create') => {
   const basePayload = {

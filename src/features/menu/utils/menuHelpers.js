@@ -24,6 +24,26 @@ export const hasChildren = (item) => Array.isArray(item?.children) && item.child
 
 const isReportRoute = (route) => REPORT_ROUTE_SET.has(route);
 
+const VISA_MENU_FALLBACK_ITEM = {
+  id: "frontend-visa-management",
+  title: "Visa Management",
+  icon: "VisaManagementIcon",
+  order: 900,
+  children: [
+    { id: "frontend-visa-applications", title: "Applications", path: APP_ROUTES.visaApplications, icon: "VisaManagementIcon", order: 1, children: [] },
+    { id: "frontend-visa-countries", title: "Countries", path: APP_ROUTES.visaCountries, icon: "VisaManagementIcon", order: 2, children: [] },
+    { id: "frontend-visa-types", title: "Visa Types", path: APP_ROUTES.visaTypes, icon: "VisaManagementIcon", order: 3, children: [] },
+    { id: "frontend-visa-requirements", title: "Requirements", path: APP_ROUTES.visaRequirements, icon: "VisaManagementIcon", order: 4, children: [] },
+  ],
+};
+
+const containsVisaMenuItem = (items = []) =>
+  items.some((item) => {
+    const route = getSupportedRoute(item.path);
+    return [APP_ROUTES.visaApplications, APP_ROUTES.visaCountries, APP_ROUTES.visaTypes, APP_ROUTES.visaRequirements].includes(route)
+      || containsVisaMenuItem(item.children ?? []);
+  });
+
 const isReportMenuHubCandidate = (item = {}) => {
   const supportedRoute = getSupportedRoute(item.path);
 
@@ -128,16 +148,19 @@ const normalizeReportsMenu = ({ mainMenuItems = [], bottomMenuItems = [] }) => {
     reportChildren: dedupeReportItems([...context.reportItems, ...buildFallbackReportMenuItems()]),
   };
 
+  const hasVisaEntries = containsVisaMenuItem([...nextMainMenuItems, ...nextBottomMenuItems]);
+  const visaFallback = hasVisaEntries ? [] : [VISA_MENU_FALLBACK_ITEM];
+
   if ((context.reportHubLocation ?? "bottomMenuItems") === "mainMenuItems") {
     return {
-      mainMenuItems: sortMenuItems([...nextMainMenuItems, reportHubItem]),
+      mainMenuItems: sortMenuItems([...nextMainMenuItems, ...visaFallback, reportHubItem]),
       bottomMenuItems: sortMenuItems(nextBottomMenuItems),
     };
   }
 
   return {
     mainMenuItems: sortMenuItems(nextMainMenuItems),
-    bottomMenuItems: sortMenuItems([...nextBottomMenuItems, reportHubItem]),
+    bottomMenuItems: sortMenuItems([...nextBottomMenuItems, ...visaFallback, reportHubItem]),
   };
 };
 
@@ -192,6 +215,18 @@ export const getSupportedRoute = (path) => {
     path?.startsWith("/admin/visa/applications/")
   ) {
     return APP_ROUTES.visaApplications;
+  }
+
+  if (
+    path === "/admin/visa/requirements" ||
+    path === "/visa/requirements" ||
+    path === "admin/visa/requirements" ||
+    path === "visa/requirements" ||
+    path === "/admin/visa/requirements/add" ||
+    path === "/admin/visa/requirements/update/:id" ||
+    path?.startsWith("/admin/visa/requirements/update/")
+  ) {
+    return APP_ROUTES.visaRequirements;
   }
 
   if (

@@ -1,88 +1,179 @@
-import { lazy, Suspense } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import './App.css'
-import FullPageLoader from './components/common/FullPageLoader'
-import { ToastProvider } from './components/common/Toaster'
-import { APP_ROUTES } from './constants/routes'
-import { AuthProvider, useAuthContext } from './contexts/AuthContext'
-import { AppLayout } from './layout/AppLayout'
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import FullPageLoader from "./components/common/FullPageLoader";
+import { ToastProvider } from "./components/common/Toaster";
+import { APP_ROUTES } from "./constants/routes";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+import { AppLayout } from "./layout/AppLayout";
 
-const AvgBookingValueReportPage = lazy(() => import('./features/AvgBookingValueReport/page/AvgBookingValueReportPage'))
-const AccountBalancePage = lazy(() => import('./features/AccountBalance/page/AccountBalancePage'))
-const AccountHistoryPage = lazy(() => import('./features/AccountHistory/page/AccountHistoryPage'))
-const BlogFormPage = lazy(() => import('./features/Blogs/page/BlogFormPage'))
-const BlogsPage = lazy(() => import('./features/Blogs/page/BlogsPage'))
-const BookingsPage = lazy(() => import('./features/Bookings/page/BookingsPage'))
-const BookingFrequencyPerUserPage = lazy(() => import('./features/BookingFrequencyPerUser/page/BookingFrequencyPerUserPage'))
-const BookingSummaryPage = lazy(() => import('./features/BookingSummary/page/BookingSummaryPage'))
-const CustomerValueReportPage = lazy(() => import('./features/CustomerValueReport/page/CustomerValueReportPage'))
-const DailyBalancePage = lazy(() => import('./features/DailyBalance/page/DailyBalancePage'))
-const Dashboard = lazy(() => import('./features/Dashboard/page/DashboardPage'))
-const FinancialReportPage = lazy(() => import('./features/FinancialReport/page/FinancialReportPage'))
-const HighCancellationPackagesPage = lazy(() => import('./features/HighCancellationPackages/page/HighCancellationPackagesPage'))
-const HotelsPage = lazy(() => import('./features/Hotels/page/HotelsPage'))
-const HotelFormPage = lazy(() => import('./features/Hotels/page/HotelFormPage'))
-const LowOccupancyReportPage = lazy(() => import('./features/LowOccupancyReport/page/LowOccupancyReportPage'))
-const LowPerformingPackagesPage = lazy(() => import('./features/LowPerformingPackages/page/LowPerformingPackagesPage'))
-const MenuItemFormPage = lazy(() => import('./features/MenuItems/page/MenuItemFormPage'))
-const MenuItemsPage = lazy(() => import('./features/MenuItems/page/MenuItemsPage'))
-const MonitoringPage = lazy(() => import('./features/Monitoring/page/MonitoringPage'))
-const MonthRunningBalancePage = lazy(() => import('./features/MonthRunningBalance/page/MonthRunningBalancePage'))
-const OnlinePaymentConfigFormPage = lazy(() => import('./features/OnlinePaymentConfig/page/OnlinePaymentConfigFormPage'))
-const OnlinePaymentConfigPage = lazy(() => import('./features/OnlinePaymentConfig/page/OnlinePaymentConfigPage'))
-const OverallSalesReportPage = lazy(() => import('./features/OverallSalesReport/page/OverallSalesReportPage'))
-const PackagesPage = lazy(() => import('./features/Packages/page/PackagesPage'))
-const ReportsPage = lazy(() => import('./features/Reports/page/ReportsPage'))
-const RefundsPage = lazy(() => import('./features/Refunds/page/RefundsPage'))
-const RoutePage = lazy(() => import('./features/Routes/page/RoutePage'))
-const RouteWiseSalesReportPage = lazy(() => import('./features/RouteWiseSalesReport/page/RouteWiseSalesReportPage'))
-const SeatManagementPage = lazy(() => import('./features/Seats/page/SeatManagementPage'))
-const TicketStatusReportPage = lazy(() => import('./features/TicketStatusReport/page/TicketStatusReportPage'))
-const TicketsPage = lazy(() => import('./features/Tickets/page/TicketsPage'))
-const TopActiveCustomersPage = lazy(() => import('./features/TopActiveCustomers/page/TopActiveCustomersPage'))
-const TransactionsPage = lazy(() => import('./features/Transactions/page/TransactionsPage'))
-const TripPerformancePage = lazy(() => import('./features/TripPerformance/page/TripPerformancePage'))
-const TripsPage = lazy(() => import('./features/Trips/page/TripsPage'))
-const UsersPage = lazy(() => import('./features/Users/page/UsersPage'))
-const UserComparePage = lazy(() => import('./features/Users/page/UserComparePage'))
-const UserProfilePage = lazy(() => import('./features/Users/page/UserProfilePage'))
-const VisaApplicationDetailsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationDetailsPage'))
-const VisaApplicationsPage = lazy(() => import('./features/VisaApplications/page/VisaApplicationsPage'))
-const VisaCountriesPage = lazy(() => import('./features/VisaCountries/page/VisaCountriesPage'))
-const VisaTypesPage = lazy(() => import('./features/VisaTypes/page/VisaTypesPage'))
-const VehicleTrackingReportPage = lazy(() => import('./features/VehicleTrackingReport/page/VehicleTrackingReportPage'))
-const VehicleWiseSeatReportPage = lazy(() => import('./features/VehicleWiseSeatReport/page/VehicleWiseSeatReportPage'))
-const VehiclesPage = lazy(() => import('./features/Vehicles/page/VehiclesPage'))
-const LoginPage = lazy(() => import('./features/auth/page/LoginPage'))
+const AvgBookingValueReportPage = lazy(
+  () =>
+    import("./features/AvgBookingValueReport/page/AvgBookingValueReportPage"),
+);
+const AccountBalancePage = lazy(
+  () => import("./features/AccountBalance/page/AccountBalancePage"),
+);
+const AccountHistoryPage = lazy(
+  () => import("./features/AccountHistory/page/AccountHistoryPage"),
+);
+const BlogFormPage = lazy(() => import("./features/Blogs/page/BlogFormPage"));
+const BlogsPage = lazy(() => import("./features/Blogs/page/BlogsPage"));
+const BookingsPage = lazy(
+  () => import("./features/Bookings/page/BookingsPage"),
+);
+const BookingFrequencyPerUserPage = lazy(
+  () =>
+    import("./features/BookingFrequencyPerUser/page/BookingFrequencyPerUserPage"),
+);
+const BookingSummaryPage = lazy(
+  () => import("./features/BookingSummary/page/BookingSummaryPage"),
+);
+const CustomerValueReportPage = lazy(
+  () => import("./features/CustomerValueReport/page/CustomerValueReportPage"),
+);
+const DailyBalancePage = lazy(
+  () => import("./features/DailyBalance/page/DailyBalancePage"),
+);
+const Dashboard = lazy(() => import("./features/Dashboard/page/DashboardPage"));
+const FinancialReportPage = lazy(
+  () => import("./features/FinancialReport/page/FinancialReportPage"),
+);
+const HighCancellationPackagesPage = lazy(
+  () =>
+    import("./features/HighCancellationPackages/page/HighCancellationPackagesPage"),
+);
+const HotelsPage = lazy(() => import("./features/Hotels/page/HotelsPage"));
+const HotelFormPage = lazy(
+  () => import("./features/Hotels/page/HotelFormPage"),
+);
+const LowOccupancyReportPage = lazy(
+  () => import("./features/LowOccupancyReport/page/LowOccupancyReportPage"),
+);
+const LowPerformingPackagesPage = lazy(
+  () =>
+    import("./features/LowPerformingPackages/page/LowPerformingPackagesPage"),
+);
+const MenuItemFormPage = lazy(
+  () => import("./features/MenuItems/page/MenuItemFormPage"),
+);
+const MenuItemsPage = lazy(
+  () => import("./features/MenuItems/page/MenuItemsPage"),
+);
+const MonitoringPage = lazy(
+  () => import("./features/Monitoring/page/MonitoringPage"),
+);
+const MonthRunningBalancePage = lazy(
+  () => import("./features/MonthRunningBalance/page/MonthRunningBalancePage"),
+);
+const OnlinePaymentConfigFormPage = lazy(
+  () =>
+    import("./features/OnlinePaymentConfig/page/OnlinePaymentConfigFormPage"),
+);
+const OnlinePaymentConfigPage = lazy(
+  () => import("./features/OnlinePaymentConfig/page/OnlinePaymentConfigPage"),
+);
+const OverallSalesReportPage = lazy(
+  () => import("./features/OverallSalesReport/page/OverallSalesReportPage"),
+);
+const PackagesPage = lazy(
+  () => import("./features/Packages/page/PackagesPage"),
+);
+const ReportsPage = lazy(() => import("./features/Reports/page/ReportsPage"));
+const RefundsPage = lazy(() => import("./features/Refunds/page/RefundsPage"));
+const RoutePage = lazy(() => import("./features/Routes/page/RoutePage"));
+const RouteWiseSalesReportPage = lazy(
+  () => import("./features/RouteWiseSalesReport/page/RouteWiseSalesReportPage"),
+);
+const SeatManagementPage = lazy(
+  () => import("./features/Seats/page/SeatManagementPage"),
+);
+const TicketStatusReportPage = lazy(
+  () => import("./features/TicketStatusReport/page/TicketStatusReportPage"),
+);
+const TicketsPage = lazy(() => import("./features/Tickets/page/TicketsPage"));
+const TopActiveCustomersPage = lazy(
+  () => import("./features/TopActiveCustomers/page/TopActiveCustomersPage"),
+);
+const TransactionsPage = lazy(
+  () => import("./features/Transactions/page/TransactionsPage"),
+);
+const TripPerformancePage = lazy(
+  () => import("./features/TripPerformance/page/TripPerformancePage"),
+);
+const TripsPage = lazy(() => import("./features/Trips/page/TripsPage"));
+const UsersPage = lazy(() => import("./features/Users/page/UsersPage"));
+const UserComparePage = lazy(
+  () => import("./features/Users/page/UserComparePage"),
+);
+const UserProfilePage = lazy(
+  () => import("./features/Users/page/UserProfilePage"),
+);
+const VisaApplicationDetailsPage = lazy(
+  () => import("./features/VisaApplications/page/VisaApplicationDetailsPage"),
+);
+const VisaApplicationsPage = lazy(
+  () => import("./features/VisaApplications/page/VisaApplicationsPage"),
+);
+const VisaCountriesPage = lazy(
+  () => import("./features/VisaCountries/page/VisaCountriesPage"),
+);
+const VisaCountryFormPage = lazy(
+  () => import("./features/VisaCountries/page/VisaCountryFormPage"),
+);
+const VisaRequirementFormPage = lazy(
+  () => import("./features/VisaRequirements/page/VisaRequirementFormPage"),
+);
+const VisaRequirementsPage = lazy(
+  () => import("./features/VisaRequirements/page/VisaRequirementsPage"),
+);
+const VisaTypesPage = lazy(
+  () => import("./features/VisaTypes/page/VisaTypesPage"),
+);
+const VisaTypeFormPage = lazy(
+  () => import("./features/VisaTypes/page/VisaTypeFormPage"),
+);
+const VehicleTrackingReportPage = lazy(
+  () =>
+    import("./features/VehicleTrackingReport/page/VehicleTrackingReportPage"),
+);
+const VehicleWiseSeatReportPage = lazy(
+  () =>
+    import("./features/VehicleWiseSeatReport/page/VehicleWiseSeatReportPage"),
+);
+const VehiclesPage = lazy(
+  () => import("./features/Vehicles/page/VehiclesPage"),
+);
+const LoginPage = lazy(() => import("./features/auth/page/LoginPage"));
 
 function ProtectedRoute({ children }) {
   const {
     auth: { isAuthenticated },
-  } = useAuthContext()
+  } = useAuthContext();
 
   if (!isAuthenticated) {
-    return <Navigate to={APP_ROUTES.login} replace />
+    return <Navigate to={APP_ROUTES.login} replace />;
   }
 
-  return children
+  return children;
 }
 
 function GuestRoute({ children }) {
   const {
     auth: { isAuthenticated },
-  } = useAuthContext()
+  } = useAuthContext();
 
   if (isAuthenticated) {
-    return <Navigate to={APP_ROUTES.dashboard} replace />
+    return <Navigate to={APP_ROUTES.dashboard} replace />;
   }
 
-  return children
+  return children;
 }
 
 function AppRoutes() {
   const {
     auth: { isAuthenticated },
-  } = useAuthContext()
+  } = useAuthContext();
 
   return (
     <Routes>
@@ -103,11 +194,16 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<Navigate to={APP_ROUTES.dashboard} replace />} />
+        <Route
+          path="/"
+          element={<Navigate to={APP_ROUTES.dashboard} replace />}
+        />
         <Route
           path={APP_ROUTES.accountBalance}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading account balance..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading account balance..." />}
+            >
               <AccountBalancePage />
             </Suspense>
           }
@@ -115,7 +211,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.accountHistory}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading account history..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading account history..." />}
+            >
               <AccountHistoryPage />
             </Suspense>
           }
@@ -123,7 +221,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.avgBookingValueReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading average booking value report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading average booking value report..." />
+              }
+            >
               <AvgBookingValueReportPage />
             </Suspense>
           }
@@ -139,7 +241,9 @@ function AppRoutes() {
         <Route
           path="/admin/blog/add"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading blog builder..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading blog builder..." />}
+            >
               <BlogFormPage action="add" />
             </Suspense>
           }
@@ -147,16 +251,23 @@ function AppRoutes() {
         <Route
           path="/admin/blog/update/:id"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading blog builder..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading blog builder..." />}
+            >
               <BlogFormPage action="update" />
             </Suspense>
           }
         />
-        <Route path="/admin/blogs" element={<Navigate to={APP_ROUTES.blogs} replace />} />
+        <Route
+          path="/admin/blogs"
+          element={<Navigate to={APP_ROUTES.blogs} replace />}
+        />
         <Route
           path={APP_ROUTES.bookings}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading bookings..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading bookings..." />}
+            >
               <BookingsPage />
             </Suspense>
           }
@@ -164,7 +275,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.bookingFrequencyPerUser}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading booking frequency report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading booking frequency report..." />
+              }
+            >
               <BookingFrequencyPerUserPage />
             </Suspense>
           }
@@ -172,7 +287,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.customerValueReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading customer value report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading customer value report..." />
+              }
+            >
               <CustomerValueReportPage />
             </Suspense>
           }
@@ -180,16 +299,23 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.bookingSummary}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading booking summary..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading booking summary..." />}
+            >
               <BookingSummaryPage />
             </Suspense>
           }
         />
-        <Route path="/admin/booking-summary" element={<Navigate to={APP_ROUTES.bookingSummary} replace />} />
+        <Route
+          path="/admin/booking-summary"
+          element={<Navigate to={APP_ROUTES.bookingSummary} replace />}
+        />
         <Route
           path={APP_ROUTES.dailyBalance}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading daily balance..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading daily balance..." />}
+            >
               <DailyBalancePage />
             </Suspense>
           }
@@ -197,7 +323,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.financialReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading financial report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading financial report..." />
+              }
+            >
               <FinancialReportPage />
             </Suspense>
           }
@@ -205,7 +335,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.reports}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading reports..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading reports..." />}
+            >
               <ReportsPage />
             </Suspense>
           }
@@ -213,7 +345,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.overallSales}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading overall sales..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading overall sales..." />}
+            >
               <OverallSalesReportPage />
             </Suspense>
           }
@@ -221,7 +355,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.routeWiseSales}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading route wise sales..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading route wise sales..." />
+              }
+            >
               <RouteWiseSalesReportPage />
             </Suspense>
           }
@@ -229,7 +367,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.ticketStatusReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading ticket status report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading ticket status report..." />
+              }
+            >
               <TicketStatusReportPage />
             </Suspense>
           }
@@ -237,7 +379,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.topActiveCustomers}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading top active customers..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading top active customers..." />
+              }
+            >
               <TopActiveCustomersPage />
             </Suspense>
           }
@@ -245,7 +391,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.highCancellationPackages}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading high cancellation packages..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading high cancellation packages..." />
+              }
+            >
               <HighCancellationPackagesPage />
             </Suspense>
           }
@@ -253,7 +403,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.lowOccupancyReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading low occupancy report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading low occupancy report..." />
+              }
+            >
               <LowOccupancyReportPage />
             </Suspense>
           }
@@ -261,7 +415,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.lowPerformingPackages}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading low-performing packages..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading low-performing packages..." />
+              }
+            >
               <LowPerformingPackagesPage />
             </Suspense>
           }
@@ -269,7 +427,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.monthRunningBalance}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading monthly running balance..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading monthly running balance..." />
+              }
+            >
               <MonthRunningBalancePage />
             </Suspense>
           }
@@ -277,7 +439,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.monitoring}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading monitoring..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading monitoring..." />}
+            >
               <MonitoringPage />
             </Suspense>
           }
@@ -285,7 +449,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.onlinePaymentConfig}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading online payment configuration..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading online payment configuration..." />
+              }
+            >
               <OnlinePaymentConfigPage />
             </Suspense>
           }
@@ -293,7 +461,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.menuItems}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading menu items..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading menu items..." />}
+            >
               <MenuItemsPage />
             </Suspense>
           }
@@ -301,7 +471,9 @@ function AppRoutes() {
         <Route
           path="/admin/menu-items/add"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading menu item form..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading menu item form..." />}
+            >
               <MenuItemFormPage action="add" />
             </Suspense>
           }
@@ -309,7 +481,9 @@ function AppRoutes() {
         <Route
           path="/admin/menu-items/update/:id"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading menu item form..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading menu item form..." />}
+            >
               <MenuItemFormPage action="update" />
             </Suspense>
           }
@@ -317,7 +491,11 @@ function AppRoutes() {
         <Route
           path="/admin/online-payment-configure/add"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading online payment configuration form..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading online payment configuration form..." />
+              }
+            >
               <OnlinePaymentConfigFormPage action="add" />
             </Suspense>
           }
@@ -325,16 +503,25 @@ function AppRoutes() {
         <Route
           path="/admin/online-payment-configure/update/:id"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading online payment configuration form..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading online payment configuration form..." />
+              }
+            >
               <OnlinePaymentConfigFormPage action="update" />
             </Suspense>
           }
         />
-        <Route path="/admin/online-configure" element={<Navigate to={APP_ROUTES.onlinePaymentConfig} replace />} />
+        <Route
+          path="/admin/online-configure"
+          element={<Navigate to={APP_ROUTES.onlinePaymentConfig} replace />}
+        />
         <Route
           path={APP_ROUTES.refunds}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading refunds..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading refunds..." />}
+            >
               <RefundsPage />
             </Suspense>
           }
@@ -342,7 +529,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.packages}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading packages..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading packages..." />}
+            >
               <PackagesPage />
             </Suspense>
           }
@@ -358,7 +547,9 @@ function AppRoutes() {
         <Route
           path="/admin/hotel/add"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading hotel form..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading hotel form..." />}
+            >
               <HotelFormPage action="add" />
             </Suspense>
           }
@@ -366,7 +557,9 @@ function AppRoutes() {
         <Route
           path="/admin/hotel/update/:id"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading hotel form..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading hotel form..." />}
+            >
               <HotelFormPage action="update" />
             </Suspense>
           }
@@ -374,12 +567,17 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.transactions}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading transactions..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading transactions..." />}
+            >
               <TransactionsPage />
             </Suspense>
           }
         />
-        <Route path="/admin/transaction" element={<Navigate to={APP_ROUTES.transactions} replace />} />
+        <Route
+          path="/admin/transaction"
+          element={<Navigate to={APP_ROUTES.transactions} replace />}
+        />
         <Route
           path={APP_ROUTES.users}
           element={
@@ -391,7 +589,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.userCompare}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading customer comparison..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading customer comparison..." />
+              }
+            >
               <UserComparePage />
             </Suspense>
           }
@@ -399,7 +601,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.userProfile()}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading customer profile..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading customer profile..." />
+              }
+            >
               <UserProfilePage />
             </Suspense>
           }
@@ -407,7 +613,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.tickets}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading tickets..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading tickets..." />}
+            >
               <TicketsPage />
             </Suspense>
           }
@@ -415,7 +623,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.tripPerformance}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading trip performance..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading trip performance..." />
+              }
+            >
               <TripPerformancePage />
             </Suspense>
           }
@@ -423,7 +635,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.visaApplications}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading visa applications..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading visa applications..." />
+              }
+            >
               <VisaApplicationsPage />
             </Suspense>
           }
@@ -431,7 +647,11 @@ function AppRoutes() {
         <Route
           path="/admin/visa/applications/:id"
           element={
-            <Suspense fallback={<FullPageLoader message="Loading visa application details..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading visa application details..." />
+              }
+            >
               <VisaApplicationDetailsPage />
             </Suspense>
           }
@@ -439,27 +659,50 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.visaCountries}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading visa countries..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading visa countries..." />}
+            >
               <VisaCountriesPage />
             </Suspense>
           }
         />
-        <Route path="/admin/visa/countries/add" element={<Navigate to={APP_ROUTES.visaCountries} replace />} />
-        <Route path="/admin/visa/countries/update/:id" element={<Navigate to={APP_ROUTES.visaCountries} replace />} />
+        <Route
+          path="/admin/visa/countries/add"
+          element={<Suspense fallback={<FullPageLoader message="Loading visa country form..." />}><VisaCountryFormPage action="add" /></Suspense>}
+        />
+        <Route
+          path="/admin/visa/countries/update/:id"
+          element={<Suspense fallback={<FullPageLoader message="Loading visa country form..." />}><VisaCountryFormPage action="update" /></Suspense>}
+        />
         <Route
           path={APP_ROUTES.visaTypes}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading visa types..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading visa types..." />}
+            >
               <VisaTypesPage />
             </Suspense>
           }
         />
-        <Route path="/admin/visa/types/add" element={<Navigate to={APP_ROUTES.visaTypes} replace />} />
-        <Route path="/admin/visa/types/update/:id" element={<Navigate to={APP_ROUTES.visaTypes} replace />} />
+        <Route
+          path="/admin/visa/types/add"
+          element={<Suspense fallback={<FullPageLoader message="Loading visa type form..." />}><VisaTypeFormPage action="add" /></Suspense>}
+        />
+        <Route
+          path="/admin/visa/types/update/:id"
+          element={<Suspense fallback={<FullPageLoader message="Loading visa type form..." />}><VisaTypeFormPage action="update" /></Suspense>}
+        />
+        <Route path={APP_ROUTES.visaRequirements} element={<Suspense fallback={<FullPageLoader message="Loading visa requirements..." />}><VisaRequirementsPage /></Suspense>} />
+        <Route path="/admin/visa/requirements/add" element={<Suspense fallback={<FullPageLoader message="Loading visa requirement form..." />}><VisaRequirementFormPage action="add" /></Suspense>} />
+        <Route path="/admin/visa/requirements/update/:id" element={<Suspense fallback={<FullPageLoader message="Loading visa requirement form..." />}><VisaRequirementFormPage action="update" /></Suspense>} />
         <Route
           path={APP_ROUTES.vehicleTrackingReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading vehicle tracking report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading vehicle tracking report..." />
+              }
+            >
               <VehicleTrackingReportPage />
             </Suspense>
           }
@@ -467,7 +710,11 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.vehicleWiseSeatReport}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading vehicle wise seat report..." />}>
+            <Suspense
+              fallback={
+                <FullPageLoader message="Loading vehicle wise seat report..." />
+              }
+            >
               <VehicleWiseSeatReportPage />
             </Suspense>
           }
@@ -475,7 +722,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.dashboard}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading dashboard..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading dashboard..." />}
+            >
               <Dashboard />
             </Suspense>
           }
@@ -491,7 +740,9 @@ function AppRoutes() {
         <Route
           path={APP_ROUTES.vehicles}
           element={
-            <Suspense fallback={<FullPageLoader message="Loading vehicles..." />}>
+            <Suspense
+              fallback={<FullPageLoader message="Loading vehicles..." />}
+            >
               <VehiclesPage />
             </Suspense>
           }
@@ -515,10 +766,15 @@ function AppRoutes() {
       </Route>
       <Route
         path="*"
-        element={<Navigate to={isAuthenticated ? APP_ROUTES.dashboard : APP_ROUTES.login} replace />}
+        element={
+          <Navigate
+            to={isAuthenticated ? APP_ROUTES.dashboard : APP_ROUTES.login}
+            replace
+          />
+        }
       />
     </Routes>
-  )
+  );
 }
 
 function App() {
@@ -530,7 +786,7 @@ function App() {
         </AuthProvider>
       </ToastProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

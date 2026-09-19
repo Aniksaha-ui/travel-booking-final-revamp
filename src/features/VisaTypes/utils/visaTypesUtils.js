@@ -87,14 +87,18 @@ export const normalizeVisaType = (item = {}, index = 0, pagination = {}) => {
   }
 }
 
-export const toVisaTypeFormValues = (item = {}) => ({
-  country_id: item.country_id ? String(item.country_id) : '',
-  description: normalizeText(item.description, ''),
-  fee: item.fee ?? '',
-  processing_days: item.processing_days ?? '',
-  status: toBoolean(item.status ?? item.is_active, true),
-  visa_name: normalizeText(item.visa_name, ''),
-})
+export const toVisaTypeFormValues = (item) => {
+  const source = item ?? {}
+
+  return {
+    country_id: source.country_id ? String(source.country_id) : '',
+    description: normalizeText(source.description, ''),
+    fee: source.fee ?? '',
+    processing_days: source.processing_days ?? '',
+    status: toBoolean(source.status ?? source.is_active, true),
+    visa_name: normalizeText(source.visa_name, ''),
+  }
+}
 
 const parseInteger = (value) => {
   const parsedValue = Number.parseInt(String(value ?? '').trim(), 10)
