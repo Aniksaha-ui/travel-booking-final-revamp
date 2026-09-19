@@ -35,10 +35,18 @@ export function VisaApplicationDetailsHeader({ application, isPrinting, onBack, 
       icon: CalendarClock,
     },
   ]
+  const initials = application.fullName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((name) => name.charAt(0))
+    .join('')
+    .toUpperCase()
+  const reviewedDocuments = application.documents.filter((document) => document.reviewStatus !== 'pending').length
 
   return (
-    <section className="relative overflow-hidden rounded-[28px] border border-[#2d282b] bg-[#171314] shadow-[0_24px_60px_rgba(0,0,0,0.24)]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.18),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.14),transparent_28%)]" />
+    <section className="relative overflow-hidden rounded-[28px] border border-[#31384c] bg-[#171314] shadow-[0_24px_60px_rgba(0,0,0,0.24)]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.25),transparent_38%),radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.14),transparent_32%)]" />
 
       <div className="relative p-5 lg:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -51,17 +59,12 @@ export function VisaApplicationDetailsHeader({ application, isPrinting, onBack, 
               <ArrowLeft size={16} />
             </button>
 
-            <div>
+            <div className="min-w-0">
               <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#7ea1ff]">
                 Visa Application
               </p>
-              <h1 className="mt-2 text-2xl font-black text-white lg:text-[30px]">
-                {application.applicationNoLabel}
-              </h1>
-              <p className="mt-2 text-sm text-[#9fb2d0]">
-                {application.fullName} is travelling to {application.countryName} under{' '}
-                {application.packageTitle}.
-              </p>
+              <div className="mt-2 flex items-center gap-3"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-400 to-cyan-500 text-sm font-black text-slate-950 shadow-lg shadow-blue-500/20">{initials || 'VA'}</span><div><h1 className="text-2xl font-black text-white lg:text-[30px]">{application.fullName}</h1><p className="mt-0.5 text-sm text-[#9fb2d0]">Application {application.applicationNoLabel}</p></div></div>
+              <p className="mt-3 text-sm text-[#b8c9e3]">Travelling to <strong className="text-white">{application.countryName}</strong> on the <strong className="text-white">{application.packageTitle}</strong> visa package.</p>
             </div>
           </div>
 
@@ -85,6 +88,9 @@ export function VisaApplicationDetailsHeader({ application, isPrinting, onBack, 
           <span className="inline-flex rounded-full border border-[#3a3337] bg-[#211d20] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#8fa0bd]">
             Fee: {application.feeSnapshotLabel}
           </span>
+          <span className="inline-flex rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-cyan-100">
+            {reviewedDocuments}/{application.documents.length} documents reviewed
+          </span>
         </div>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -94,7 +100,7 @@ export function VisaApplicationDetailsHeader({ application, isPrinting, onBack, 
             return (
               <article
                 key={item.label}
-                className="rounded-[20px] border border-[#332d30] bg-[#1d191b]/90 p-4 shadow-[0_12px_30px_rgba(0,0,0,0.16)]"
+                className="rounded-[20px] border border-white/[0.08] bg-[#1d191b]/80 p-4 shadow-[0_12px_30px_rgba(0,0,0,0.16)]"
               >
                 <div className="flex items-center gap-2">
                   <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-300">

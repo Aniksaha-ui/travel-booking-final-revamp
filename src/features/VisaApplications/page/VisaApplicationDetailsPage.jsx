@@ -21,6 +21,7 @@ import { VisaApplicationDocumentsPanel } from '../component/VisaApplicationDocum
 import { VisaApplicationKanbanBoard } from '../component/VisaApplicationKanbanBoard.jsx'
 import { VisaApplicationOverviewPanel } from '../component/VisaApplicationOverviewPanel.jsx'
 import { VisaApplicationPaymentsPanel } from '../component/VisaApplicationPaymentsPanel.jsx'
+import { VisaApplicationReviewGuide } from '../component/VisaApplicationReviewGuide.jsx'
 import { VisaApplicationStatusLogsPanel } from '../component/VisaApplicationStatusLogsPanel.jsx'
 import { VisaApplicationWorkflowPanel } from '../component/VisaApplicationWorkflowPanel.jsx'
 import { VisaApplicationWorkspaceTabs } from '../component/VisaApplicationWorkspaceTabs.jsx'
@@ -39,7 +40,7 @@ export default function VisaApplicationDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const toast = useToast()
-  const [activeTab, setActiveTab] = useState('workflow')
+  const [activeTab, setActiveTab] = useState('overview')
   const [application, setApplication] = useState(null)
   const [officers, setOfficers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -335,6 +336,12 @@ export default function VisaApplicationDetailsPage() {
             />
           ))}
         </section>
+
+        <VisaApplicationReviewGuide
+          application={application}
+          onOpenDocuments={() => setActiveTab('documents')}
+          onOpenWorkflow={() => setActiveTab('workflow')}
+        />
 
         <VisaApplicationWorkspaceTabs
           activeTab={activeTab}
