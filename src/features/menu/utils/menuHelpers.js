@@ -197,6 +197,10 @@ export const normalizeStoredMenuState = (payload) => {
 };
 
 export const getSupportedRoute = (path) => {
+  if (path === '/guide/myAssignPackages' || path === 'guide/myAssignPackages') {
+    return APP_ROUTES.guidePackages;
+  }
+
   if (
     path === "/admin/reports" ||
     path === "/reports" ||

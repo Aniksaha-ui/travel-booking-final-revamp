@@ -34,6 +34,7 @@ export const APP_ROUTES = {
   visaCountries: "/admin/visa/countries",
   visaRequirements: "/admin/visa/requirements",
   visaTypes: "/admin/visa/types",
+  guidePackages: "/guide/myAssignPackages",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
   vehicleWiseSeatReport: "/admin/vehiclewiseseatreport",
   dashboard: "/dashboard",

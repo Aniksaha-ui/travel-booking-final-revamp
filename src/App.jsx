@@ -133,6 +133,10 @@ const VisaTypesPage = lazy(
 const VisaTypeFormPage = lazy(
   () => import("./features/VisaTypes/page/VisaTypeFormPage"),
 );
+const GuidePackagesPage = lazy(() => import("./features/GuidePackages/page/GuidePackagesPage"));
+const GuidePackageCostingPage = lazy(() => import("./features/GuidePackages/page/GuidePackageCostingPage"));
+const GuidePackageCostingFormPage = lazy(() => import("./features/GuidePackages/page/GuidePackageCostingFormPage"));
+const GuidePackageFeedbackPage = lazy(() => import("./features/GuidePackages/page/GuidePackageFeedbackPage"));
 const VehicleTrackingReportPage = lazy(
   () =>
     import("./features/VehicleTrackingReport/page/VehicleTrackingReportPage"),
@@ -644,6 +648,11 @@ function AppRoutes() {
             </Suspense>
           }
         />
+        <Route path={APP_ROUTES.guidePackages} element={<Suspense fallback={<FullPageLoader message="Loading assigned packages..." />}><GuidePackagesPage /></Suspense>} />
+        <Route path="/guide/my-packageCosting/:id" element={<Suspense fallback={<FullPageLoader message="Loading package costing..." />}><GuidePackageCostingPage /></Suspense>} />
+        <Route path="/guide/my-packageCosting/addCosting/:packageId" element={<Suspense fallback={<FullPageLoader message="Loading cost form..." />}><GuidePackageCostingFormPage action="add" /></Suspense>} />
+        <Route path="/guide/my-packageCosting/addCosting/:packageId/:costId" element={<Suspense fallback={<FullPageLoader message="Loading cost form..." />}><GuidePackageCostingFormPage action="update" /></Suspense>} />
+        <Route path="/guide/my-feedback/:id" element={<Suspense fallback={<FullPageLoader message="Loading package feedback..." />}><GuidePackageFeedbackPage /></Suspense>} />
         <Route
           path="/admin/visa/applications/:id"
           element={

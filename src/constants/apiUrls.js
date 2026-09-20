@@ -8,6 +8,14 @@ export const API_URLS = {
     users: "/admin/users",
     userProfile: (userId) => `/admin/users/${userId}/profile`,
   },
+  guide: {
+    assignedPackages: "/guide/myAssignPackage",
+    costingByPackage: "/guide/costingByPackageList",
+    costingCreate: "/admin/guide/costingbypackage",
+    costingUpdate: "/admin/guide/costingbypackage/update",
+    costingById: (costId) => `/admin/guide/costingbypackage/${costId}`,
+    feedbackByPackage: "/guide/myFeedBackByPackage",
+  },
   bookings: {
     invoice: "/admin/booking-invoice",
     list: "/admin/booking",
