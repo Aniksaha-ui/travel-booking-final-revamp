@@ -1,8 +1,3 @@
-import {
-  buildFallbackReportMenuItems,
-  REPORT_ROUTE_SET,
-  REPORTS_MENU_FALLBACK_ITEM,
-} from "../../../constants/reportCatalog";
 import { APP_ROUTES } from "../../../constants/routes";
 
 const toOrderNumber = (value) => {
@@ -22,154 +17,20 @@ export const sortMenuItems = (items = []) =>
 
 export const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0;
 
-const isReportRoute = (route) => REPORT_ROUTE_SET.has(route);
-
-const VISA_MENU_FALLBACK_ITEM = {
-  id: "frontend-visa-management",
-  title: "Visa Management",
-  icon: "VisaManagementIcon",
-  order: 900,
-  children: [
-    { id: "frontend-visa-applications", title: "Applications", path: APP_ROUTES.visaApplications, icon: "VisaManagementIcon", order: 1, children: [] },
-    { id: "frontend-visa-countries", title: "Countries", path: APP_ROUTES.visaCountries, icon: "VisaManagementIcon", order: 2, children: [] },
-    { id: "frontend-visa-types", title: "Visa Types", path: APP_ROUTES.visaTypes, icon: "VisaManagementIcon", order: 3, children: [] },
-    { id: "frontend-visa-requirements", title: "Requirements", path: APP_ROUTES.visaRequirements, icon: "VisaManagementIcon", order: 4, children: [] },
-  ],
-};
-
-const containsVisaMenuItem = (items = []) =>
-  items.some((item) => {
-    const route = getSupportedRoute(item.path);
-    return [APP_ROUTES.visaApplications, APP_ROUTES.visaCountries, APP_ROUTES.visaTypes, APP_ROUTES.visaRequirements].includes(route)
-      || containsVisaMenuItem(item.children ?? []);
-  });
-
-const isReportMenuHubCandidate = (item = {}) => {
-  const supportedRoute = getSupportedRoute(item.path);
-
-  if (supportedRoute === APP_ROUTES.reports) {
-    return true;
-  }
-
-  return (/report/i.test(item.title ?? "") || item.icon === "ReportManagementIcon") && (!supportedRoute || hasChildren(item));
-};
-
-const collectNestedReportItems = (items = []) => {
-  const reportItems = [];
-
-  items.forEach((item) => {
-    const supportedRoute = getSupportedRoute(item.path);
-
-    if (isReportRoute(supportedRoute)) {
-      reportItems.push({
-        ...item,
-        path: supportedRoute,
-        children: [],
-      });
-    }
-
-    reportItems.push(...collectNestedReportItems(item.children ?? []));
-    reportItems.push(...collectNestedReportItems(item.reportChildren ?? []));
-  });
-
-  return reportItems;
-};
-
-const dedupeReportItems = (items = []) => {
-  const routes = new Set();
-
-  return sortMenuItems(
-    items.reduce((reportItems, item) => {
-      const supportedRoute = getSupportedRoute(item.path);
-
-      if (!isReportRoute(supportedRoute) || routes.has(supportedRoute)) {
-        return reportItems;
-      }
-
-      routes.add(supportedRoute);
-      reportItems.push({
-        ...item,
-        path: supportedRoute,
-        children: [],
-      });
-      return reportItems;
-    }, []),
-  );
-};
-
-const stripReportMenuItems = (items = [], context, location) =>
-  items.reduce((nextItems, item) => {
-    const supportedRoute = getSupportedRoute(item.path);
-
-    if (isReportMenuHubCandidate(item)) {
-      context.reportHubItem = context.reportHubItem ?? item;
-      context.reportHubLocation = context.reportHubLocation ?? location;
-      context.reportHubOrder = context.reportHubOrder ?? item.order;
-      context.reportItems.push(...collectNestedReportItems(item.children ?? []));
-      context.reportItems.push(...collectNestedReportItems(item.reportChildren ?? []));
-      return nextItems;
-    }
-
-    if (isReportRoute(supportedRoute)) {
-      context.reportHubLocation = context.reportHubLocation ?? location;
-      context.reportHubOrder = context.reportHubOrder ?? item.order;
-      context.reportItems.push({
-        ...item,
-        path: supportedRoute,
-        children: [],
-      });
-      return nextItems;
-    }
-
-    nextItems.push({
-      ...item,
-      children: stripReportMenuItems(item.children ?? [], context, location),
-    });
-
-    return nextItems;
-  }, []);
-
-const normalizeReportsMenu = ({ mainMenuItems = [], bottomMenuItems = [] }) => {
-  const context = {
-    reportHubItem: null,
-    reportHubLocation: null,
-    reportHubOrder: null,
-    reportItems: [],
-  };
-
-  const nextMainMenuItems = stripReportMenuItems(mainMenuItems, context, "mainMenuItems");
-  const nextBottomMenuItems = stripReportMenuItems(bottomMenuItems, context, "bottomMenuItems");
-  const reportHubItem = {
-    ...REPORTS_MENU_FALLBACK_ITEM,
-    ...(context.reportHubItem ?? {}),
-    order: context.reportHubOrder ?? context.reportHubItem?.order ?? REPORTS_MENU_FALLBACK_ITEM.order,
-    path: APP_ROUTES.reports,
-    children: [],
-    reportChildren: dedupeReportItems([...context.reportItems, ...buildFallbackReportMenuItems()]),
-  };
-
-  const hasVisaEntries = containsVisaMenuItem([...nextMainMenuItems, ...nextBottomMenuItems]);
-  const visaFallback = hasVisaEntries ? [] : [VISA_MENU_FALLBACK_ITEM];
-
-  if ((context.reportHubLocation ?? "bottomMenuItems") === "mainMenuItems") {
-    return {
-      mainMenuItems: sortMenuItems([...nextMainMenuItems, ...visaFallback, reportHubItem]),
-      bottomMenuItems: sortMenuItems(nextBottomMenuItems),
-    };
-  }
-
-  return {
-    mainMenuItems: sortMenuItems(nextMainMenuItems),
-    bottomMenuItems: sortMenuItems([...nextBottomMenuItems, ...visaFallback, reportHubItem]),
-  };
-};
+// The API is the source of truth for a user's navigation. In particular, do
+// not add frontend fallback modules here: doing so can expose items that the
+// current user's role has not been assigned.
+const normalizeMenu = ({ mainMenuItems = [], bottomMenuItems = [] }) => ({
+  mainMenuItems: sortMenuItems(mainMenuItems),
+  bottomMenuItems: sortMenuItems(bottomMenuItems),
+});
 
 export const normalizeMenuResponse = (payload) => {
   const menuData = payload?.data;
 
-  return normalizeReportsMenu({
-    mainMenuItems: sortMenuItems(menuData?.MAIN_MENU_ITEMS ?? []),
-    bottomMenuItems: sortMenuItems(menuData?.BOTTOM_MENU_ITEMS ?? []),
+  return normalizeMenu({
+    mainMenuItems: menuData?.MAIN_MENU_ITEMS ?? [],
+    bottomMenuItems: menuData?.BOTTOM_MENU_ITEMS ?? [],
   });
 };
 
@@ -179,13 +40,13 @@ export const normalizeStoredMenuState = (payload) => {
   }
 
   if (Array.isArray(payload)) {
-    return normalizeReportsMenu({ mainMenuItems: sortMenuItems(payload), bottomMenuItems: [] });
+    return normalizeMenu({ mainMenuItems: payload, bottomMenuItems: [] });
   }
 
   if (payload.mainMenuItems || payload.bottomMenuItems) {
-    return normalizeReportsMenu({
-      mainMenuItems: sortMenuItems(payload.mainMenuItems ?? []),
-      bottomMenuItems: sortMenuItems(payload.bottomMenuItems ?? []),
+    return normalizeMenu({
+      mainMenuItems: payload.mainMenuItems ?? [],
+      bottomMenuItems: payload.bottomMenuItems ?? [],
     });
   }
 
